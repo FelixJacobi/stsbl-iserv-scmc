@@ -1,0 +1,10 @@
+--- /etc/postgresql/9.4/main/pg_ident.conf	2016-10-22 05:53:48.854574270 +0200
++++ pg_ident.conf	2016-10-22 09:19:49.407105634 +0200
+@@ -63,7 +63,6 @@
+ map1		www-data	rsyslogd
+ map1		www-data	scanhp
+ map1		www-data	schedule
+-map1		www-data	scmc_session
+ map1		www-data	sessauthd
+ map1		www-data	webadm
+ map1		www-data	webusr

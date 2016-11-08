@@ -1,0 +1,11 @@
+scmc_access_frontend:
+module      School Certificate Manager Connector
+description Access the connector to up- and download data
+assign      admins
+assignroles admin schoolcertificatemanager
+
+scmc_admin:
+module      School Certificate Manager Connector
+description Manage master password and servers
+assign      admins
+assignroles admin

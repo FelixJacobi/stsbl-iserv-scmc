@@ -1,0 +1,65 @@
+msgid "Certificate Management"
+msgstr "Zeugnisverwaltung"
+
+msgid "Currently there is no master password set. Please contact your administrator."
+msgstr "Derzeit ist das Masterpasswort nicht gesetzt. Bitte kontaktieren sie Ihren Administrator."
+
+msgid "Master password"
+msgstr "Masterpasswort"
+
+msgid "New master password"
+msgstr "Neues Masterpasswort"
+
+msgid "Repeat new master password"
+msgstr "Neues Masterpasswort wiederholen"
+
+msgid "Old master password"
+msgstr "Altes Masterpasswort"
+
+msgid "Currently there is no master password set. Please enter a new master password in the formular and press Update password."
+msgstr "Derzeit ist kein Masterpasswort gesetzt. Bitte geben sie ein neues Masterpasswort in das Formular ein und drücken sie Passwort aktualisieren."
+
+msgid "Update password"
+msgstr "Passwort aktualisieren"
+
+msgid "Everyone who should access the certificate management section need to know this password. After you you changed the password, note it down. If you forget it, you can only reset it via the root console."
+msgstr "Jeder, der Zugriff auf den Zeugnisverwaltungsbereich haben soll, muss Kenntnis von diesem Passwort haben. Nachdem sie das Passwort geändert haben, notieren sie es. Sollten sie es vergessen, können sie es ausschließlich über die Root-Konsole zurücksetzen."
+
+msgid "Old master password can not be empty."
+msgstr "Altes Masterpasswort darf nicht leer sein."
+
+msgid "New password and repeat does not match."
+msgstr "Neues Passwort und Wiederholung stimmen nicht überein."
+
+msgid "Master password updated successfully."
+msgstr "Masterpasswort erfolgreich aktualisiert."
+
+msgid "Old master password is wrong."
+msgstr "Das alte Masterpasswort ist falsch."
+
+msgid "Please enter the master password and try it again."
+msgstr "Bitte geben sie das Masterpasswort ein und versuchen sie es erneut."
+
+msgid "The master password is wrong."
+msgstr "Das Masterpasswort ist falsch."
+
+msgid "You have logged out successfully from the Certificate Management Section."
+msgstr "Sie haben sich erfolgreich aus dem Zeugnisverwaltungsbereich abgemeldet."
+
+msgid "Unknown error. Please try again."
+msgstr "Unbekannter Fehler. Bitte probieren sie es erneut."
+
+msgid "You have logged in successfully in the Certificate Management Section."
+msgstr "Sie haben sich erfolgreich im Zeugnisverwaltungsbereich angemeldet."
+
+msgid "School Certificate Manager"
+msgstr "Zeugnisverwalter"
+
+msgid "School Certificate Manager Connector"
+msgstr "Zeugnisverwaltungsconnector"
+
+msgid "Manage master password and servers"
+msgstr "Masterpasswort und Server verwalten"
+
+msgid "Access the connector to up- and download data"
+msgstr "Auf den Connector zugreifen um Daten hoch- und herunterzuladen"

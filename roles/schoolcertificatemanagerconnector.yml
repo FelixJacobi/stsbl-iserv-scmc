@@ -1,0 +1,3 @@
+schoolcertificatemanager:
+    module: schoolcertifcatemanagerconnector
+    name: School Certificate Manager

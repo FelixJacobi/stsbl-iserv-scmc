@@ -1,0 +1,2 @@
+Cmnd_Alias      SCMC = /usr/lib/iserv/scmc_masterpassword_update,/usr/lib/iserv/scmc_masterpassword_empty,/usr/lib/iserv/scmc_session_open,/usr/lib/iserv/scmc_session_close
+www-data        ALL = (root) NOPASSWD: SCMC

@@ -1,0 +1,9 @@
+MkDir 0755 root:root /var/lib/stsbl/
+MkDir 0755 root:root /var/lib/stsbl/scmc
+MkDir 0750 root:root /var/lib/stsbl/scmc/auth
+
+Touch /var/lib/stsbl/scmc/auth/masterpassword.pwd
+ChPerm 600 root:root /var/lib/stsbl/scmc/auth/masterpassword.pwd
+
+Touch /var/lib/stsbl/scmc/auth/masterpassword.salt
+ChPerm 600 root:root /var/lib/stsbl/scmc/auth/masterpassword.salt
