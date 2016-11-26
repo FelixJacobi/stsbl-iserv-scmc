@@ -60,17 +60,17 @@ class SessionCommand extends ContainerAwareCommand {
     private function open(InputInterface $input, OutputInterface $output)
     {
         if (!isset($_SERVER['SCMC_MASTERPW']) or !isset($_SERVER['SCMC_ACT'])) {
-            throw new RuntimeExecption('Environment variables are missing.');
+            throw new \RuntimeExecption('Environment variables are missing.');
         }
         $suppliedMasterPassword = $_SERVER['SCMC_MASTERPW']; 
         $act = $_SERVER['SCMC_ACT'];
         
         if (empty($suppliedMasterPassword)) {
-            throw new RuntimeException('Master password is missing.');
+            throw new \RuntimeException('Master password is missing.');
         }
         
         if (empty($act)) {
-            throw new RuntimeException('Account is missing.');
+            throw new \RuntimeException('Account is missing.');
         }
         
         $privilegeDB = $this->getIServDBConnection();
@@ -78,11 +78,11 @@ class SessionCommand extends ContainerAwareCommand {
         $statement->bindParam(':act', $act, \PDO::PARAM_STR);
         $statement->execute();
         if ($statement->fetchColumn() < 1) {
-            throw new RuntimeException('User '.$act.' has not enough privileges to authentificate.');
+            throw new \RuntimeException('User '.$act.' has not enough privileges to authentificate.');
         }
         
         if (filesize(self::MASTERPASSWORD_FILE) == 0) {
-            throw new RuntimeException('Masterpassword file is empty!');
+            throw new \RuntimeException('Masterpassword file is empty!');
         }
         
         $masterPasswordHash = file_get_contents(self::MASTERPASSWORD_FILE);
@@ -122,7 +122,7 @@ class SessionCommand extends ContainerAwareCommand {
             $statement->execute(array(':sessionToken' => $sessionToken, ':sessionPasswordHash' => $sessionPasswordHash, ':sessionPasswordSalt' => $sessionPasswordSalt, ':account' => $act));
         } catch (\PDOException $e) {
             $sessionDB->rollBack();
-            throw new RuntimeException('Error during executing statement: '.$e->getMessage());
+            throw new \RuntimeException('Error during executing statement: '.$e->getMessage());
         }
         
         $sessionDB->commit();
@@ -139,7 +139,7 @@ class SessionCommand extends ContainerAwareCommand {
     private function close(InputInterface $input, OutputInterface $output)
     {
         if (!isset($_SERVER['SCMC_ACT']) or !isset($_SERVER['SCMC_SESSIONPW']) or !isset($_SERVER['SCMC_SESSIONTOKEN'])) {
-            throw new RuntimeException('Environment variables are missing.');
+            throw new \RuntimeException('Environment variables are missing.');
         }
         
         $sessionToken = $_SERVER['SCMC_SESSIONTOKEN'];
@@ -147,15 +147,15 @@ class SessionCommand extends ContainerAwareCommand {
         $act = $_SERVER['SCMC_ACT'];
         
         if (empty($sessionToken)) {
-            throw new RuntimeException('Session token is missing.');
+            throw new \RuntimeException('Session token is missing.');
         }
         
         if (empty($sessionPassword)) {
-            throw new RuntimeException('Session password is missing.');
+            throw new \RuntimeException('Session password is missing.');
         }
         
         if(empty($act)) {
-            throw new RuntimeException('Account is missing.');
+            throw new \RuntimeException('Account is missing.');
         }
         
         $sessionDB = $this->getSessionDBConnection(); 
@@ -164,7 +164,7 @@ class SessionCommand extends ContainerAwareCommand {
         $statement->execute(array(':sessionToken' => $sessionToken, ':account' => $act));
         
         if ($statement->fetchColumn() < 1) {
-            throw new RuntimeException("Couldn't find session with that token or/and account.");
+            throw new \RuntimeException("Couldn't find session with that token or/and account.");
         }
         
         $statement = $sessionDB->prepare('SELECT sessionpwsalt FROM scmc_sessions WHERE sessiontoken = :sessionToken AND act = :account');
@@ -184,7 +184,7 @@ class SessionCommand extends ContainerAwareCommand {
         $statement->execute(array(':sessionToken' => $sessionToken, ':sessionPasswordHash' => $sessionPasswordHash, ':account' => $act));
         
         if ($statement->fetchColumn() < 1) {
-            throw new RuntimeException("Session password hash does not match.");
+            throw new \RuntimeException("Session password hash does not match.");
         }
         
         $sessionDB->beginTransaction();
@@ -193,7 +193,7 @@ class SessionCommand extends ContainerAwareCommand {
             $statement->execute(array(':sessionToken' => $sessionToken, ':sessionPasswordHash' => $sessionPasswordHash, ':account' => $act));
         } catch (\PDOException $e) {
             $sessionDB->rollBack();
-            throw new RuntimeException('Error during executing PDOStatement: '.$e->getMessage());
+            throw new \RuntimeException('Error during executing PDOStatement: '.$e->getMessage());
         }
         
         $sessionDB->commit();
