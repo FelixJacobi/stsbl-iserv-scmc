@@ -92,7 +92,7 @@ class SessionCommand extends ContainerAwareCommand {
         }
         
         $privilegeDB = $this->getIServDBConnection();
-        $statement = $privilegeDB->prepare("SELECT count(*) FROM members WHERE actuser = :act AND actgrp IN (SELECT act FROM privileges_assign WHERE privilege = 'scmc_access_frontend')");
+        $statement = $privilegeDB->prepare("SELECT count(*) FROM users_priv WHERE Act = :act AND privilege = 'scmc_access_frontend'");
         $statement->bindParam(':act', $act, \PDO::PARAM_STR);
         $statement->execute();
         if ($statement->fetchColumn() < 1) {
