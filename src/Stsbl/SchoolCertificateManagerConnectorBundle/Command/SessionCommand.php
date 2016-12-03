@@ -2,6 +2,7 @@
 // src/Stsbl/SchoolCertificateManagerConnectorBundle/Command/MasterPasswordCommand.php
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Command;
 
+use IServ\CoreBundle\Service\Shell;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -22,6 +23,11 @@ class SessionCommand extends ContainerAwareCommand {
     const SALT_FILE = '/var/lib/stsbl/scmc/auth/masterpassword.salt';
     
     /**
+     * @var Shell
+     */
+    private $shell;
+
+    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -37,6 +43,18 @@ class SessionCommand extends ContainerAwareCommand {
     }
     
     /**
+     * {@inheritdoc}
+     */
+    public function initialize(InputInterface $input, OutputInterface $output)
+    {
+        /**
+         * @var $shell \iServ\CoreBundle\Service\Shell
+         */
+        $shell = $this->getContainer()->get('iserv.shell');
+        $this->shell = $shell;
+    }
+
+        /**
      * {@inheritdoc}
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -100,26 +118,26 @@ class SessionCommand extends ContainerAwareCommand {
             return;
         }
         
-        $pwgen = shell_exec('/usr/bin/env pwgen -n -s 60 1');
-        $sessionPassword = str_replace("\n", '', $pwgen);
+        $shell = $this->shell->exec('/usr/bin/env', ['pwgen', '-n', '-s', '60', '1']);
+        $password = $this->shell->getOutput();
+                
+        $sessionPassword = $password[0];
         $sessionPasswordSalt = base64_encode(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
         $sessionPasswordHashOptions = [
             'cost' => 11,
             'salt' => $sessionPasswordSalt
         ];
         $sessionPasswordHash = password_hash($sessionPassword, PASSWORD_BCRYPT, $sessionPasswordHashOptions);
-        $pwgen = shell_exec('/usr/bin/env pwgen -n -s 60 1');
-        $sessionToken = str_replace("\n", '', $pwgen);
+        
+        $shell = $this->shell->exec('/usr/bin/env', ['pwgen', '-n', '-s', '60', '1']);
+        $password = $this->shell->getOutput();
+        $sessionToken = $password[0];
         
         $sessionDB = $this->getSessionDBConnection();
         $sessionDB->beginTransaction();
         try {
-            // PDOStatement sucks this time
-            $sessionDB->exec("INSERT INTO scmc_sessions(sessiontoken, sessionpw, sessionpwsalt, act, created) VALUES ('$sessionToken', '$sessionPasswordHash', '$sessionPasswordSalt', '".addslashes($act)."', now())");
-            
             $statement = $sessionDB->prepare("INSERT INTO scmc_sessions (sessiontoken, sessionpw, sessionpwsalt, act, created) VALUES (:sessionToken, :sessionPasswordHash, :sessionPasswordSalt, :account, now());", array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-            
-            $statement->execute(array(':sessionToken' => $sessionToken, ':sessionPasswordHash' => $sessionPasswordHash, ':sessionPasswordSalt' => $sessionPasswordSalt, ':account' => $act));
+            $statement->execute([':sessionToken' => $sessionToken, ':sessionPasswordHash' => $sessionPasswordHash, ':sessionPasswordSalt' => $sessionPasswordSalt, ':account' => $act]);
         } catch (\PDOException $e) {
             $sessionDB->rollBack();
             throw new \RuntimeException('Error during executing statement: '.$e->getMessage());
@@ -161,7 +179,7 @@ class SessionCommand extends ContainerAwareCommand {
         $sessionDB = $this->getSessionDBConnection(); 
         
         $statement = $sessionDB->prepare('SELECT count(*) FROM scmc_sessions WHERE sessiontoken = :sessionToken AND act = :account');
-        $statement->execute(array(':sessionToken' => $sessionToken, ':account' => $act));
+        $statement->execute([':sessionToken' => $sessionToken, ':account' => $act]);
         
         if ($statement->fetchColumn() < 1) {
             throw new \RuntimeException("Couldn't find session with that token or/and account.");
@@ -169,7 +187,7 @@ class SessionCommand extends ContainerAwareCommand {
         
         $statement = $sessionDB->prepare('SELECT sessionpwsalt FROM scmc_sessions WHERE sessiontoken = :sessionToken AND act = :account');
         
-        $statement->execute(array(':sessionToken' => $sessionToken, ':account' => $act));
+        $statement->execute([':sessionToken' => $sessionToken, ':account' => $act]);
         
         $sessionPasswordSalt = $statement->fetchColumn();
         
