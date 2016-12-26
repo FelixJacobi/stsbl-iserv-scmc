@@ -2,6 +2,7 @@
 // src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 
+use Doctrine\ORM\NoResultException;
 use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Administrative Settings for the school certificate manager connector
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("admin/scmc")
  */
 class AdminController extends PageController {
@@ -159,5 +160,63 @@ class AdminController extends PageController {
         ;
         
         return $builder->getForm();
+    }
+    
+    /**
+     * Displays form to set a master password for a user
+     * 
+     * @param Request $request
+     * @Route("/userpasswords/set/{user}", name="admin_scmc_set_user_password")
+     * @param string $user
+     */
+    public function setUserPasswordAction(Request $request, $user)
+    {
+        if(!$this->isAdmin()) {
+            throw $this->createAccessDeniedException('You must be an administrator.');
+        }
+        /* @var $repository \Doctrine\Common\Persistence\ObjectRepository */
+        $repository = $this->getDoctrine()->getRepository('IServCoreBundle:User');
+        
+        /* @var $userObject \IServ\CoreBundle\Entity\User */
+        try {
+            $userObject = $repository->findOneByUsername($user);
+        } catch (NoResultException $e) {
+            throw new \RuntimeException('User was not found.');
+        }
+        
+        $FullName = $userObject->getName();
+        
+        $builder = $this->createFormBuilder();
+        
+        $builder
+            ->add('userpassword', PasswordType::class, array(
+                'label' => _('New user password'),
+                'required' => true,
+                'attr' => array(
+                    'autocomplete' => 'off',
+                    )
+                )
+            )
+            ->add('submit', SubmitType::class, array(
+                'label' => _('Set password'),
+                'buttonClass' => 'btn-success',
+                'icon' => 'ok'
+                )
+            )
+        ;
+        
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+        } else {
+            $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('admin_scmc'));
+            $this->addBreadcrumb(_('User passwords'), $this->generateUrl('admin_scmc_userpassword_index'));
+            $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user]));
+            $this->addBreadcrumb(_('Set user password'));
+            
+            $parameters = ['password_form' => $form->createView(), 'act' => $user, 'fullname' => $FullName];
+            return $this->render('StsblSchoolCertificateManagerConnectorBundle:Admin:setuserpassword.html.twig', $parameters);
+        }
     }
 }

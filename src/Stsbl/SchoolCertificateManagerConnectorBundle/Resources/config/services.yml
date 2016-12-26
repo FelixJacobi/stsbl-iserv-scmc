@@ -1,22 +1,15 @@
 # src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/config/services.yml
-
-parameters:
-    # Handles login redirects to scmc area (overrides Symfony's default listener!)
-    security.exception_listener.class: Stsbl\SchoolCertificateManagerConnectorBundle\Security\Firewall\ExceptionListener
-
 services:
     stsbl.scmc.menu:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\EventListener\MenuListener # Out MenuListener Class
         tags:
           - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu } # Tells IServ about the main menu method
           - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu } # Tells IServ about the admin menu method]
-          
-    # Handles access denied to scmc URLs while the user is logged in as user but nut into the scmc section
-    stsbl.scmc.security.access_denied_handler:
-        class: Stsbl\SchoolCertificateManagerConnectorBundle\Security\Authorization\AccessDeniedHandler # Our AccessDeniedHandler Class
-        arguments: ["@security.authorization_checker", "@router"] # Inject authorization checker and router into the class
-        tags:
-            - { name: kernel.event_listener, event: security.kernel_response, method: handle } # Tells Symfony about our handler
     stsbl.scmc.service.session:
         class:  Stsbl\SchoolCertificateManagerConnectorBundle\Service\SessionService # Our Service class
         arguments: ["@iserv.security_handler", "@iserv.shell"] # Inject SecurityHandler and Shell into the class
+    stsbl.scmc.admin.userpassword:
+        class: Stsbl\SchoolCertificateManagerConnectorBundle\Admin\UserPasswordAdmin # Our CRUD class
+        arguments: [IServ\CoreBundle\Entity\User]  # Sets the controlled entity class
+        tags:
+            - { name: iserv.crud } # Tells IServ about our CRUD

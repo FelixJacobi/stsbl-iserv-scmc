@@ -19,7 +19,7 @@ use Symfony\Component\Process\Exception\RuntimeException;
  * School Certificate Manager Connector Login/Logout
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("scmc", schemes="https")
  * @Security("requires_channel: https")
  */

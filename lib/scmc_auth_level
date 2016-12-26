@@ -1,0 +1,32 @@
+#!/usr/bin/perl -T -CSDAL
+use warnings;
+use strict;
+use IServ::Valid;
+use sessauth;
+
+if (@ARGV < 1)
+{
+  print STDERR "Usage: scmc_auth_level ACCT\n";
+  print STDERR "Environment: SESSPW\n";
+  exit 1
+}
+
+my ($login_act) = @ARGV;
+my $login_pwd = $ENV{SESSPW};
+my $auth_level;
+
+sub get_auth_level() {
+  if (not defined $login_pwd) {
+    $auth_level = "none";
+  } else {
+    $login_act = IServ::Valid::User $login_act;
+    $login_pwd = IServ::Valid::Passwd $login_pwd;
+    my $res = sessauth::sessauth $login_act, $login_pwd, "actadm";
+    die "wrong session password\n" unless $res =~ /^OK\b/;
+    $auth_level = $res =~ /^OK adm\b/? "admin": "user";
+  }
+}
+
+get_auth_level unless defined $auth_level;
+print $auth_level;
+print "\n";

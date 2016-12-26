@@ -4,18 +4,18 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Command;
 
 use IServ\CoreBundle\Service\Shell;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use \PDO;
+use \RuntimeException;
 
 /**
  * Util to manage SCMC sessions
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  */
 class SessionCommand extends ContainerAwareCommand {
     const MASTERPASSWORD_FILE = '/var/lib/stsbl/scmc/auth/masterpassword.pwd';
@@ -48,7 +48,7 @@ class SessionCommand extends ContainerAwareCommand {
     public function initialize(InputInterface $input, OutputInterface $output)
     {
         /**
-         * @var $shell \iServ\CoreBundle\Service\Shell
+         * @var $shell \IServ\CoreBundle\Service\Shell
          */
         $shell = $this->getContainer()->get('iserv.shell');
         $this->shell = $shell;
@@ -65,7 +65,7 @@ class SessionCommand extends ContainerAwareCommand {
         } else if ($action == 'close') {
             $this->close($input, $output);
         } else {
-            throw new RuntimeException('Unknown action "'.$action.'".');
+            throw new \RuntimeException('Unknown action "'.$action.'".');
         }
     }
     
@@ -77,11 +77,19 @@ class SessionCommand extends ContainerAwareCommand {
      */
     private function open(InputInterface $input, OutputInterface $output)
     {
-        if (!isset($_SERVER['SCMC_MASTERPW']) or !isset($_SERVER['SCMC_ACT'])) {
+        if (!isset($_SERVER['SCMC_MASTERPW']) or !isset($_SERVER['SCMC_ACT']) or !isset($_SERVER['SESSPW'])) {
             throw new \RuntimeExecption('Environment variables are missing.');
         }
         $suppliedMasterPassword = $_SERVER['SCMC_MASTERPW']; 
         $act = $_SERVER['SCMC_ACT'];
+        
+        $this->shell->exec('/usr/lib/iserv/scmc_auth_level', [$act]);
+        $shellOutput = $this->shell->getOutput();
+        $authLevel = array_shift($shellOutput);
+        
+        if (!preg_match('(admin|user)', $authLevel)) {
+          throw new \RuntimeException('User is not logged in via sessauthd.');    
+        }
         
         if (empty($suppliedMasterPassword)) {
             throw new \RuntimeException('Master password is missing.');

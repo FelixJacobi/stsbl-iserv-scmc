@@ -63,3 +63,27 @@ msgstr "Masterpasswort und Server verwalten"
 
 msgid "Access the connector to up- and download data"
 msgstr "Auf den Connector zugreifen um Daten hoch- und herunterzuladen"
+
+msgid "User passwords"
+msgstr "Benutzerpasswörter"
+
+msgid "Every user which should access the certificate management section needs also to have an individual user password."
+msgstr "Jeder Benutzer, der auf den Zeugnisverwaltungsbereich zugreifen soll, benötigt außerdem ein invidiuelles Benutzerpasswort."
+
+msgid "Set up user passwords"
+msgstr "Benutzerpasswörter einrichten"
+
+msgid "Back to details"
+msgstr "Zurück zu Details"
+
+msgid "Make sure that the User also have the privilege to access the certificate management section assigned. Otherwhile the certificate management will not shown in the IDesk Menu."
+msgstr "Stellen sie sicher, dass der Benutzer auch das nötige Sonderrecht hat, um auf die Zeugnisverwaltung zuzugreifen. Andernfalls wird der Menüpunkt im IDesk nicht angezeigt."
+
+msgid "New user password"
+msgstr "Neues Benutzerpasswort"
+
+msgid "Set a new user password for %s"
+msgstr "Ein neues Benutzerpasswort für %s setzen"
+
+msgid "Set user password"
+msgstr "Benutzerpasswort setzen"

@@ -38,17 +38,19 @@ trait MasterPasswordTrait {
      * @return bool|string
      */
     protected function updateMasterPassword($oldMasterPassword, $newMasterPassword)
-    {   
+    {
+        $securityHandler = $this->get('iserv.security_handler');
+        $sessionPassword = $securityHandler->getSessionPassword();
+        $act = $securityHandler->getToken()->getUser()->getUsername();
+        /* @var $shell \IServ\CoreBundle\Service\Shell */
         $shell = $this->get('iserv.shell');
-        $shell->exec('/usr/bin/sudo', array('/usr/lib/iserv/scmc_masterpassword_update'), null, array('SCMC_OLDMASTERPW' => $oldMasterPassword, 'SCMC_NEWMASTERPW' => $newMasterPassword));
-        
-        $ret = $shell->getOutput();
-        
-        if ($ret[0] == "True") {
+        $shell->exec('/usr/bin/sudo', array('/usr/lib/iserv/scmc_masterpassword_update'), null, array('SCMC_OLDMASTERPW' => $oldMasterPassword, 'SCMC_NEWMASTERPW' => $newMasterPassword, 'SCMC_ACT' => $act, 'SESSPW' => $sessionPassword));
+        $ret = array_shift(array_values($shell->getOutput()));
+        if ($ret == "True") {
             return true;
-        } else if ($ret[0] == "False") {
+        } else if ($ret == "False") {
             return false;
-        } else if ($ret[0] == "Wrong") {
+        } else if ($ret == "Wrong") {
             return 'wrong';
         } else {
             throw new \RuntimeException('Unexpected return from scmc_masterpassword_update.');

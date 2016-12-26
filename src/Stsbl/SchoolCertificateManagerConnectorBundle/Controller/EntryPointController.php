@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
  * School Certificate Manager Connector Entry Point
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("scmc")
  */
 class EntryPointController extends PageController {

@@ -72,7 +72,8 @@ class SessionService {
     {
         $shell = $this->shell;
         $act = $this->securityHandler->getToken()->getUser()->getUsername();
-        $shell->exec('/usr/bin/sudo', array('/usr/lib/iserv/scmc_session_open'), null, array('SCMC_ACT' => $act, 'SCMC_MASTERPW' => $masterPassword));
+        $sessionPassword = $this->securityHandler->getSessionPassword();
+        $shell->exec('/usr/bin/sudo', ['/usr/lib/iserv/scmc_session_open'], null, ['SCMC_ACT' => $act, 'SCMC_MASTERPW' => $masterPassword, 'SESSPW' => $sessionPassword]);
         
         $this->handleShellExitCode($shell);
         $ret = $shell->getOutput();
