@@ -24,25 +24,35 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    {% if not emptyMasterPassword %}
+                    {% if emptyMasterPassword %}
+                        <div class="alert alert-warning">
+                            {{ _('Currently there is no master password set. Please contact your administrator.') }}
+                        </div>
+                    {% elseif not hasUserPassword %}
+                        <div class="alert alert-warning">
+                            {{ _('Currently for your account is not a user password set. Please contact your administrator.') }}
+                        </div>
+                    {% else %}
                         {% if not error == '' %}
                             <div class="alert alert-danger">
                                 {{ error }}
                             </div>
                         {% endif %}
+                        <div class="alert alert-info">
+                            {{ _('Please enter both passwords, the master password and your personal user password. If you do not know them, please conact your administrator.') }}
+                        </div>
                         <form name="form" class="form ng-pristine ng-valid" role="form" action="{{ path('scmc_login') }}" method="post">
                             {{ form_row(login_form._token) }}
                             <div class="form-group">
                                 {{ form_widget(login_form.masterpassword) }}
                             </div>
                             <div class="form-group">
+                                {{ form_widget(login_form.userpassword) }}
+                            </div>
+                            <div class="form-group">
                                 <button class="btn btn-warning" type="submit">{{ icon('pro-log-in') }} {{ _('Login') }}</button>
                             </div>
                         </form>
-                    {% else %}
-                        <div class="alert alert-warning">
-                            {{ _('Currently there is no master password set. Please contact your administrator.') }}
-                        </div>
                     {% endif %}
                 </div>
             </div>

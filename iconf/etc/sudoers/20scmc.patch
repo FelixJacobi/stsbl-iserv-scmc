@@ -4,7 +4,7 @@
  # env_keep contains evil variables like PATH by default.
  Defaults env_keep = "IP IPFWD PASSWD PASSWDNEW"
  Defaults:www-data env_keep += "ARG SESSPW IP IPFWD SCRIPT_FILENAME CHUSR_UPLOAD PASSWD PASSWDNEW"
-+Defaults:www-data env_keep += "SCMC_ACT SCMC_MASTERPW SCMC_NEWMASTERPW SCMC_OLDMASTERPW SCMC_SESSIONTOKEN SCMC_SESSIONPW"
++Defaults:www-data env_keep += "SCMC_ACT SCMC_MASTERPW SCMC_NEWMASTERPW SCMC_OLDMASTERPW SCMC_SESSIONTOKEN SCMC_SESSIONPW SCMC_USERPW"
  
  # Host alias specification
  

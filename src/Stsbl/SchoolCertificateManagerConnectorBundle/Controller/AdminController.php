@@ -2,6 +2,7 @@
 // src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\NoResultException;
 use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
@@ -9,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\MasterPasswordTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -163,7 +164,7 @@ class AdminController extends PageController {
     }
     
     /**
-     * Displays form to set a master password for a user
+     * Displays form to set a password for a user
      * 
      * @param Request $request
      * @Route("/userpasswords/set/{user}", name="admin_scmc_set_user_password")
@@ -174,17 +175,8 @@ class AdminController extends PageController {
         if(!$this->isAdmin()) {
             throw $this->createAccessDeniedException('You must be an administrator.');
         }
-        /* @var $repository \Doctrine\Common\Persistence\ObjectRepository */
-        $repository = $this->getDoctrine()->getRepository('IServCoreBundle:User');
         
-        /* @var $userObject \IServ\CoreBundle\Entity\User */
-        try {
-            $userObject = $repository->findOneByUsername($user);
-        } catch (NoResultException $e) {
-            throw new \RuntimeException('User was not found.');
-        }
-        
-        $FullName = $userObject->getName();
+        $FullName = $this->getUserEntity($user)->getName();
         
         $builder = $this->createFormBuilder();
         
@@ -209,14 +201,151 @@ class AdminController extends PageController {
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $this->initalizeLogger();
+            $password = $data['userpassword'];
+            if (empty($password)) {
+                $this->get('iserv.flash')->error(_('User password can not be empty!'));
+                return $this->redirectToRoute('admin_scmc_set_user_password', ['user' => $user]);
+            }
+            
+            $securityHandler = $this->get('iserv.security_handler');
+            $sessionPassword = $securityHandler->getSessionPassword();
+            // echo $sessionPassword;
+            $act = $securityHandler->getToken()->getUser()->getUsername();
+        
+            /* @var $shell \IServ\CoreBundle\Service\Shell */
+            $shell = $this->get('iserv.shell');
+            $shell->exec('/usr/bin/sudo', ['/usr/lib/iserv/scmc_userpassword_set', $user], null, ['SESSPW' => $sessionPassword, 'SCMC_ACT' => $act, 'SCMC_USERPW' => $password]);
+            $exitCode = $shell->getExitCode();
+            if ($exitCode !== 0) {
+                throw new \RuntimeException('Shell returned exit code '.$exitCode.'.');
+            }
+            
+            $this->get('iserv.flash')->success(__('User password of %s set.', $FullName));
+            $this->log(sprintf('Benutzerpasswort von %s gesetzt', $FullName));
+            return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
+            
         } else {
             $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('admin_scmc'));
             $this->addBreadcrumb(_('User passwords'), $this->generateUrl('admin_scmc_userpassword_index'));
             $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user]));
             $this->addBreadcrumb(_('Set user password'));
             
-            $parameters = ['password_form' => $form->createView(), 'act' => $user, 'fullname' => $FullName];
+            /* @var $userPrivileges \Doctrine\Common\Collections\ArrayCollection */
+            $userPrivileges = $this->getUserEntity($user)->getPrivileges();
+            $hasPrivilege = false;
+            
+            foreach ($userPrivileges as $privilege) {
+                /* @var $privilege \IServ\CoreBundle\Entity\Privilege */
+                if ($privilege->getPriv() == 'PRIV_SCMC_ACCESS_FRONTEND') {
+                    $hasPrivilege = true;
+                    break;
+                }
+            }
+            
+            // check if user has privileges
+            if (!$hasPrivilege) {
+                $permissionNotice = true;
+            } else {
+                $permissionNotice = false;
+            }
+            
+            $parameters = ['password_form' => $form->createView(), 'act' => $user, 'fullname' => $FullName, 'permissionnotice' => $permissionNotice];
             return $this->render('StsblSchoolCertificateManagerConnectorBundle:Admin:setuserpassword.html.twig', $parameters);
         }
+    }
+
+    /**
+     * Displays form to delete a password for a user
+     * 
+     * @param Request $request
+     * @Route("/userpasswords/delete/{user}", name="admin_scmc_delete_user_password")
+     * @param string $user
+     */
+    public function deleteUserPasswordAction(Request $request, $user)
+    {
+        if(!$this->isAdmin()) {
+            throw $this->createAccessDeniedException('You must be an administrator.');
+        }
+        
+        $FullName = $this->getUserEntity($user)->getName();
+        
+        $builder = $this->createFormBuilder();
+        $builder
+            ->add('actions', FormActionsType::class)
+        ;
+        
+        $builder->get('actions')
+            ->add('approve', SubmitType::class, array(
+                'label' => _('Yes'),
+                'buttonClass' => 'btn-danger',
+                'icon' => 'ok'
+                )
+            )
+            ->add('cancel', SubmitType::class, array(
+                'label' => _('No'),
+                'buttonClass' => 'btn-default',
+                'icon' => 'remove'
+                )
+            )
+        ;
+        
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->initalizeLogger();
+            $button = $form->getClickedButton()->getName();
+            if ($button === 'approve') {
+                $securityHandler = $this->get('iserv.security_handler');
+                $sessionPassword = $securityHandler->getSessionPassword();
+                // echo $sessionPassword;
+                $act = $securityHandler->getToken()->getUser()->getUsername();
+        
+                /* @var $shell \IServ\CoreBundle\Service\Shell */
+                $shell = $this->get('iserv.shell');
+                $shell->exec('/usr/bin/sudo', ['/usr/lib/iserv/scmc_userpassword_delete', $user], null, ['SESSPW' => $sessionPassword, 'SCMC_ACT' => $act]);
+                $exitCode = $shell->getExitCode();
+                if ($exitCode !== 0) {
+                    throw new \RuntimeException('Shell returned exit code '.$exitCode.'.');
+                }
+            
+                $this->get('iserv.flash')->success(__('User password of %s deleted.', $FullName));
+                $this->log(sprintf('Benutzerpasswort von %s gelöscht', $FullName));
+                return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
+            } else {
+                return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
+            }
+        } else {
+            $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('admin_scmc'));
+            $this->addBreadcrumb(_('User passwords'), $this->generateUrl('admin_scmc_userpassword_index'));
+            $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user]));
+            $this->addBreadcrumb(_('Delete user password'));
+            
+            $parameters = ['fullname' => $FullName, 'act' => $user, 'delete_form' => $form->createView()];
+            return $this->render('StsblSchoolCertificateManagerConnectorBundle:Admin:deleteuserpassword.html.twig', $parameters);
+        }
+    }
+    
+    /**
+     * Gets the Entity of an IServ User
+     * 
+     * @param string $act
+     * @return User
+     */
+    private function getUserEntity($act)
+    {
+        /* @var $repository \Doctrine\Common\Persistence\ObjectRepository */
+        $repository = $this->getDoctrine()->getRepository('IServCoreBundle:User');
+        
+        /* @var $userObject \IServ\CoreBundle\Entity\User */
+        try {
+            $userEntity = $repository->findOneByUsername($act);
+        } catch (NoResultException $e) {
+            throw new \RuntimeException('User was not found.');
+        }
+        
+        return $userEntity;
     }
 }

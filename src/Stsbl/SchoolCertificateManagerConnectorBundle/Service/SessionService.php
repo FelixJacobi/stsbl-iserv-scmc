@@ -8,7 +8,7 @@ use IServ\CoreBundle\Service\Shell;
  * Service container for SCMC session management
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  */
 class SessionService {
     /**
@@ -63,25 +63,29 @@ class SessionService {
     }
 
     /**
-     * Authentificate with master password
+     * Authentificate with master and user password
      * 
      * @param string $masterPassword
-     * @return bool
+     * @param string $userPassword
+     * @return string|bool
      */
-    public function openSession($masterPassword)
+    public function openSession($masterPassword, $userPassword)
     {
         $shell = $this->shell;
         $act = $this->securityHandler->getToken()->getUser()->getUsername();
         $sessionPassword = $this->securityHandler->getSessionPassword();
-        $shell->exec('/usr/bin/sudo', ['/usr/lib/iserv/scmc_session_open'], null, ['SCMC_ACT' => $act, 'SCMC_MASTERPW' => $masterPassword, 'SESSPW' => $sessionPassword]);
+        $shell->exec('/usr/bin/sudo', ['/usr/lib/iserv/scmc_session_open'], null, ['SCMC_ACT' => $act, 'SCMC_MASTERPW' => $masterPassword, 'SESSPW' => $sessionPassword, 'SCMC_USERPW' => $userPassword]);
         
         $this->handleShellExitCode($shell);
-        $ret = $shell->getOutput();
+        $output = $shell->getOutput();
+        $ret = array_shift($output);
         
-        if ($ret[0] == "Wrong") {
-            return false;
-        } else if (strpos($ret[0], 'SESSDATA:') === 0) {
-            $sessionData = explode(',', str_replace('SESSDATA:', '', $ret[0]));
+        if ($ret == "Wrong") {
+            return 'wrong';
+        } else if ($ret == "Wrong UserPassword") {
+            return 'wrong userpassword';
+        } else if (strpos($ret, 'SESSDATA:') === 0) {
+            $sessionData = explode(',', str_replace('SESSDATA:', '', $ret));
  
             $this->securityHandler->getToken()->setAttribute('scmc_authentificated', true);
             $this->securityHandler->getToken()->setAttribute('scmc_sessiontoken', $sessionData[0]);
@@ -108,9 +112,10 @@ class SessionService {
         $shell->exec('/usr/bin/sudo', array('/usr/lib/iserv/scmc_session_close'), null, array('SCMC_ACT' => $act, 'SCMC_SESSIONTOKEN' => $this->sessionToken, 'SCMC_SESSIONPW' => $this->sessionPassword));
         
         $this->handleShellExitCode($shell);
-        $ret = $shell->getOutput();
+        $output = $shell->getOutput();
+        $ret = array_shift($output);
         
-        if ($ret[0] == "True") {
+        if ($ret == "True") {
             // delete data from session
             $this->securityHandler->getToken()->setAttribute('scmc_authentificated', null);
             $this->securityHandler->getToken()->setAttribute('scmc_sessiontoken', null);

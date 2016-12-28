@@ -6,7 +6,7 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Traits;
  * Common functions for checking privileges in Controller
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  */
 trait SecurityTrait {
     /**

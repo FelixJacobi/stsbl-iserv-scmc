@@ -6,7 +6,7 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Traits;
  * Common functions for handling the master password
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
- * @license GNU General Public License <http://gnu.org/licenses/gpl-3.0>
+ * @license MIT license <https://opensource.org/licenses/MIT>
  */
 trait MasterPasswordTrait {
     /**
@@ -41,11 +41,15 @@ trait MasterPasswordTrait {
     {
         $securityHandler = $this->get('iserv.security_handler');
         $sessionPassword = $securityHandler->getSessionPassword();
+        // echo $sessionPassword;
         $act = $securityHandler->getToken()->getUser()->getUsername();
         /* @var $shell \IServ\CoreBundle\Service\Shell */
         $shell = $this->get('iserv.shell');
         $shell->exec('/usr/bin/sudo', array('/usr/lib/iserv/scmc_masterpassword_update'), null, array('SCMC_OLDMASTERPW' => $oldMasterPassword, 'SCMC_NEWMASTERPW' => $newMasterPassword, 'SCMC_ACT' => $act, 'SESSPW' => $sessionPassword));
-        $ret = array_shift(array_values($shell->getOutput()));
+        $output = $shell->getOutput();
+        $ret = array_shift($output);
+        var_dump($output);
+        
         if ($ret == "True") {
             return true;
         } else if ($ret == "False") {

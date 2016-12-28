@@ -76,8 +76,8 @@ msgstr "Benutzerpasswörter einrichten"
 msgid "Back to details"
 msgstr "Zurück zu Details"
 
-msgid "Make sure that the User also have the privilege to access the certificate management section assigned. Otherwhile the certificate management will not shown in the IDesk Menu."
-msgstr "Stellen sie sicher, dass der Benutzer auch das nötige Sonderrecht hat, um auf die Zeugnisverwaltung zuzugreifen. Andernfalls wird der Menüpunkt im IDesk nicht angezeigt."
+msgid "The user has currently not the privilege \"Access the connector to up- and download data\". Make sure that the User also have this privilege assigned. Otherwhile the certificate management will not shown in the IDesk."
+msgstr "Der Benutzer hat derzeit nicht das Sonderrecht \"Auf den Connector zugreifen um Daten hoch- und herunterzuladen\". Stellen Sie sicher, dass der Benutzer dieses Sonderrecht hat. Andernfalls wird der Menüpunkt Zeugnisverwaltung im IDesk nicht angezeigt."
 
 msgid "New user password"
 msgstr "Neues Benutzerpasswort"
@@ -87,3 +87,33 @@ msgstr "Ein neues Benutzerpasswort für %s setzen"
 
 msgid "Set user password"
 msgstr "Benutzerpasswort setzen"
+
+msgid "User password"
+msgstr "Benutzerpasswort"
+
+msgid "Delete user password"
+msgstr "Benutzerpasswort löschen"
+
+msgid "User password of %s set."
+msgstr "Benutzerpasswort von %s gesetzt."
+
+msgid "Please enter both passwords, the master password and your personal user password. If you do not know them, please conact your administrator."
+msgstr "Bitte geben sie beide Passwörter ein, das Masterpasswort und ihr persönliches Benutzerkennwort. Wenn sie diese nicht kennen, kontaktieren Sie bitte ihren Administrator."
+
+msgid "Delete user password of %s"
+msgstr "Benutzerpasswort von %s löschen"
+
+msgid "Do you really want to delete the user password of %s?"
+msgstr "Möchten sie das Benutzerpasswort von %s wirklich löschen?"
+
+msgid "User password of %s deleted."
+msgstr "Benutzerpasswort von %s gelöscht."
+
+msgid "Currently for your account is not a user password set. Please contact your administrator."
+msgstr "Derzeit ist für ihr Konto kein Benutzerpasswort gesetzt. Bitte kontaktieren sie ihren Administrator."
+
+msgid "The user password is wrong."
+msgstr "Das Benutzerpasswort ist falsch."
+
+msgid "Please enter the user password and try it again."
+msgstr "Bitte geben sie das Benutzerpasswort ein und probieren sie es erneut."

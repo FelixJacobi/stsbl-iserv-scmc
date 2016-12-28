@@ -2,7 +2,7 @@
 // src/Stsbl/SchoolCertificateManagerConnectorBundle/Command/MasterPasswordCommand.php
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Command;
 
-use IServ\CoreBundle\Service\Shell;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Util\Password as PasswordUtil;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,15 +18,14 @@ use \RuntimeException;
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
 class SessionCommand extends ContainerAwareCommand {
+    use CommonTrait;
+    
     const MASTERPASSWORD_FILE = '/var/lib/stsbl/scmc/auth/masterpassword.pwd';
     
     const SALT_FILE = '/var/lib/stsbl/scmc/auth/masterpassword.salt';
     
-    /**
-     * @var Shell
-     */
-    private $shell;
-
+    const PASSWD_FILE = '/etc/stsbl/scmcpasswd';
+    
     /**
      * {@inheritdoc}
      */
@@ -47,14 +46,10 @@ class SessionCommand extends ContainerAwareCommand {
      */
     public function initialize(InputInterface $input, OutputInterface $output)
     {
-        /**
-         * @var $shell \IServ\CoreBundle\Service\Shell
-         */
-        $shell = $this->getContainer()->get('iserv.shell');
-        $this->shell = $shell;
+        $this->initalizeShell();
     }
 
-        /**
+    /**
      * {@inheritdoc}
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -77,11 +72,12 @@ class SessionCommand extends ContainerAwareCommand {
      */
     private function open(InputInterface $input, OutputInterface $output)
     {
-        if (!isset($_SERVER['SCMC_MASTERPW']) or !isset($_SERVER['SCMC_ACT']) or !isset($_SERVER['SESSPW'])) {
+        if (!isset($_SERVER['SCMC_MASTERPW']) or !isset($_SERVER['SCMC_ACT']) or !isset($_SERVER['SESSPW']) or !isset($_SERVER['SCMC_USERPW'])) {
             throw new \RuntimeExecption('Environment variables are missing.');
         }
         $suppliedMasterPassword = $_SERVER['SCMC_MASTERPW']; 
         $act = $_SERVER['SCMC_ACT'];
+        $suppliedUserPassword = $_SERVER['SCMC_USERPW'];
         
         $this->shell->exec('/usr/lib/iserv/scmc_auth_level', [$act]);
         $shellOutput = $this->shell->getOutput();
@@ -112,40 +108,56 @@ class SessionCommand extends ContainerAwareCommand {
         }
         
         $masterPasswordHash = file_get_contents(self::MASTERPASSWORD_FILE);
-        $masterPasswordSalt = file_get_contents(self::SALT_FILE);
-        
-        $hashOptions = [
-            'cost' => 11,
-            'salt' => $masterPasswordSalt,
-        ];
-                
-        $suppliedMasterPasswordHash = password_hash($suppliedMasterPassword, PASSWORD_BCRYPT, $hashOptions);
+        $masterPasswordSalt = file_get_contents(self::SALT_FILE); 
+        $suppliedMasterPasswordHash = PasswordUtil::generateHash($suppliedMasterPassword, $masterPasswordSalt, 11);
         
         if ($suppliedMasterPasswordHash !== $masterPasswordHash) {
             $output->writeln('Wrong');
             return;
         }
         
-        $shell = $this->shell->exec('/usr/bin/env', ['pwgen', '-n', '-s', '60', '1']);
-        $password = $this->shell->getOutput();
-                
-        $sessionPassword = $password[0];
-        $sessionPasswordSalt = base64_encode(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
-        $sessionPasswordHashOptions = [
-            'cost' => 11,
-            'salt' => $sessionPasswordSalt
-        ];
-        $sessionPasswordHash = password_hash($sessionPassword, PASSWORD_BCRYPT, $sessionPasswordHashOptions);
+        $passwdFile = new \SplFileObject(self::PASSWD_FILE, 'r');
+        $userPasswordHash = null;
+        $userPasswordSalt = null;
+        
+        while (!$passwdFile->eof()) {
+            $data = $passwdFile->fgetcsv();
+            if($data[0] == $act) {
+                $userPasswordHash = $data[1];
+                $userPasswordSalt = $data[2];
+                break;
+            }
+        }
+        
+        unset($passwdFile);
+        
+        if ($userPasswordHash == null || $userPasswordSalt == null) {
+            throw new \RuntimeException('$userPassword and $userPasswordHash must not be null.');
+        }
+        
+        $suppliedUserPasswordHash = PasswordUtil::generateHash($suppliedUserPassword, $userPasswordSalt, 11);
+        
+        if ($userPasswordHash !== $suppliedUserPasswordHash) {
+            $output->writeln('Wrong UserPassword');
+            return;
+        }
         
         $shell = $this->shell->exec('/usr/bin/env', ['pwgen', '-n', '-s', '60', '1']);
-        $password = $this->shell->getOutput();
-        $sessionToken = $password[0];
+        $shellOutput = $this->shell->getOutput();
+        $sessionPassword = array_shift($shellOutput);
+         
+        $salt = PasswordUtil::generateSalt();
+        $sessionPasswordHash = PasswordUtil::generateHash($sessionPassword, $salt, 11);
+        
+        $shell = $this->shell->exec('/usr/bin/env', ['pwgen', '-n', '-s', '60', '1']);
+        $shellOutput = $this->shell->getOutput();
+        $sessionToken = array_shift($shellOutput);
         
         $sessionDB = $this->getSessionDBConnection();
         $sessionDB->beginTransaction();
         try {
             $statement = $sessionDB->prepare("INSERT INTO scmc_sessions (sessiontoken, sessionpw, sessionpwsalt, act, created) VALUES (:sessionToken, :sessionPasswordHash, :sessionPasswordSalt, :account, now());", array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-            $statement->execute([':sessionToken' => $sessionToken, ':sessionPasswordHash' => $sessionPasswordHash, ':sessionPasswordSalt' => $sessionPasswordSalt, ':account' => $act]);
+            $statement->execute([':sessionToken' => $sessionToken, ':sessionPasswordHash' => $sessionPasswordHash, ':sessionPasswordSalt' => $salt, ':account' => $act]);
         } catch (\PDOException $e) {
             $sessionDB->rollBack();
             throw new \RuntimeException('Error during executing statement: '.$e->getMessage());
@@ -207,7 +219,7 @@ class SessionCommand extends ContainerAwareCommand {
         
         $statement = $sessionDB->prepare('SELECT count(*) FROM scmc_sessions WHERE sessiontoken = :sessionToken AND sessionpw = :sessionPasswordHash AND act = :account');
         
-        $statement->execute(array(':sessionToken' => $sessionToken, ':sessionPasswordHash' => $sessionPasswordHash, ':account' => $act));
+        $statement->execute([':sessionToken' => $sessionToken, ':sessionPasswordHash' => $sessionPasswordHash, ':account' => $act]);
         
         if ($statement->fetchColumn() < 1) {
             throw new \RuntimeException("Session password hash does not match.");
@@ -226,31 +238,5 @@ class SessionCommand extends ContainerAwareCommand {
         
         // until here no errors, assume it worked
         $output->writeln('True');
-    }
-    
-    /**
-     * Creates a new connection to the session database table
-     * 
-     * @return \Doctrine\DBAL\Connection 
-     */
-    private function getSessionDBConnection()
-    {
-        $connectionFactory = $this->getContainer()->get('doctrine.dbal.connection_factory');
-        $sessionDB = $connectionFactory->createConnection(['pdo' => new \PDO("pgsql:dbname=iserv", 'scmc_session')]);
-
-        return $sessionDB;
-    }
-    
-    /**
-     * Creates a new connection to the iserv database as symfony user
-     * 
-     * @return \Doctrine\DBAL\Connection 
-     */
-    private function getIServDBConnection()
-    {
-        $connectionFactory = $this->getContainer()->get('doctrine.dbal.connection_factory');
-        $iservDB = $connectionFactory->createConnection(['pdo' => new \PDO("pgsql:dbname=iserv", 'symfony')]);
-        
-        return $iservDB;
     }
 }

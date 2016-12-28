@@ -21,7 +21,7 @@ use Symfony\Component\Process\Exception\RuntimeException;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("scmc", schemes="https")
- * @Security("requires_channel: https")
+ * //@Security("requires_channel: https")
  */
 class SecurityController extends PageController {
     use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait;
@@ -32,7 +32,6 @@ class SecurityController extends PageController {
      * @param Request $request
      * @Route("/login", name="scmc_login")
      * @Template("StsblSchoolCertificateManagerConnectorBundle:Security:login.html.twig")
-     * @Security("token.getAttribute('scmc_authentificated') !== true")
      */
     public function loginAction(Request $request)
     {
@@ -58,29 +57,52 @@ class SecurityController extends PageController {
             $this->initalizeLogger();
         
             if (empty($data['masterpassword'])) {
-                $this->log('Login im Zeugnisverwaltungsbereich: Falsches Masterpasswort');
+                $this->log('Login im Zeugnisverwaltungsbereich: Fehlende Zugangsdaten');
                 $this->get('iserv.flash')->error(_('Please enter the master password and try it again.'));
                 goto render;
             }
             
-            $ret = $this->get('stsbl.scmc.service.session')->openSession($data['masterpassword']);
+            if (empty($data['userpassword'])) {
+                $this->log('Login im Zeugnisverwaltungsbereich: Fehlende Zugangsdaten');
+                $this->get('iserv.flash')->error(_('Please enter the user password and try it again.'));
+                goto render;
+            }
             
-            if (!$ret) {
+            $ret = $this->get('stsbl.scmc.service.session')->openSession($data['masterpassword'], $data['userpassword']);
+            
+            if ($ret == 'wrong') {
                 $this->log('Login im Zeugnisverwaltungsbereich: Falsches Masterpasswort');
                 $error = _('The master password is wrong.');
                 goto render;
-            } else if ($ret) {
-                $this->log('Login im Zeugnisverwaltungsbreich erfolgreich');            
-                $this->get('iserv.flash')->success(_('You have logged in successfully in the Certificate Management Section.'));
-                
-                return $this->redirect($this->generateUrl('scmc_index'));
-            } 
+            } else if ($ret == 'wrong userpassword') {
+                $this->log('Login im Zeugnisverwaltungsbereich: Falsches Benuterpasswort');
+                $error = _('The user password is wrong.');
+                goto render;
+            }
             
-            // if we are until here not redirected, expect an error.
-            $error = _('Unknown error. Please try again.');
+            $this->log('Login im Zeugnisverwaltungsbreich erfolgreich');            
+            $this->get('iserv.flash')->success(_('You have logged in successfully in the Certificate Management Section.'));
+            
+            // assume sucessful login
+            return $this->redirect($this->generateUrl('scmc_index')); 
         }
         
         render:
+
+        $act = $this->get('iserv.security_handler')->getToken()->getUser()->getUsername();
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $doctrine = $this->getDoctrine();
+        /* @var $em \Doctrine\ORM\EntityManager */
+        $em = $doctrine->getManager();
+        /* @var $object \Stsbl\SchoolCertificateManagerConnectorBundle\Entity\User */
+        $object = $em->find('StsblSchoolCertificateManagerConnectorBundle:UserPassword', $act);
+        
+        if (!is_null($object)) {
+            $hasUserPassword = $object->getPassword();
+        } else {
+            $hasUserPassword = false;
+        }
+            
         // parameters
         $view = $form->createView();
         $emptyMasterPassword = $this->isMasterPasswordEmpty();
@@ -88,7 +110,7 @@ class SecurityController extends PageController {
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));
         
-        return array('login_form' => $view, 'emptyMasterPassword' => $emptyMasterPassword, 'error' => $error);
+        return array('login_form' => $view, 'emptyMasterPassword' => $emptyMasterPassword, 'hasUserPassword' => $hasUserPassword, 'error' => $error);
     }
     
     /**
@@ -128,6 +150,15 @@ class SecurityController extends PageController {
                 'required' => true,
                 'attr' => array(
                     'placeholder' => _('Master password'),
+                    'autofocus' => 'autofocus'
+                    )
+                )
+            )
+            ->add('userpassword', PasswordType::class, array(
+                'label' => false,
+                'required' => true,
+                'attr' => array(
+                    'placeholder' => _('User password'),
                     'autofocus' => 'autofocus'
                     )
                 )
