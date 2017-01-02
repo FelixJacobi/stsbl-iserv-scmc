@@ -6,14 +6,41 @@ use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Doctrine\ORM\NoResultException;
 use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\MasterPasswordTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
+/*
+ * The MIT License
+ *
+ * Copyright 2017 Felix Jacobi.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 /**
  * Administrative Settings for the school certificate manager connector
@@ -23,13 +50,15 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("admin/scmc")
  */
 class AdminController extends PageController {
-    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait;
+    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait, FormTrait;
     
     /**
      * Overview page
      * 
      * @param Request $request
+     * @return array
      * @Route("", name="admin_scmc")
+     * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:index.html.twig")
      */
     public function indexAction(Request $request)
     {
@@ -38,39 +67,30 @@ class AdminController extends PageController {
         }
         
         $isMasterPasswordEmtpy = $this->isMasterPasswordEmpty();
-        $form = $this->getMasterPasswordUpdateForm()->createView();
+        $this->handleMasterPasswordForm($request);
+        $view = $this->getMasterPasswordUpdateForm()->createView();
         
         // track path
         $this->addBreadcrumb(_('Certificate Management'));
         
-        return $this->render('StsblSchoolCertificateManagerConnectorBundle:Admin:index.html.twig', array('emptyMasterPassword' => $isMasterPasswordEmtpy, 'masterpassword_form' => $form));
+        return ['emptyMasterPassword' => $isMasterPasswordEmtpy, 'masterpassword_form' => $view];
     }
     
     /**
-     * Update master password
+     * Try to update the master password
      * 
-     * @param Request $request
-     * @Route("/update/masterpassword", name="admin_scmc_update_master_password")
-     * @Method("POST")
+     * @param Form $form
      */
-    public function updateMasterPasswordAction(Request $request)
+    private function handleMasterPasswordForm(Request $request)
     {
-        if(!$this->isAdmin()) {
-            throw $this->createAccessDeniedException('You must be an administrator.');
-        }
         $form = $this->getMasterPasswordUpdateForm();
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $this->initalizeLogger();
-            
-            if (empty($data['oldmasterpassword']) && !$this->isMasterPasswordEmpty()) {
-                $this->get('iserv.flash')->error(_('Old master password can not be empty.'));
-                $this->log('Masterpasswortaktualisierung fehlgeschlagen: Altes Passwort leer');
-                
-                return $this->redirect($this->generateUrl('admin_scmc'));
-            } else if (!isset($data['oldmasterpassword']) && $this->isMasterPasswordEmpty()) {
+         
+            if (!isset($data['oldmasterpassword']) && $this->isMasterPasswordEmpty()) {
                 $oldMasterPassword = '';
             } else {
                 $oldMasterPassword = $data['oldmasterpassword'];
@@ -79,8 +99,7 @@ class AdminController extends PageController {
             if ($data['newmasterpassword'] !== $data['repeatmasterpassword']) {
                 $this->get('iserv.flash')->error(_('New password and repeat does not match.'));
                 $this->log('Masterpasswortaktualisierung fehlgeschlagen: Neues Passwort und Wiederholung nicht übereinstimmend');
-                
-                return $this->redirect($this->generateUrl('admin_scmc'));
+                return;
             } else {
                 $newMasterPassword = $data['newmasterpassword'];
             }
@@ -97,34 +116,26 @@ class AdminController extends PageController {
             } else {
                 $this->get('iserv.flash')->error(_('This should never happen.'));
             }
-            
-            return $this->redirect($this->generateUrl('admin_scmc'));
-            
         } else {
-            $this->get('iserv.flash')->error(_('Invalid request'));
-            
-            return $this->redirect($this->generateUrl('admin_scmc'));
+            $this->handleFormErrors($form);
         }
     }
     
     /**
      * Creates form to update master password
      * 
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     private function getMasterPasswordUpdateForm()
     {
         $isMasterPasswordEmpty = $this->isMasterPasswordEmpty();
         $builder = $this->createFormBuilder();
         
-        $builder
-            ->setAction($this->generateUrl('admin_scmc_update_master_password'))
-        ;
-        
         if (!$isMasterPasswordEmpty) {
             $builder->add('oldmasterpassword', PasswordType::class, array(
                 'label' => false,
                 'required' => true,
+                'constraints' => new NotBlank(['message' => _('Old master password can not be empty.')]),
                 'attr' => array(
                     'placeholder' => _('Old master password'),
                     'autocomplete' => 'off',
@@ -134,18 +145,20 @@ class AdminController extends PageController {
         }
         
         $builder
-            ->add('newmasterpassword', PasswordType::class, array(
+            ->add('newmasterpassword', PasswordType::class, [
                 'label' => false,
                 'required' => true,
-                'attr' => array(
+                'constraints' => new NotBlank(['message' => _('New master password can not be empty.')]),
+                'attr' => [
                     'placeholder' => _('New master password'),
                     'autocomplete' => 'off',
-                    )
-                )
+                    ]
+                ]
             )
             ->add('repeatmasterpassword', PasswordType::class, array(
                 'label' => false,
                 'required' => true,
+                'constraints' => new NotBlank(['message' => _('Repeat of new master password can not be empty.')]),
                 'attr' => array(
                     'placeholder' => _('Repeat new master password'),
                     'autocomplete' => 'off',
@@ -164,11 +177,51 @@ class AdminController extends PageController {
     }
     
     /**
+     * Creates form for a new user password
+     * 
+     * @return Form
+     */
+    private function getNewUserPasswordForm()
+    {
+        $builder = $this->createFormBuilder();
+        
+        $builder
+            ->add('userpassword', PasswordType::class, array(
+                'label' => _('New user password'),
+                'required' => true,
+                'constraints' => new NotBlank(['message' => _('User password can not be empty.')]),
+                'attr' => array(
+                    'autocomplete' => 'off',
+                    )
+                )
+            )
+            ->add('actions', FormActionsType::class);
+        
+        $builder->get('actions')
+            ->add('approve', SubmitType::class, array(
+                'label' => _('Set user password'),
+                'buttonClass' => 'btn-success',
+                'icon' => 'ok'
+                )
+            )
+            ->add('cancel', SubmitType::class, array(
+                'label' => _('Cancel'),
+                'buttonClass' => 'btn-default',
+                'icon' => 'remove'
+                ))
+        ;
+        
+        return $builder->getForm();
+    }
+    
+    /**
      * Displays form to set a password for a user
      * 
      * @param Request $request
-     * @Route("/userpasswords/set/{user}", name="admin_scmc_set_user_password")
      * @param string $user
+     * @return array
+     * @Route("/userpasswords/set/{user}", name="admin_scmc_set_user_password")
+     * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:setuserpassword.html.twig")
      */
     public function setUserPasswordAction(Request $request, $user)
     {
@@ -178,36 +231,15 @@ class AdminController extends PageController {
         
         $FullName = $this->getUserEntity($user)->getName();
         
-        $builder = $this->createFormBuilder();
-        
-        $builder
-            ->add('userpassword', PasswordType::class, array(
-                'label' => _('New user password'),
-                'required' => true,
-                'attr' => array(
-                    'autocomplete' => 'off',
-                    )
-                )
-            )
-            ->add('submit', SubmitType::class, array(
-                'label' => _('Set password'),
-                'buttonClass' => 'btn-success',
-                'icon' => 'ok'
-                )
-            )
-        ;
-        
-        $form = $builder->getForm();
+        $form = $this->getNewUserPasswordForm();
         $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->getClickedButton()->getName() === 'cancel') {
+            // go back, if user pressed cancel
+            return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
+        } else if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $this->initalizeLogger();
             $password = $data['userpassword'];
-            if (empty($password)) {
-                $this->get('iserv.flash')->error(_('User password can not be empty!'));
-                return $this->redirectToRoute('admin_scmc_set_user_password', ['user' => $user]);
-            }
             
             $securityHandler = $this->get('iserv.security_handler');
             $sessionPassword = $securityHandler->getSessionPassword();
@@ -216,7 +248,7 @@ class AdminController extends PageController {
         
             /* @var $shell \IServ\CoreBundle\Service\Shell */
             $shell = $this->get('iserv.shell');
-            $shell->exec('/usr/bin/sudo', ['/usr/lib/iserv/scmc_userpassword_set', $user], null, ['SESSPW' => $sessionPassword, 'SCMC_ACT' => $act, 'SCMC_USERPW' => $password]);
+            $shell->exec('/usr/bin/setsid', ['-w', '/usr/bin/sudo', '/usr/lib/iserv/scmc_userpassword_set', $user], null, ['SESSPW' => $sessionPassword, 'SCMC_ACT' => $act, 'SCMC_USERPW' => $password]);
             $exitCode = $shell->getExitCode();
             if ($exitCode !== 0) {
                 throw new \RuntimeException('Shell returned exit code '.$exitCode.'.');
@@ -227,6 +259,9 @@ class AdminController extends PageController {
             return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
             
         } else {
+            // show form errors if any
+            $this->handleFormErrors($form);
+            
             $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('admin_scmc'));
             $this->addBreadcrumb(_('User passwords'), $this->generateUrl('admin_scmc_userpassword_index'));
             $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user]));
@@ -251,8 +286,7 @@ class AdminController extends PageController {
                 $permissionNotice = false;
             }
             
-            $parameters = ['password_form' => $form->createView(), 'act' => $user, 'fullname' => $FullName, 'permissionnotice' => $permissionNotice];
-            return $this->render('StsblSchoolCertificateManagerConnectorBundle:Admin:setuserpassword.html.twig', $parameters);
+            return ['password_form' => $form->createView(), 'act' => $user, 'fullname' => $FullName, 'permissionnotice' => $permissionNotice];
         }
     }
 
@@ -260,8 +294,10 @@ class AdminController extends PageController {
      * Displays form to delete a password for a user
      * 
      * @param Request $request
-     * @Route("/userpasswords/delete/{user}", name="admin_scmc_delete_user_password")
      * @param string $user
+     * @return array
+     * @Route("/userpasswords/delete/{user}", name="admin_scmc_delete_user_password")
+     * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:deleteuserpassword.html.twig")
      */
     public function deleteUserPasswordAction(Request $request, $user)
     {
@@ -305,7 +341,7 @@ class AdminController extends PageController {
         
                 /* @var $shell \IServ\CoreBundle\Service\Shell */
                 $shell = $this->get('iserv.shell');
-                $shell->exec('/usr/bin/sudo', ['/usr/lib/iserv/scmc_userpassword_delete', $user], null, ['SESSPW' => $sessionPassword, 'SCMC_ACT' => $act]);
+                $shell->exec('/usr/bin/setsid', ['-w', '/usr/bin/sudo', '/usr/lib/iserv/scmc_userpassword_delete', $user], null, ['SESSPW' => $sessionPassword, 'SCMC_ACT' => $act]);
                 $exitCode = $shell->getExitCode();
                 if ($exitCode !== 0) {
                     throw new \RuntimeException('Shell returned exit code '.$exitCode.'.');
@@ -323,8 +359,7 @@ class AdminController extends PageController {
             $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user]));
             $this->addBreadcrumb(_('Delete user password'));
             
-            $parameters = ['fullname' => $FullName, 'act' => $user, 'delete_form' => $form->createView()];
-            return $this->render('StsblSchoolCertificateManagerConnectorBundle:Admin:deleteuserpassword.html.twig', $parameters);
+            return ['fullname' => $FullName, 'act' => $user, 'delete_form' => $form->createView()];
         }
     }
     

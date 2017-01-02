@@ -1,0 +1,15 @@
+Source: stsbl-iserv-scmc
+Section: unknown
+Priority: optional
+Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://anonscm.debian.org/collab-maint/stsbl-iserv-scmc.git
+#Vcs-Browser: http://anonscm.debian.org/?p=collab-maint/stsbl-iserv-scmc.git;a=summary
+
+Package: stsbl-iserv-scmc
+Architecture: all
+Depends: ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>

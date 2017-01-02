@@ -8,7 +8,8 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Traits;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-trait MasterPasswordTrait {
+trait MasterPasswordTrait 
+{
     /**
      * Checks via sudo, if the masterpassword is empty
      * 
@@ -17,7 +18,7 @@ trait MasterPasswordTrait {
     protected function isMasterPasswordEmpty()
     {
         $shell = $this->get('iserv.shell');
-        $shell->exec('/usr/bin/sudo', array('/usr/lib/iserv/scmc_masterpassword_empty'));
+        $shell->exec('/usr/bin/setsid', ['-w', '/usr/bin/sudo', '/usr/lib/iserv/scmc_masterpassword_empty']);
         
         $ret = $shell->getOutput();
         
@@ -45,7 +46,7 @@ trait MasterPasswordTrait {
         $act = $securityHandler->getToken()->getUser()->getUsername();
         /* @var $shell \IServ\CoreBundle\Service\Shell */
         $shell = $this->get('iserv.shell');
-        $shell->exec('/usr/bin/sudo', array('/usr/lib/iserv/scmc_masterpassword_update'), null, array('SCMC_OLDMASTERPW' => $oldMasterPassword, 'SCMC_NEWMASTERPW' => $newMasterPassword, 'SCMC_ACT' => $act, 'SESSPW' => $sessionPassword));
+        $shell->exec('/usr/bin/setsid', ['-w', '/usr/bin/sudo', '/usr/lib/iserv/scmc_masterpassword_update'], null, array('SCMC_OLDMASTERPW' => $oldMasterPassword, 'SCMC_NEWMASTERPW' => $newMasterPassword, 'SCMC_ACT' => $act, 'SESSPW' => $sessionPassword));
         $output = $shell->getOutput();
         $ret = array_shift($output);
         var_dump($output);

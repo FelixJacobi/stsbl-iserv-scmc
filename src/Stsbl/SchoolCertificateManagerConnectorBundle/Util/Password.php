@@ -1,9 +1,6 @@
 <?php
-// src/Stsbl/SchoolCertificateManagerConnectorBundle/DependencyInjection/Configuration.php
-namespace Stsbl\SchoolCertificateManagerConnectorBundle\DependencyInjection;
-
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
+// src/Stsbl/SchoolCertificateManagerConnectorBundle/Util/Password.php
+namespace Stsbl\SchoolCertificateManagerConnectorBundle\Util;
 
 /*
  * The MIT License
@@ -30,35 +27,35 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 
 /**
- * This is the class that validates and merges configuration from your app/config files.
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/configuration.html}
+ * Util for password generation and management
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class Configuration implements ConfigurationInterface
-{
-    private $alias;
-
+class Password {
     /**
-     * The constructor
-     *
-     * @param string $alias The alias of the extension (for config)
+     * Generates salt to hash a password
      */
-    public function __construct($alias)
+    public static function generateSalt()
     {
-        $this->alias = $alias;
+        return base64_encode(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
     }
-
+    
     /**
-     * {@inheritDoc}
+     * Generates a hash from a plaintext password
+     * 
+     * @param string $password
+     * @param string $salt
+     * @param int $cost
+     * @return string
      */
-    public function getConfigTreeBuilder()
+    public static function generateHash($password, $salt, $cost = 11)
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root($this->alias);
-
-        return $treeBuilder;
+        $HashOptions = [
+            'cost' => $cost,
+            'salt' => $salt
+        ];
+        
+        return password_hash($password, PASSWORD_BCRYPT, $HashOptions);
     }
 }

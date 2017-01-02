@@ -1,9 +1,10 @@
 <?php
-// src/Stsbl/SchoolCertificateManagerConnectorBundle/DependencyInjection/Configuration.php
-namespace Stsbl\SchoolCertificateManagerConnectorBundle\DependencyInjection;
+// src/Stsbl/SchoolCertificateManagerConnectorBunlde/Traits/FormTrait.php
+namespace Stsbl\SchoolCertificateManagerConnectorBundle\Traits;
 
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormErrorIterator;
 
 /*
  * The MIT License
@@ -30,35 +31,30 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 
 /**
- * This is the class that validates and merges configuration from your app/config files.
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/configuration.html}
+ * Common functions for form handling
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class Configuration implements ConfigurationInterface
+trait FormTrait 
 {
-    private $alias;
-
     /**
-     * The constructor
-     *
-     * @param string $alias The alias of the extension (for config)
+     * Handles form errors and displays them via flash
+     * 
+     * @param Form $form
      */
-    public function __construct($alias)
+    protected function handleFormErrors(Form $form)
     {
-        $this->alias = $alias;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getConfigTreeBuilder()
-    {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root($this->alias);
-
-        return $treeBuilder;
+        /* @var $errors FormErrorIterator */
+        $errors = $form->getErrors(true);
+        
+        if($errors->count() < 1) {
+            return;
+        }
+       
+        foreach ($errors as $error) {
+            /* @var $error FormError */
+            $this->get('iserv.flash')->error($error->getMessage());
+        }
     }
 }

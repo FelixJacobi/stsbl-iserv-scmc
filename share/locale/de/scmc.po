@@ -28,8 +28,14 @@ msgstr "Jeder, der Zugriff auf den Zeugnisverwaltungsbereich haben soll, muss Ke
 msgid "Old master password can not be empty."
 msgstr "Altes Masterpasswort darf nicht leer sein."
 
+msgid "New master password can not be empty."
+msgstr "Neues Masspasswort darf nicht leer sein."
+
 msgid "New password and repeat does not match."
 msgstr "Neues Passwort und Wiederholung stimmen nicht überein."
+
+msgid "Repeat of new master password can not be empty."
+msgstr "Wiederholung des neues Masterpasswortes darf nicht leer sein."
 
 msgid "Master password updated successfully."
 msgstr "Masterpasswort erfolgreich aktualisiert."
@@ -77,7 +83,7 @@ msgid "Back to details"
 msgstr "Zurück zu Details"
 
 msgid "The user has currently not the privilege \"Access the connector to up- and download data\". Make sure that the User also have this privilege assigned. Otherwhile the certificate management will not shown in the IDesk."
-msgstr "Der Benutzer hat derzeit nicht das Sonderrecht \"Auf den Connector zugreifen um Daten hoch- und herunterzuladen\". Stellen Sie sicher, dass der Benutzer dieses Sonderrecht hat. Andernfalls wird der Menüpunkt Zeugnisverwaltung im IDesk nicht angezeigt."
+msgstr "Der Benutzer hat derzeit nicht das Sonderrecht \"Auf den Connector zugreifen um Daten hoch- und herunterzuladen\". Stellen sie sicher, dass der Benutzer dieses Sonderrecht hat. Andernfalls wird der Menüpunkt Zeugnisverwaltung im IDesk nicht angezeigt."
 
 msgid "New user password"
 msgstr "Neues Benutzerpasswort"
@@ -98,7 +104,7 @@ msgid "User password of %s set."
 msgstr "Benutzerpasswort von %s gesetzt."
 
 msgid "Please enter both passwords, the master password and your personal user password. If you do not know them, please conact your administrator."
-msgstr "Bitte geben sie beide Passwörter ein, das Masterpasswort und ihr persönliches Benutzerkennwort. Wenn sie diese nicht kennen, kontaktieren Sie bitte ihren Administrator."
+msgstr "Bitte geben sie beide Passwörter ein, das Masterpasswort und ihr persönliches Benutzerkennwort. Wenn sie diese nicht kennen, kontaktieren sie bitte ihren Administrator."
 
 msgid "Delete user password of %s"
 msgstr "Benutzerpasswort von %s löschen"
@@ -117,3 +123,6 @@ msgstr "Das Benutzerpasswort ist falsch."
 
 msgid "Please enter the user password and try it again."
 msgstr "Bitte geben sie das Benutzerpasswort ein und probieren sie es erneut."
+
+msgid "User password can not be empty."
+msgstr "Benutzerpasswort darf nicht leer sein."

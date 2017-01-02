@@ -8,7 +8,8 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Traits;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-trait SecurityTrait {
+trait SecurityTrait 
+{
     /**
      * Checks if the user can access the connector
      * 

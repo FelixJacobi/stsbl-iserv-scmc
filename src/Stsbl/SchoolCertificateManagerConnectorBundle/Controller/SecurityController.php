@@ -7,13 +7,39 @@ use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\MasterPasswordTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Process\Exception\RuntimeException;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
+/*
+ * The MIT License
+ *
+ * Copyright 2017 Felix Jacobi.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 /**
  * School Certificate Manager Connector Login/Logout
@@ -24,12 +50,13 @@ use Symfony\Component\Process\Exception\RuntimeException;
  * //@Security("requires_channel: https")
  */
 class SecurityController extends PageController {
-    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait;
+    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait, FormTrait;
     
     /**
      * Displays login form
      * 
      * @param Request $request
+     * @return array|Response
      * @Route("/login", name="scmc_login")
      * @Template("StsblSchoolCertificateManagerConnectorBundle:Security:login.html.twig")
      */
@@ -49,33 +76,22 @@ class SecurityController extends PageController {
         $form->handleRequest($request);
         
         if ($form->isSubmitted()) {
-            if(!$form->isValid() or !$form->isSubmitted()) {
-                $this->get('iserv.flash')->error(_('Invalid request'));
+            if(!$form->isValid()) {
+                $this->handleFormErrors($form);
+                goto render;
             }
         
             $data = $form->getData();
             $this->initalizeLogger();
-        
-            if (empty($data['masterpassword'])) {
-                $this->log('Login im Zeugnisverwaltungsbereich: Fehlende Zugangsdaten');
-                $this->get('iserv.flash')->error(_('Please enter the master password and try it again.'));
-                goto render;
-            }
-            
-            if (empty($data['userpassword'])) {
-                $this->log('Login im Zeugnisverwaltungsbereich: Fehlende Zugangsdaten');
-                $this->get('iserv.flash')->error(_('Please enter the user password and try it again.'));
-                goto render;
-            }
             
             $ret = $this->get('stsbl.scmc.service.session')->openSession($data['masterpassword'], $data['userpassword']);
             
             if ($ret == 'wrong') {
-                $this->log('Login im Zeugnisverwaltungsbereich: Falsches Masterpasswort');
+                $this->log('Zeugnisverwaltungs-Login: Falsches Masterpasswort');
                 $error = _('The master password is wrong.');
                 goto render;
             } else if ($ret == 'wrong userpassword') {
-                $this->log('Login im Zeugnisverwaltungsbereich: Falsches Benuterpasswort');
+                $this->log('Zeugnisverwaltungs-Login: Falsches Benuterpasswort');
                 $error = _('The user password is wrong.');
                 goto render;
             }
@@ -117,6 +133,7 @@ class SecurityController extends PageController {
      * Logouts user from current session
      * 
      * @param Request $request
+     * @return RedirectResponse
      * @Route("/logout", name="scmc_logout")
      * @Security("token.hasAttribute('scmc_authentificated') and token.getAttribute('scmc_authentificated') == true")
      */
@@ -148,6 +165,7 @@ class SecurityController extends PageController {
             ->add('masterpassword', PasswordType::class, array(
                 'label' => false,
                 'required' => true,
+                'constraints' => new NotBlank(['message' => _('Please enter the master password and try it again.')]),
                 'attr' => array(
                     'placeholder' => _('Master password'),
                     'autofocus' => 'autofocus'
@@ -157,6 +175,7 @@ class SecurityController extends PageController {
             ->add('userpassword', PasswordType::class, array(
                 'label' => false,
                 'required' => true,
+                'constraints' => new NotBlank(['message' => _('Please enter the user password and try it again.')]),
                 'attr' => array(
                     'placeholder' => _('User password'),
                     'autofocus' => 'autofocus'
