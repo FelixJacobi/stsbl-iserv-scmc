@@ -18,4 +18,4 @@ Description: Zeugnisverwaltungsconnector für IServ (EXPERIMENTELL)
  Momentan wird der in Hamburg verbreitete Zeugnisverwaltungsserver WZeugnis (http://www.weisserwolf.de/WZeugnis/WZeugnis.html) unterstützt.
  .
  Das Modul ist noch nicht fertiggestellt und befindet sich noch in Entwicklung. Daher sind noch nicht alle beschriebenen Funktionen sichtbar.
-Tag: suite::iserv:portal, role::plugin, status::experimental
+Tag: suite::iserv:portal, role::plugin, status::experimental, implemented-in::php
