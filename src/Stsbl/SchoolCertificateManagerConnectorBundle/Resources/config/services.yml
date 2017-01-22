@@ -1,6 +1,6 @@
 # src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/config/services.yml
 services:
-    stsbl.scmc.menu:
+    stsbl.scmc.menu_listener:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\EventListener\MenuListener # Out MenuListener Class
         tags:
           - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu } # Tells IServ about the main menu method
@@ -13,3 +13,6 @@ services:
         arguments: [IServ\CoreBundle\Entity\User]  # Sets the controlled entity class
         tags:
             - { name: iserv.crud } # Tells IServ about our CRUD
+    stsbl.scmc.menu_builder:
+        class: Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory", "@security.token_storage", "@security.authorization_checker", "@event_dispatcher"]

@@ -6,7 +6,7 @@ use sessauth;
 
 if (@ARGV < 1)
 {
-  print STDERR "Usage: scmc_auth_level ACCT\n";
+  print STDERR "Usage: scmc_auth_level ACT\n";
   print STDERR "Environment: SESSPW\n";
   exit 1
 }
@@ -21,7 +21,7 @@ sub get_auth_level() {
   } else {
     $login_act = IServ::Valid::User $login_act;
     $login_pwd = IServ::Valid::Passwd $login_pwd;
-    my $res = sessauth::sessauth $login_act, $login_pwd, "actadm";
+    my $res = sessauth::sessauth $login_act, $login_pwd, "scmc";
     die "wrong session password\n" unless $res =~ /^OK\b/;
     $auth_level = $res =~ /^OK adm\b/? "admin": "user";
   }

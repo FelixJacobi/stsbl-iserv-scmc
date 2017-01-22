@@ -7,6 +7,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
 /*
@@ -44,6 +48,19 @@ use Symfony\Component\HttpFoundation\Request;
 class ManagementController extends PageController {
     use SecurityTrait;
     
+    /*
+     * @var \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
+     */
+    private $menuBuilder;
+
+
+    public function setMenuBuilder()
+    {
+        /* @var $menuBuilder \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder */
+        $menuBuilder = $this->get('stsbl.scmc.menu_builder');
+        $this->menuBuilder = $menuBuilder;
+    }
+
     /**
      * School Certificate Manager Connector Main Page
      * 
@@ -55,7 +72,68 @@ class ManagementController extends PageController {
     {
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));
+        $this->addBreadcrumb(_('Start Page'), $this->generateUrl('scmc_forward'));
         
-        return [];
+        $this->setMenuBuilder();
+        $menu = $this->menuBuilder->createSCMCMenu();
+        return ['menu' => $menu];
+    }
+    
+    /**
+     * School Certificate Manager Connector Upload Page
+     * 
+     * @return array
+     * @Route("/upload", name="scmc_upload")
+     * @Template("StsblSchoolCertificateManagerConnectorBundle:Management:upload.html.twig")
+     */
+    public function uploadAction(Request $request)
+    {
+        // track path
+        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));
+        $this->addBreadcrumb(_('Data Upload'), $this->generateUrl('scmc_upload'));
+        
+        $this->setMenuBuilder();
+        $menu = $this->menuBuilder->createSCMCMenu();
+        $form = $this->getUploadForm();
+        
+        return ['menu' => $menu, 'form' => $form->createView()];
+    }
+    /**
+     * Gets the scmc upload formular
+     * 
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function getUploadForm()
+    {
+        $builder = $this->createFormBuilder();
+        
+        $builder
+            ->add('server', ChoiceType::class, [
+                'label' => _('Select destination server'),
+                'attr' => [
+                    'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
+                    ]
+                ])
+            ->add('class_data', FileType::class, [
+                'label' => _('Zip file with class data'),
+                'attr' => [
+                    'help_text' => _('The zip file with the class data. It must contain sub folders with the class lists sorted by age group (Jahrgang5, Jahrgang6, ...). For more information please refer the WZeugnis Documentation.')
+                    ]
+                ])
+            ->add('confirm', \IServ\CoreBundle\Form\Type\BooleanType::class, [
+                    'label' => _('Confirmation'),
+                    'data' => false,
+                    'attr' => [
+                        'help_text' => _('Before you can upload new class data, you have to confirm that will lead to loosing all data currently stored on the certificate server.')
+                    ]
+                ])
+            ->add('submit', SubmitType::class, [
+                'label' => _('Upload data'), 
+                'buttonClass' => 'btn-success', 
+                'icon' => 'arrow-up'
+                ])
+            ;
+        
+        return $builder->getForm();
     }
 }

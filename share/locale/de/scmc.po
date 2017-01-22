@@ -2,7 +2,7 @@ msgid "Certificate Management"
 msgstr "Zeugnisverwaltung"
 
 msgid "Currently there is no master password set. Please contact your administrator."
-msgstr "Derzeit ist das Masterpasswort nicht gesetzt. Bitte kontaktieren sie Ihren Administrator."
+msgstr "Derzeit ist das Masterpasswort nicht gesetzt. Bitte kontaktieren Sie Ihren Administrator."
 
 msgid "Master password"
 msgstr "Masterpasswort"
@@ -17,13 +17,13 @@ msgid "Old master password"
 msgstr "Altes Masterpasswort"
 
 msgid "Currently there is no master password set. Please enter a new master password in the formular and press Update password."
-msgstr "Derzeit ist kein Masterpasswort gesetzt. Bitte geben sie ein neues Masterpasswort in das Formular ein und drücken sie Passwort aktualisieren."
+msgstr "Derzeit ist kein Masterpasswort gesetzt. Bitte geben Sie ein neues Masterpasswort in das Formular ein und drücken Sie Passwort aktualisieren."
 
 msgid "Update password"
 msgstr "Passwort aktualisieren"
 
 msgid "Everyone who should access the certificate management section need to know this password. After you you changed the password, note it down. If you forget it, you can only reset it via the root console."
-msgstr "Jeder, der Zugriff auf den Zeugnisverwaltungsbereich haben soll, muss Kenntnis von diesem Passwort haben. Nachdem sie das Passwort geändert haben, notieren sie es. Sollten sie es vergessen, können sie es ausschließlich über die Root-Konsole zurücksetzen."
+msgstr "Jeder, der Zugriff auf den Zeugnisverwaltungsbereich haben soll, muss Kenntnis von diesem Passwort haben. Nachdem Sie das Passwort geändert haben, notieren sie es. Sollten sie es vergessen, können sie es ausschließlich über die Root-Konsole zurücksetzen."
 
 msgid "Old master password can not be empty."
 msgstr "Altes Masterpasswort darf nicht leer sein."
@@ -44,7 +44,7 @@ msgid "Old master password is wrong."
 msgstr "Das alte Masterpasswort ist falsch."
 
 msgid "Please enter the master password and try it again."
-msgstr "Bitte geben sie das Masterpasswort ein und versuchen sie es erneut."
+msgstr "Bitte geben Sie das Masterpasswort ein und versuchen Sie es erneut."
 
 msgid "The master password is wrong."
 msgstr "Das Masterpasswort ist falsch."
@@ -53,7 +53,7 @@ msgid "You have logged out successfully from the Certificate Management Section.
 msgstr "Sie haben sich erfolgreich aus dem Zeugnisverwaltungsbereich abgemeldet."
 
 msgid "Unknown error. Please try again."
-msgstr "Unbekannter Fehler. Bitte probieren sie es erneut."
+msgstr "Unbekannter Fehler. Bitte probieren Sie es erneut."
 
 msgid "You have logged in successfully in the Certificate Management Section."
 msgstr "Sie haben sich erfolgreich im Zeugnisverwaltungsbereich angemeldet."
@@ -83,7 +83,7 @@ msgid "Back to details"
 msgstr "Zurück zu Details"
 
 msgid "The user has currently not the privilege \"Access the connector to up- and download data\". Make sure that the User also have this privilege assigned. Otherwhile the certificate management will not shown in the IDesk."
-msgstr "Der Benutzer hat derzeit nicht das Sonderrecht \"Auf den Connector zugreifen um Daten hoch- und herunterzuladen\". Stellen sie sicher, dass der Benutzer dieses Sonderrecht hat. Andernfalls wird der Menüpunkt Zeugnisverwaltung im IDesk nicht angezeigt."
+msgstr "Der Benutzer hat derzeit nicht das Sonderrecht \"Auf den Connector zugreifen um Daten hoch- und herunterzuladen\". Stellen Sie sicher, dass der Benutzer dieses Sonderrecht hat. Andernfalls wird der Menüpunkt Zeugnisverwaltung im IDesk nicht angezeigt."
 
 msgid "New user password"
 msgstr "Neues Benutzerpasswort"
@@ -104,25 +104,25 @@ msgid "User password of %s set."
 msgstr "Benutzerpasswort von %s gesetzt."
 
 msgid "Please enter both passwords, the master password and your personal user password. If you do not know them, please conact your administrator."
-msgstr "Bitte geben sie beide Passwörter ein, das Masterpasswort und ihr persönliches Benutzerkennwort. Wenn sie diese nicht kennen, kontaktieren sie bitte ihren Administrator."
+msgstr "Bitte geben Sie beide Passwörter ein, das Masterpasswort und ihr persönliches Benutzerkennwort. Wenn Sie diese nicht kennen, kontaktieren sie bitte ihren Administrator."
 
 msgid "Delete user password of %s"
 msgstr "Benutzerpasswort von %s löschen"
 
 msgid "Do you really want to delete the user password of %s?"
-msgstr "Möchten sie das Benutzerpasswort von %s wirklich löschen?"
+msgstr "Möchten Sie das Benutzerpasswort von %s wirklich löschen?"
 
 msgid "User password of %s deleted."
 msgstr "Benutzerpasswort von %s gelöscht."
 
 msgid "Currently for your account is not a user password set. Please contact your administrator."
-msgstr "Derzeit ist für ihr Konto kein Benutzerpasswort gesetzt. Bitte kontaktieren sie ihren Administrator."
+msgstr "Derzeit ist für ihr Konto kein Benutzerpasswort gesetzt. Bitte kontaktieren Sie ihren Administrator."
 
 msgid "The user password is wrong."
 msgstr "Das Benutzerpasswort ist falsch."
 
 msgid "Please enter the user password and try it again."
-msgstr "Bitte geben sie das Benutzerpasswort ein und probieren sie es erneut."
+msgstr "Bitte geben Sie das Benutzerpasswort ein und probieren Sie es erneut."
 
 msgid "User password can not be empty."
 msgstr "Benutzerpasswort darf nicht leer sein."
