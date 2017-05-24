@@ -2,7 +2,7 @@
 // src/Stsbl/SchoolCertificateManagerConnectorBundle/Command/UpdateMasterPasswordCommand.php
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Command;
 
-use IServ\CoreBundle\Service\Shell;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Util\Password as PasswordUtil;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -81,7 +81,7 @@ class MasterPasswordCommand extends ContainerAwareCommand
         } else if ($action == 'update') {
             $this->update($input, $output);
         } else {
-            throw new \RuntimeException('Unknown action "'.$action.'".');
+            $output->writeln('<error>Unknown action "'.$action.'".</error>');
         }
     }
     
@@ -125,13 +125,13 @@ class MasterPasswordCommand extends ContainerAwareCommand
                 }
             }
             
-            $newSalt = base64_encode(mcrypt_create_iv(22, MCRYPT_DEV_URANDOM));
+            $newSalt = PasswordUtil::generateSalt();
             
             $saltFile = new \SplFileObject(self::SALT_FILE, 'w');
             $saltFile->fwrite($newSalt);
             
             $hashOptions['salt'] = $newSalt;
-            $newMasterPasswordHash = password_hash($_SERVER['SCMC_NEWMASTERPW'], PASSWORD_BCRYPT, $hashOptions);
+            $newMasterPasswordHash = PasswordUtil::generateHash($_SERVER['SCMC_NEWMASTERPW'], $newSalt);
             
             $pwdFile = new \SplFileObject(self::MASTERPASSWORD_FILE, 'w');
             $pwdFile->fwrite($newMasterPasswordHash);

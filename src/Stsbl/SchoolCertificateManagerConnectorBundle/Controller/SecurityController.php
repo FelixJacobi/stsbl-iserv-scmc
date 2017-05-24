@@ -47,7 +47,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("scmc", schemes="https")
- * //@Security("requires_channel: https")
  */
 class SecurityController extends PageController 
 {

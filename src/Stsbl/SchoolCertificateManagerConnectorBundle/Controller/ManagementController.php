@@ -5,6 +5,7 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
@@ -130,6 +131,7 @@ class ManagementController extends PageController
      * School Certificate Manager Connector Upload Page
      * 
      * @return Symfony\Component\HttpFoundation\Response|Symfony\Component\HttpFoundation\RedirectResponse
+     * @Method("POST")
      * @Route("/download/zip", name="scmc_download_zip")
      */
     public function downloadZipAction(Request $request)

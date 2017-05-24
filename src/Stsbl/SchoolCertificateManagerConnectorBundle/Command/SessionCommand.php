@@ -98,7 +98,7 @@ class SessionCommand extends ContainerAwareCommand
     private function open(InputInterface $input, OutputInterface $output)
     {
         if (!isset($_SERVER['SCMC_MASTERPW']) or !isset($_SERVER['SCMC_ACT']) or !isset($_SERVER['SESSPW']) or !isset($_SERVER['SCMC_USERPW'])) {
-            throw new \RuntimeExecption('Environment variables are missing.');
+            throw new \RuntimeException('Environment variables are missing.');
         }
         $suppliedMasterPassword = $_SERVER['SCMC_MASTERPW']; 
         $act = $_SERVER['SCMC_ACT'];
