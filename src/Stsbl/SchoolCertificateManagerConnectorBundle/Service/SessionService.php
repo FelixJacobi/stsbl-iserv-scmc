@@ -104,7 +104,7 @@ class SessionService
         $this->handleShellExitCode($shell);
         $output = $shell->getOutput();
         $ret = array_shift($output);
-        
+
         if ($ret == "Wrong") {
             return 'wrong';
         } else if ($ret == "Wrong UserPassword") {
@@ -146,6 +146,7 @@ class SessionService
             $this->securityHandler->getToken()->setAttribute('scmc_authentificated', null);
             $this->securityHandler->getToken()->setAttribute('scmc_sessiontoken', null);
             $this->securityHandler->getToken()->setAttribute('scmc_sessionpassword', null);
+            $this->securityHandler->getToken()->setAttribute('scmc_salt', null);
             return true;
         } else {
             throw new \RuntimeException('Failed to close session.');

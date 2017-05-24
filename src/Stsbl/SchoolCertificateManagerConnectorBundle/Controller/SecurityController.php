@@ -87,7 +87,8 @@ class SecurityController extends PageController
             
             $ret = $this->get('stsbl.scmc.service.session')->openSession($data['masterpassword'], $data['userpassword']);
             
-            if ($ret == 'wrong') {
+            if ($ret === true) {
+            } else if ($ret == 'wrong') {
                 $this->log('Zeugnisverwaltungs-Login: Falsches Masterpasswort');
                 $error = _('The master password is wrong.');
                 goto render;
@@ -97,7 +98,7 @@ class SecurityController extends PageController
                 goto render;
             }
             
-            $this->log('Login im Zeugnisverwaltungsbreich erfolgreich');            
+            $this->log('Zeugnisverwaltungs-Login erfolgreich');
             $this->get('iserv.flash')->success(_('You have logged in successfully in the Certificate Management Section.'));
             
             // assume sucessful login
@@ -147,7 +148,7 @@ class SecurityController extends PageController
         $this->get('stsbl.scmc.service.session')->closeSession();
             
         $this->initalizeLogger();
-        $this->log('Logout aus dem Zeugnisverwaltungsbereich');
+        $this->log('Zeugnisverwaltungs-Logout erfolgreich');
         $this->get('iserv.flash')->success(_('You have logged out successfully from the Certificate Management Section.'));
     
         return $this->redirect($this->generateUrl('scmc_forward'));

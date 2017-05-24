@@ -3,10 +3,12 @@
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 
 use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Util\Password as PasswordUtil;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -49,7 +51,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ManagementController extends PageController 
 {
-    use FormTrait, SecurityTrait;
+    use FormTrait, LoggerTrait, LoggerInitalizationTrait, SecurityTrait;
     
     /*
      * @var \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
@@ -139,6 +141,9 @@ class ManagementController extends PageController
             return $this->redirectToRoute('scmc_download');
         }
         
+        $this->initalizeLogger();
+        $this->log('Zeugnisdaten vom Server heruntergeladen');
+
         $securityHandler = $this->get('iserv.security_handler');
         $sessionPassword = $securityHandler->getSessionPassword();
         $act = $securityHandler->getToken()->getUser()->getUsername();
@@ -175,7 +180,7 @@ class ManagementController extends PageController
         $response->headers->set('Content-Type', 'application/zip');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$quoted);
         
-            return $response;
+        return $response;
     }
     
     /**
