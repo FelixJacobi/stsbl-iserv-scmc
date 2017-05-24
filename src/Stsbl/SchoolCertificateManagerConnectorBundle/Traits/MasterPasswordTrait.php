@@ -42,14 +42,12 @@ trait MasterPasswordTrait
     {
         $securityHandler = $this->get('iserv.security_handler');
         $sessionPassword = $securityHandler->getSessionPassword();
-        die($sessionPassword);
         $act = $securityHandler->getToken()->getUser()->getUsername();
         /* @var $shell \IServ\CoreBundle\Service\Shell */
         $shell = $this->get('iserv.shell');
         $shell->exec('/usr/bin/setsid', ['-w', '/usr/bin/sudo', '/usr/lib/iserv/scmc_masterpassword_update'], null, array('SCMC_OLDMASTERPW' => $oldMasterPassword, 'SCMC_NEWMASTERPW' => $newMasterPassword, 'SCMC_ACT' => $act, 'SESSPW' => $sessionPassword));
         $output = $shell->getOutput();
         $ret = array_shift($output);
-        var_dump($output);
         
         if ($ret == "True") {
             return true;

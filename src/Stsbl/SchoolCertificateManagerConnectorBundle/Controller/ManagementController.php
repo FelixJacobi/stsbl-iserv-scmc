@@ -6,11 +6,13 @@ use IServ\CoreBundle\Controller\PageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Util\Password as PasswordUtil;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 /*
@@ -47,7 +49,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ManagementController extends PageController 
 {
-    use SecurityTrait;
+    use FormTrait, SecurityTrait;
     
     /*
      * @var \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
@@ -67,7 +69,7 @@ class ManagementController extends PageController
      * 
      * @return array
      * @Route("/index", name="scmc_index")
-     * @Template("StsblSchoolCertificateManagerConnectorBundle:Management:index.html.twig")
+     * @Template()
      */
     public function indexAction(Request $request)
     {
@@ -85,7 +87,7 @@ class ManagementController extends PageController
      * 
      * @return array
      * @Route("/upload", name="scmc_upload")
-     * @Template("StsblSchoolCertificateManagerConnectorBundle:Management:upload.html.twig")
+     * @Template()
      */
     public function uploadAction(Request $request)
     {
@@ -96,9 +98,86 @@ class ManagementController extends PageController
         $this->setMenuBuilder();
         $menu = $this->menuBuilder->createSCMCMenu();
         $form = $this->getUploadForm();
+        $form->handleRequest($request);
         
         return ['menu' => $menu, 'form' => $form->createView()];
     }
+    
+    /**
+     * School Certificate Manager Connector Upload Page
+     * 
+     * @return array
+     * @Route("/download", name="scmc_download")
+     * @Template()
+     */
+    public function downloadAction(Request $request)
+    {
+        // track path
+        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));
+        $this->addBreadcrumb(_('Data Download'), $this->generateUrl('scmc_download'));
+        
+        $this->setMenuBuilder();
+        $menu = $this->menuBuilder->createSCMCMenu();
+        $form = $this->getDownloadForm();
+        $form->handleRequest($request);
+        
+        return ['menu' => $menu, 'form' => $form->createView()];
+    }
+    
+    /**
+     * School Certificate Manager Connector Upload Page
+     * 
+     * @return Symfony\Component\HttpFoundation\Response|Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/download/zip", name="scmc_download_zip")
+     */
+    public function downloadZipAction(Request $request)
+    {
+        $form = $this->getDownloadForm();
+        $form->handleRequest($request);
+        if (!$form->isValid()) {
+            $this->handleFormErrors($form);
+            return $this->redirectToRoute('scmc_download');
+        }
+        
+        $securityHandler = $this->get('iserv.security_handler');
+        $sessionPassword = $securityHandler->getSessionPassword();
+        $act = $securityHandler->getToken()->getUser()->getUsername();
+        /* @var $shell \IServ\CoreBundle\Service\Shell */
+        $shell = $this->get('iserv.shell');
+        $shell->exec('sudo', [
+            '/usr/lib/iserv/scmc_get_data',
+            $act,
+            1
+        ], null, [
+            'SESSPW' => $sessionPassword,
+            'IP' => $request->getClientIp(),
+            'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
+            'SCMC_SESSIONTOKEN' => $securityHandler->getToken()->getAttribute('scmc_sessiontoken'),
+            'SCMC_SESSIONPW' => PasswordUtil::generateHash($securityHandler->getToken()->getAttribute('scmc_sessionpassword'), $securityHandler->getToken()->getAttribute('scmc_salt'), 11),
+        ]);
+        
+        $zipPath = null;
+        foreach ($shell->getOutput() as $line) {
+            if (preg_match('|^path=|', $line)) {
+                $zipPath = preg_replace('|^path=|', '', $line);
+                break;
+            }
+        }
+        
+        if ($zipPath == null) {
+            throw new \RuntimeException("Couldn't determine zip path!");
+        }
+        
+        $zipContent = file_get_contents($zipPath);
+        $quoted = sprintf('"%s"', addcslashes('zeugnis-download-'.date('d-m-Y-G-i-s').'.zip', '"\\'));
+            
+        $response = new Response($zipContent);
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', 'attachment; filename='.$quoted);
+        
+            return $response;
+    }
+    
     /**
      * Gets the scmc upload formular
      * 
@@ -132,6 +211,33 @@ class ManagementController extends PageController
                 'label' => _('Upload data'), 
                 'buttonClass' => 'btn-success', 
                 'icon' => 'arrow-up'
+                ])
+            ;
+        
+        return $builder->getForm();
+    }
+    
+    /**
+     * Gets the scmc download formular
+     * 
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    private function getDownloadForm()
+    {
+        $builder = $this->createFormBuilder();
+        $builder->setAction($this->generateUrl('scmc_download_zip'));
+        
+        $builder
+            ->add('server', ChoiceType::class, [
+                'label' => _('Select destination server'),
+                'attr' => [
+                    'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
+                    ]
+                ])
+            ->add('submit', SubmitType::class, [
+                'label' => _('Download data'), 
+                'buttonClass' => 'btn-success', 
+                'icon' => 'arrow-down'
                 ])
             ;
         

@@ -151,7 +151,7 @@ class MasterPasswordCommand extends ContainerAwareCommand
      */
     private function isEmpty(InputInterface $input, OutputInterface $output)
     {
-        if (filesize(self::MASTERPASSWORD_FILE) === 0) {
+        if (!file_exists(self::MASTERPASSWORD_FILE) || filesize(self::MASTERPASSWORD_FILE) === 0) {
             $output->writeln('True');
         } else {
             $output->writeln('False');

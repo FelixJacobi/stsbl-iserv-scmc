@@ -1,0 +1,13 @@
+{# src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/views/Management/upload.html.twig #}
+{% extends "IServCoreBundle::page.html.twig" %}
+
+{% block page_title %}{{ _('Data Download') }} - {{ _('Certificate Management') }}{% endblock %}
+
+{% block content %}
+    <h1> {{ _('Data Download') }}</h1>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -190,7 +190,7 @@ class SessionCommand extends ContainerAwareCommand
         
         $sessionDB->commit();
         
-        $output->writeln('SESSDATA:'.$sessionToken.','.$sessionPassword);
+        $output->writeln('SESSDATA:'.$sessionToken.','.$sessionPassword.','.$salt);
     }
     
     /**

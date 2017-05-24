@@ -115,6 +115,7 @@ class SessionService
             $this->securityHandler->getToken()->setAttribute('scmc_authentificated', true);
             $this->securityHandler->getToken()->setAttribute('scmc_sessiontoken', $sessionData[0]);
             $this->securityHandler->getToken()->setAttribute('scmc_sessionpassword', $sessionData[1]);
+            $this->securityHandler->getToken()->setAttribute('scmc_salt', $sessionData[2]);
             
             // recall setSessionData to set password and token received from command
             $this->setSessionData();
