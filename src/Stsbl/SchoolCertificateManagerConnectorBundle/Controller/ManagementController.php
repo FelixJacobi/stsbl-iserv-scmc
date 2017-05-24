@@ -45,7 +45,8 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("scmc", schemes="https")
  * @Security("is_granted('PRIV_SCMC_ACCESS_FRONTEND') and token.hasAttribute('scmc_authentificated') and token.getAttribute('scmc_authentificated') == true")
  */
-class ManagementController extends PageController {
+class ManagementController extends PageController 
+{
     use SecurityTrait;
     
     /*

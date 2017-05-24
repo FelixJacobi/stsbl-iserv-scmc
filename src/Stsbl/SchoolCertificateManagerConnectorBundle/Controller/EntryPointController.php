@@ -39,7 +39,8 @@ use Symfony\Component\HttpFoundation\Request;
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("scmc")
  */
-class EntryPointController extends PageController {
+class EntryPointController extends PageController
+{
     use SecurityTrait;
     
     /**

@@ -4,15 +4,18 @@ services:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\EventListener\MenuListener # Out MenuListener Class
         tags:
           - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu } # Tells IServ about the main menu method
-          - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu } # Tells IServ about the admin menu method]
+          - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu } # Tells IServ about the admin menu method
+    
     stsbl.scmc.service.session:
         class:  Stsbl\SchoolCertificateManagerConnectorBundle\Service\SessionService # Our Service class
         arguments: ["@iserv.security_handler", "@iserv.shell"] # Inject SecurityHandler and Shell into the class
+    
     stsbl.scmc.admin.userpassword:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Admin\UserPasswordAdmin # Our CRUD class
         arguments: [IServ\CoreBundle\Entity\User]  # Sets the controlled entity class
         tags:
             - { name: iserv.crud } # Tells IServ about our CRUD
+    
     stsbl.scmc.menu_builder:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
         arguments: ["@knp_menu.factory", "@security.token_storage", "@security.authorization_checker", "@event_dispatcher"]

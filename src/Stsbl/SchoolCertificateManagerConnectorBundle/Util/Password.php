@@ -32,7 +32,8 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Util;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class Password {
+class Password 
+{
     /**
      * Generates salt to hash a password
      */

@@ -49,7 +49,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @Route("scmc", schemes="https")
  * //@Security("requires_channel: https")
  */
-class SecurityController extends PageController {
+class SecurityController extends PageController 
+{
     use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait, FormTrait;
     
     /**

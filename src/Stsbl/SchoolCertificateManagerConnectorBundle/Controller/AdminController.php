@@ -49,7 +49,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("admin/scmc")
  */
-class AdminController extends PageController {
+class AdminController extends PageController
+{
     use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait, FormTrait;
     
     /**

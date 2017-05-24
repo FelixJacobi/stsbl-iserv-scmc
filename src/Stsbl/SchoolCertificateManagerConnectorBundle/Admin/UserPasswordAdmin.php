@@ -41,7 +41,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class UserPasswordAdmin extends AbstractAdmin {
+class UserPasswordAdmin extends AbstractAdmin
+{
     /**
      * {@inheritdoc}
      */
@@ -88,11 +89,7 @@ class UserPasswordAdmin extends AbstractAdmin {
      */    
     public function isAllowedToAdd(UserInterface $user = null)
     {
-        if ($user !== null) {
-            return false;
-        }
-        
-        return true;
+        return false;
     }
     
     /**
@@ -100,11 +97,7 @@ class UserPasswordAdmin extends AbstractAdmin {
      */    
     public function isAllowedToEdit(CrudInterface $object = null, UserInterface $user = null)
     {
-        if ($user !== null) {
-            return false;
-        }
-        
-        return true;
+        return false;
     }
 
     /**
@@ -112,11 +105,7 @@ class UserPasswordAdmin extends AbstractAdmin {
      */    
     public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null)
     {
-        if ($user !== null) {
-            return false;
-        }
-        
-        return true;
+        return false;
     }
     
     /**

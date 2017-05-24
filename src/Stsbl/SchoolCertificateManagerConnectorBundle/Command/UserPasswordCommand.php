@@ -41,7 +41,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class UserPasswordCommand extends ContainerAwareCommand {
+class UserPasswordCommand extends ContainerAwareCommand
+{
     use CommonTrait;
     
     const PASSWD_FILE = '/etc/stsbl/scmcpasswd';

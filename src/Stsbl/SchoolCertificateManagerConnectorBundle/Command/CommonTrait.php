@@ -34,7 +34,8 @@ use IServ\CoreBundle\Service\Shell;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-trait CommonTrait {
+trait CommonTrait
+{
     /**
      * @var Shell
      */

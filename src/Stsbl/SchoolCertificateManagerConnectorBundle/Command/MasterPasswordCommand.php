@@ -39,7 +39,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class MasterPasswordCommand extends ContainerAwareCommand {
+class MasterPasswordCommand extends ContainerAwareCommand 
+{
     use CommonTrait;
     
     const MASTERPASSWORD_FILE = '/var/lib/stsbl/scmc/auth/masterpassword.pwd';
