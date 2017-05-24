@@ -164,18 +164,30 @@ class ManagementController extends PageController
         ]);
         
         $zipPath = null;
+        $output = [];
         foreach ($shell->getOutput() as $line) {
             if (preg_match('|^path=|', $line)) {
                 $zipPath = preg_replace('|^path=|', '', $line);
-                break;
+            } else {
+                $output[] = $line;
             }
         }
         
+        if (count($shell->getError()) > 0) {
+            $this->get('iserv.flash')->error(join("\n", $shell->getError()));
+        }
+        
+        if(count($output) > 0) {
+            $this->get('iserv.flash')->success(join("\n", $output));
+        }
+        
         if ($zipPath == null) {
-            throw new \RuntimeException("Couldn't determine zip path!");
+            $this->get('iserv.flash')->error(_('Something went wrong.'));
+            return $this->redirectToRoute('scmc_download');
         }
         
         $zipContent = file_get_contents($zipPath);
+        unlink($zipPath);
         $quoted = sprintf('"%s"', addcslashes('zeugnis-download-'.date('d-m-Y-G-i-s').'.zip', '"\\'));
             
         $response = new Response($zipContent);

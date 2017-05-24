@@ -62,7 +62,7 @@ if ($dest_zip =~ /^(.*)$/) {
 die "Insecure destination!" if -d $dest_dir;
 die "Insecure zip path!" if -f $dest_zip;
 
-mkdir $dest_dir, 00600;
+mkdir $dest_dir, 00700;
 # Net::SCP::Expect cannot handle directories :/
 #Stsbl::IServ::SCP::scp $server_ip, ":/Zeugnisse", $dest_dir;
 system "scp", "-i", $server_key, "-o", 
@@ -75,9 +75,10 @@ system "scp", "-i", $server_key, "-o",
   $dest_dir;
 
 chdir $dest_dir or die "Failed to chdir to $dest_dir: $!";
-system "zip", "-r", $dest_zip, "Zeugnisse/";
+system "zip", "-q", "-r", $dest_zip, "Zeugnisse/";
 my (undef, undef, $www_data_uid) = getpwnam "www-data";
 chown $www_data_uid, 0, $dest_zip;
+chmod 00600, $dest_zip;
 
-unlink $dest_dir;
+system "rm", "-rf",  $dest_dir; 
 print "path=$dest_zip\n";
