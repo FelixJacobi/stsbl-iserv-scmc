@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# expire scmc sessions older than a day
+psql -q -c "DELETE FROM scmc_sessions WHERE created < now() - '24 hours'::INTERVAL" iserv postgres
