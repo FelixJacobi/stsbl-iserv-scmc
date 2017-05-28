@@ -81,7 +81,7 @@ class UserPasswordAdmin extends AbstractAdmin
     {
         $listHandler
             ->addListFilter(new Filter\ListSearchFilter('search', ['username', 'firstname', 'lastname']))
-            ->addListFilter((new Filter\ListAssociationFilter(_('Groups'), 'groups', 'IServCoreBundle:Group', 'name', 'account'))->setName('groups'));
+            ->addListFilter((new Filter\ListAssociationFilter(_('Groups'), 'groups', 'IServCoreBundle:Group', 'name', 'account'))->setName('groups')->setPickerOptions(array('data-live-search' => 'true')));
     }
     
     /**
