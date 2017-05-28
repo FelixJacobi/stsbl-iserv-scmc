@@ -1,0 +1,169 @@
+#!/usr/bin/perl -T -CSDAL
+
+use warnings;
+use strict;
+use Bytes::Random::Secure;
+use Cwd qw(abs_path);
+use IServ::DB;
+use IServ::SSH;
+use Stsbl::IServ::IO;
+use Stsbl::IServ::Log;
+#use Stsbl::IServ::SCP;
+use Stsbl::IServ::Security;
+
+my $m_ip = qr/[\d.:]{1,64}/;
+
+my $login_pwd = $ENV{PASSWORD} // $ENV{SESSPW};
+my ($login_ip) = ($ENV{IP} // "") =~ /^($m_ip)$/;
+my ($login_ip_fwd) = ($ENV{IPFWD} // "") =~ /^($m_ip)$/;
+my ($scmc_token, $scmc_sessionpw) = ($ENV{SCMC_SESSIONTOKEN}, $ENV{SCMC_SESSIONPW});
+undef %ENV;
+$ENV{PATH} = "/usr/sbin:/usr/bin:/sbin:/bin";
+
+if (@ARGV < 3)
+{
+  print STDERR "Usage: scmc_get_data COMMAND ARGS\n\n";
+  print STDERR "Command getdata: LOGIN SERVERID\n";
+  print STDERR "Command putdata: LOGIN SERVERID ZIPFILE\n\n";
+  print STDERR "Environment: PASSWORD, IP, IPWD, SCMC_SESSIONTOKEN, SCMC_SESSIONPW\n";
+  print STDERR "Return of getdata: Folder path of created zip file on STDOUT.\n";
+  exit 1;
+}
+
+my $cmd = shift @ARGV;
+my $login_act = shift @ARGV;
+
+set_ips $login_ip, $login_ip_fwd;
+set_credentials $login_act, $login_pwd;
+sessauth_auth "scmc_get_data";
+
+sub check_path($) 
+{
+  my $path = shift;
+  my $realpath = abs_path $path;
+  $realpath =~ /\/tmp\/stsbl-iserv-scmc-(.*)/ or Stsbl::IServ::IO::error "Invalid file path!";
+}
+
+sub req_scmc_auth
+{
+  IServ::DB::Do "SELECT 1 FROM scmc_sessions WHERE sessiontoken = ? AND sessionpw = ? AND act = ? LIMIT 1", $scmc_token, $scmc_sessionpw, $login_act 
+    or Stsbl::IServ::IO::error "Invalid scmc session data!";
+}
+
+my $random = new Bytes::Random::Secure();
+
+if ($cmd eq "getdata")
+{
+  req_auth;
+  req_priv "scmc_access_frontend";
+  req_scmc_auth; 
+
+  # TODO
+  my $server_id = shift @ARGV;
+  my $server_ip = "10.5.6.1";
+  my $server_user = "root";
+  my $server_key = "/var/lib/iserv/config/id_rsa";
+
+  my $dest_dir = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10)."/";
+  my $dest_zip = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10).".zip";
+
+  # untaint variables (TODO why is this neccessary?!)
+  if ($dest_dir =~ /^(.*)$/) {
+  $dest_dir = $1;
+  } else {
+    die "Failed to untaint data!";
+  }
+  if ($dest_zip =~ /^(.*)$/) {
+    $dest_zip = $1;
+  } else {
+    die "Failed to untaint data!";
+  }
+
+  # Should never happen
+  die "Insecure destination!" if -d $dest_dir;
+  die "Insecure zip path!" if -f $dest_zip;
+
+  mkdir $dest_dir, 00700 or die "Failed to create directory $dest_dir: $!";
+  # Net::SCP::Expect cannot handle directories :/
+  #Stsbl::IServ::SCP::scp $server_ip, ":/Zeugnisse", $dest_dir;
+  system("scp", "-i", $server_key, "-o", 
+    "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null",
+    "-o", "ConnectTimeout=30",
+    "-o", "LogLevel=ERROR",
+    "-o", "PreferredAuthentications=publickey",
+    "-r",
+    "$server_user\@$server_ip:/Zeugnisse/Jahrgang*/",
+    $dest_dir) == 0
+    or die "scp failed: $!";
+
+  chdir $dest_dir or die "Failed to chdir to $dest_dir: $!";
+  system("zip", "-q", "-r", $dest_zip, "./") == 0 or
+    die "Creating of archive failed: $!";
+  my (undef, undef, $www_data_uid) = getpwnam "www-data";
+  chown $www_data_uid, 0, $dest_zip;
+  chmod 00600, $dest_zip;
+
+  system("rm", "-rf",  $dest_dir) == 0 or warn "Failed to remove destination directory: $!"; 
+  print "path=$dest_zip\n";
+} elsif ($cmd eq "putdata") 
+{
+  req_auth;
+  req_priv "scmc_access_frontend";
+  req_scmc_auth;
+
+  # TODO
+  my $server_id = shift @ARGV;
+  my $src_zip = shift @ARGV;
+  my $server_ip = "10.5.6.1";
+  my $server_user = "root";
+  my $server_key = "/var/lib/iserv/config/id_rsa";
+  my $server_type = "tomcat7";
+  my $server_name = "Test";
+
+  my $dest_dir = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10)."/";
+
+  # untaint variables (TODO why is this neccessary?!)
+  if ($dest_dir =~ /^(.*)$/) {
+    $dest_dir = $1;
+  } else {
+    die "Failed to untaint data!";
+  }
+  if ($src_zip =~ /^(.*)$/) {
+    $src_zip = $1;
+  } else {
+    die "Failed to untaint data!";
+  }
+  
+  # check path to prevent illegal files
+  check_path $src_zip;
+
+  # Should never happen
+  die "Insecure destination!" if -d $dest_dir;
+  die "Invalid zip file!" if not -f $src_zip;
+
+  # TODO
+  IServ::SSH::ssh_run $server_ip, "rm -rf /Zeugnisse/Jahrgang*/";
+
+  mkdir $dest_dir, 00700 or die "Failed to create directory $dest_dir: $!";
+  chdir $dest_dir or die "Failed to chdir to $dest_dir: $!";
+  system("unzip", "-q", $src_zip) == 0 or die "Failed to unzip archive $src_zip: $!"; 
+  system("scp", "-i", $server_key, "-o",
+    "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null",
+    "-o", "ConnectTimeout=30",
+    "-o", "LogLevel=ERROR",
+    "-o", "PreferredAuthentications=publickey",
+    "-r",
+    "./",
+    "$server_user\@$server_ip:/Zeugnisse") == 0
+    or die "scp failed: $!";
+  
+  # TODO
+  IServ::SSH::ssh_run $server_ip, "find /Zeugnisse/ -type f -exec chmod -v 664 {} \;";
+  IServ::SSH::ssh_run $server_ip, "find /Zeugnisse/ -type d -exec chmod -v 2775 {} \;";
+  IServ::SSH::ssh_run $server_ip, "chgrp -Rv $server_type /Zeugnisse/";
+
+  Stsbl::IServ::Log::write_for_module "Zeugnisdaten auf den Server \"$server_name\" hochgeladen", "School Certificate Manager Connector";
+} else 
+{
+  Stsbl::IServ::IO::error "Unknown command $cmd!";
+}

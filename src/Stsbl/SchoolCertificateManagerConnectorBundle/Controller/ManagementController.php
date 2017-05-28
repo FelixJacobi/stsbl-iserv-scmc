@@ -3,6 +3,7 @@
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 
 use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -12,11 +13,14 @@ use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Util\Password as PasswordUtil;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /*
  * The MIT License
@@ -107,7 +111,77 @@ class ManagementController extends PageController
     }
     
     /**
-     * School Certificate Manager Connector Upload Page
+     * @return Symfony\Component\HttpFoundation\RedirectResponse
+     * @Method("POST")
+     * @Route("/upload/zip", name="scmc_upload_zip")
+     */
+    public function uploadZipAction(Request $request)
+    {
+        $form = $this->getUploadForm();
+        $form->handleRequest($request);
+        if (!$form->isValid()) {
+            $this->handleFormErrors($form);
+            return $this->redirectToRoute('scmc_upload');
+        }
+
+        $fs = new Filesystem();
+        $data = $form->getData();
+        $randomNumber = rand(1000, getrandmax());
+        $dirPrefix = '/tmp/stsbl-iserv-scmc-';
+        $dir = $dirPrefix.$randomNumber.'/';
+        
+        if (!$fs->exists($dir)) {
+            $fs->mkdir($dir);
+        }
+        
+        $fs->chmod($dir, 0700);
+        
+        if (!is_writeable($dir)) {
+            throw new \RuntimeException(sprintf('%s must be writeable, it is not.', $dir));
+        }
+        /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
+        $file = $data['class_data'];
+        
+        if ($file->getMimeType() != 'application/zip') {
+            $this->get('iserv.flash')->error(_('You have to upload a zip file!'));
+            return $this->redirectToRoute('scmc_upload');
+        }
+        
+        $filePath = $dir.$file->getClientOriginalName();
+        $file->move($dir, $file->getClientOriginalName());
+        
+        $securityHandler = $this->get('iserv.security_handler');
+        $sessionPassword = $securityHandler->getSessionPassword();
+        $act = $securityHandler->getToken()->getUser()->getUsername();
+        /* @var $shell \IServ\CoreBundle\Service\Shell */
+        $shell = $this->get('iserv.shell');
+        $shell->exec('sudo', [
+            '/usr/lib/iserv/scmcadm',
+            'putdata',
+            $act,
+            1,
+            $filePath
+        ], null, [
+            'SESSPW' => $sessionPassword,
+            'IP' => $request->getClientIp(),
+            'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
+            'SCMC_SESSIONTOKEN' => $securityHandler->getToken()->getAttribute('scmc_sessiontoken'),
+            'SCMC_SESSIONPW' => PasswordUtil::generateHash($securityHandler->getToken()->getAttribute('scmc_sessionpassword'), $securityHandler->getToken()->getAttribute('scmc_salt'), 11),
+        ]);
+        
+        if (count($shell->getError()) > 0) {
+            $this->get('iserv.flash')->error(join("\n", $shell->getError()));
+        }
+        
+        if (count($shell->getOutput()) > 0) {
+            $this->get('iserv.flash')->success(join("\n", $shell->getOutput()));
+        }
+        
+        return $this->redirectToRoute('scmc_upload');
+    }
+    
+    /**
+     * School Certificate Manager Connector Dwonload Page
      * 
      * @return array
      * @Route("/download", name="scmc_download")
@@ -128,8 +202,6 @@ class ManagementController extends PageController
     }
     
     /**
-     * School Certificate Manager Connector Upload Page
-     * 
      * @return Symfony\Component\HttpFoundation\Response|Symfony\Component\HttpFoundation\RedirectResponse
      * @Method("POST")
      * @Route("/download/zip", name="scmc_download_zip")
@@ -152,7 +224,8 @@ class ManagementController extends PageController
         /* @var $shell \IServ\CoreBundle\Service\Shell */
         $shell = $this->get('iserv.shell');
         $shell->exec('sudo', [
-            '/usr/lib/iserv/scmc_get_data',
+            '/usr/lib/iserv/scmcadm',
+            'getdata',
             $act,
             1
         ], null, [
@@ -177,7 +250,7 @@ class ManagementController extends PageController
             $this->get('iserv.flash')->error(join("\n", $shell->getError()));
         }
         
-        if(count($output) > 0) {
+        if (count($output) > 0) {
             $this->get('iserv.flash')->success(join("\n", $output));
         }
         
@@ -205,6 +278,7 @@ class ManagementController extends PageController
     private function getUploadForm()
     {
         $builder = $this->createFormBuilder();
+        $builder->setAction($this->generateUrl('scmc_upload_zip'));
         
         $builder
             ->add('server', ChoiceType::class, [
@@ -212,20 +286,22 @@ class ManagementController extends PageController
                 'attr' => [
                     'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
                     ]
-                ])
+            ])
             ->add('class_data', FileType::class, [
                 'label' => _('Zip file with class data'),
+                'constraints' => [new NotBlank(['message' => _('Please select a file to upload.')])],
                 'attr' => [
                     'help_text' => _('The zip file with the class data. It must contain sub folders with the class lists sorted by age group (Jahrgang5, Jahrgang6, ...). For more information please refer the WZeugnis Documentation.')
                     ]
-                ])
-            ->add('confirm', \IServ\CoreBundle\Form\Type\BooleanType::class, [
-                    'label' => _('Confirmation'),
-                    'data' => false,
-                    'attr' => [
-                        'help_text' => _('Before you can upload new class data, you have to confirm that will lead to loosing all data currently stored on the certificate server.')
-                    ]
-                ])
+            ])
+            ->add('confirm', BooleanType::class, [
+                'label' => _('Confirmation'),
+                'constraints' => [new IsTrue(['message' => _('You need to confirm that a new upload will delete all existing data on the server.')])],
+                'data' => false,
+                'attr' => [
+                    'help_text' => _('Before you can upload new class data, you have to confirm that will lead to loosing all data currently stored on the certificate server.')
+                ]
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => _('Upload data'), 
                 'buttonClass' => 'btn-success', 
