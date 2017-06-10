@@ -14,7 +14,7 @@ IServ::Locale::UseDefLang();
 # required for iservcfg
 my $TITLE = "Zeugnisverwaltung";
 my $REAL_TITLE = _("Certificate Management");
-$IServ::Dialog::backtitle = $REAL_TITLE;
+$IServ::Dialog::backtitle = "IServ-Konfiguration > $REAL_TITLE";
 
 sub pwd_reset
 {
@@ -35,7 +35,7 @@ sub main
   {
     case "exit" { exit; }
     case "-" { &main; }
-    else { &$ret; &main; }
+    else { if (defined $ret) { &$ret; &main; } else { exit; }  }
   }
 }
 
