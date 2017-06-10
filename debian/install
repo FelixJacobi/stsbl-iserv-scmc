@@ -8,7 +8,7 @@ iservchk/*	usr/share/iserv/iconf/etc/iserv/chk.d
 lib/*		usr/lib/iserv
 priv/*		usr/share/iserv/priv
 roles/*		usr/share/iserv/roles
-#sbin/*		usr/sbin
+sbin/*		usr/sbin
 share/*		usr/share/iserv
 src/*		usr/share/iserv/src
 #install/*	srv/deploy/install

@@ -1,0 +1,42 @@
+#!/usr/bin/perl -CSDAL
+
+use utf8;
+use IServ::Conf;
+use IServ::Dialog;
+use IServ::Locale;
+use POSIX;
+use Switch;
+
+POSIX::setlocale(POSIX::LC_CTYPE, $conf->{DefLang} . ".UTF-8");
+POSIX::setlocale(POSIX::LC_MESSAGES, $conf->{DefLang} . ".UTF-8");
+IServ::Locale::UseDefLang();
+
+# required for iservcfg
+my $TITLE = "Zeugnisverwaltung";
+my $REAL_TITLE = _("Certificate Management");
+$IServ::Dialog::backtitle = $REAL_TITLE;
+
+sub pwd_reset
+{
+  print "\n";
+  system "/usr/sbin/stsbl-scmc-reset-masterpassword";
+}
+
+sub main
+{
+  my @menu;
+  push @menu, "pwd_reset" => _("Reset master password");
+  push @menu, "-" => undef;
+  push @menu, "exit" => _("Exit");
+  
+  my $ret = IServ::Dialog::menu $REAL_TITLE, undef, @menu;
+
+  switch ($ret) 
+  {
+    case "exit" { exit; }
+    case "-" { &main; }
+    else { &$ret; &main; }
+  }
+}
+
+&main;
