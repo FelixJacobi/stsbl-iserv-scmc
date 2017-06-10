@@ -9,24 +9,40 @@ CREATE USER scmc_session;
 
 -- session table
 CREATE TABLE scmc_sessions (
-    id              SERIAL              PRIMARY KEY,
-    sessiontoken    VARCHAR(60) NOT NULL,
-    sessionpw       VARCHAR(255) NOT NULL,
-    sessionpwsalt   VARCHAR(255) NOT NULL,
-    act             VARCHAR(255) REFERENCES users(act)
+    ID              SERIAL              PRIMARY KEY,
+    Sessiontoken    VARCHAR(60) NOT NULL,
+    SessionPW       VARCHAR(255) NOT NULL,
+    SessionPWSalt   VARCHAR(255) NOT NULL,
+    Act             VARCHAR(255) REFERENCES users(act)
                              ON DELETE CASCADE
                              ON UPDATE CASCADE
                              NOT NULL,
-    created         TIMESTAMPTZ(0) NOT NULL DEFAULT now()
+    Created         TIMESTAMPTZ(0) NOT NULL DEFAULT now()
 );
 
 -- table for storing user password state
 CREATE TABLE scmc_userpasswords (
-    act             VARCHAR(255) PRIMARY KEY REFERENCES users(act)
+    Act             TEXT PRIMARY KEY REFERENCES users(act)
                              ON UPDATE CASCADE
                              ON DELETE CASCADE
                              NOT NULL,
-    password        BOOLEAN NOT NULL
+    Password        BOOLEAN NOT NULL
+);
+
+-- table for scmc servers
+CREATE TABLE scmc_servers (
+    Host            TEXT        PRIMARY KEY REFERENCES hosts(Name)
+                                    ON UPDATE CASCADE
+                                    ON DELETE CASCADE
+                                    NOT NULL,
+    TomcatType      TEXT        NOT NULL 
+                                    CHECK (TomcatType IN
+        ('tomcat6', 'tomcat7', 'tomact8')),
+    WebDomain       TEXT        NOT NULL,
+    ActGrp           TEXT       REFERENCES groups(Act)
+                                    ON UPDATE CASCADE
+                                    ON DELETE SET NULL,
+    SSHAct          TEXT        NOT NULL
 );
 
 -- permissions
@@ -34,3 +50,4 @@ GRANT USAGE, SELECT ON "scmc_sessions_id_seq" TO "scmc_session";
 GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_sessions" TO "scmc_session";
 
 GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_userpasswords" TO "symfony";
+GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_servers" TO "symfony";

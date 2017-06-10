@@ -12,3 +12,13 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self }} => scmc-select2.js -->
+    {% endif %}
+    {% javascripts output='js/compiled/scmc-select2.js' filter='?uglifyjs2' '@IServCrudBundle/Resources/public/js/select2.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

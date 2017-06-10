@@ -13,8 +13,8 @@ use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Util\Password as PasswordUtil;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
@@ -214,9 +214,10 @@ class ManagementController extends PageController
             $this->handleFormErrors($form);
             return $this->redirectToRoute('scmc_download');
         }
+        $data = $form->getData();
         
         $this->initalizeLogger();
-        $this->log('Zeugnisdaten vom Server heruntergeladen');
+        $this->log(sprintf('Zeugnisdaten vom Server "%s" heruntergeladen', (string)$data['server']->getHost()));
 
         $securityHandler = $this->get('iserv.security_handler');
         $sessionPassword = $securityHandler->getSessionPassword();
@@ -281,7 +282,8 @@ class ManagementController extends PageController
         $builder->setAction($this->generateUrl('scmc_upload_zip'));
         
         $builder
-            ->add('server', ChoiceType::class, [
+            ->add('server', EntityType::class, [
+                'class' => 'StsblSchoolCertificateManagerConnectorBundle:Server',
                 'label' => _('Select destination server'),
                 'attr' => [
                     'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
@@ -323,12 +325,13 @@ class ManagementController extends PageController
         $builder->setAction($this->generateUrl('scmc_download_zip'));
         
         $builder
-            ->add('server', ChoiceType::class, [
+            ->add('server', EntityType::class, [
+                'class' => 'StsblSchoolCertificateManagerConnectorBundle:Server',
                 'label' => _('Select destination server'),
                 'attr' => [
                     'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
                     ]
-                ])
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => _('Download data'), 
                 'buttonClass' => 'btn-success', 

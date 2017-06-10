@@ -11,3 +11,5 @@ ChPerm 600 root:root /var/lib/stsbl/scmc/auth/masterpassword.salt
 MkDir 0755 root:root /etc/stsbl/
 Touch /etc/stsbl/scmcpasswd
 ChPerm 0600 root:root /etc/stsbl/scmcpasswd
+
+MkDir 0700 root:root /var/lib/stsbl/scmc/keys

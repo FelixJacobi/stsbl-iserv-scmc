@@ -32,4 +32,13 @@
         <p><a class="btn btn-primary" href="{{ path('admin_scmc_userpassword_index') }}"><span class="glyphicon glyphicon-arrow-right"></span>{{ _('Set up user passwords') }}</a></p>
     </div>
 </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ _('Servers') }}</h3>
+    </div>
+    <div class="panel-body">
+        <p>{{ _('Configure the servers which are the targets for up- and downloading.') }}</p>
+        <p><a class="btn btn-primary" href="{{ path('admin_scmc_server_index') }}"><span class="glyphicon glyphicon-arrow-right"></span>{{ _('Set up servers') }}</a></p>
+    </div>
+</div>
 {% endblock %}

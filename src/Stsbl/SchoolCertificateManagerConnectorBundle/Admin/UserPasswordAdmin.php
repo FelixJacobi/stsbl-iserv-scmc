@@ -51,7 +51,7 @@ class UserPasswordAdmin extends AbstractAdmin
         $this->title = _('User passwords');
         $this->itemTitle = _('User');
         $this->id = 'scmc_userpassword';
-        $this->routesPrefix = 'admin/scmc/userpasswords';
+        $this->routesPrefix = 'admin/scmc/userpasswords/';
     }
     
     /**
@@ -59,19 +59,23 @@ class UserPasswordAdmin extends AbstractAdmin
      */
     public function configureListFields(ListMapper $listMapper) 
     {
-        $listMapper->addIdentifier('username', null, ['label' => _('Account')]);
-        $listMapper->add('firstname', null, ['label' => _('Firstname'), 'responsive' => 'desktop']);
-        $listMapper->add('lastname', null, ['label' => _('Lastname')]);
+        $listMapper
+            ->addIdentifier('username', null, ['label' => _('Account')])
+            ->add('firstname', null, ['label' => _('Firstname'), 'responsive' => 'desktop'])
+            ->add('lastname', null, ['label' => _('Lastname')])
+        ;
     }
 
     /**
      * {@inheritdoc}
      */    
-    public function configureShowFields(ShowMapper $listMapper)
+    public function configureShowFields(ShowMapper $showMapper)
     {
-        $listMapper->add('username', null, ['label' => _('Account')]);
-        $listMapper->add('firstname', null, ['label' => _('Firstname')]);
-        $listMapper->add('lastname', null, ['label' => _('Lastname')]);
+        $showMapper
+            ->add('username', null, ['label' => _('Account')])
+            ->add('firstname', null, ['label' => _('Firstname')])
+            ->add('lastname', null, ['label' => _('Lastname')])
+        ;
     }
     
     /**
@@ -81,7 +85,8 @@ class UserPasswordAdmin extends AbstractAdmin
     {
         $listHandler
             ->addListFilter(new Filter\ListSearchFilter('search', ['username', 'firstname', 'lastname']))
-            ->addListFilter((new Filter\ListAssociationFilter(_('Groups'), 'groups', 'IServCoreBundle:Group', 'name', 'account'))->setName('groups')->setPickerOptions(array('data-live-search' => 'true')));
+            ->addListFilter((new Filter\ListAssociationFilter(_('Groups'), 'groups', 'IServCoreBundle:Group', 'name', 'account'))->setName('groups')->setPickerOptions(array('data-live-search' => 'true')))
+        ;
     }
     
     /**

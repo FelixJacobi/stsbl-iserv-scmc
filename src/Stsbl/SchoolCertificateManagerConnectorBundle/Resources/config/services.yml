@@ -15,6 +15,12 @@ services:
         arguments: [IServ\CoreBundle\Entity\User]  # Sets the controlled entity class
         tags:
             - { name: iserv.crud } # Tells IServ about our CRUD
+            
+    stsbl.scmc.admin.server:
+        class: Stsbl\SchoolCertificateManagerConnectorBundle\Admin\ServerAdmin # Our CRUD class
+        arguments: [Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Server]  # Sets the controlled entity class
+        tags:
+            - { name: iserv.crud } # Tells IServ about our CRUD
     
     stsbl.scmc.menu_builder:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
