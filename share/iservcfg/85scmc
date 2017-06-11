@@ -1,5 +1,7 @@
 #!/usr/bin/perl -CSDAL
 
+use warnings;
+use strict;
 use utf8;
 use IServ::Conf;
 use IServ::Dialog;
@@ -15,12 +17,13 @@ IServ::Locale::UseDefLang();
 my $TITLE = "Zeugnisverwaltung";
 my $REAL_TITLE = _("Certificate Management");
 $IServ::Dialog::backtitle = "IServ-Konfiguration > $REAL_TITLE";
+my %api;
 
-sub pwd_reset
-{
-  print "\n";
-  system "/usr/sbin/stsbl-scmc-reset-masterpassword";
-}
+$api{pwd_reset} = sub
+  {
+    print "\n";
+    system "/usr/sbin/stsbl-scmc-reset-masterpassword";
+  };
 
 sub main
 {
@@ -35,7 +38,7 @@ sub main
   {
     case "exit" { exit; }
     case "-" { &main; }
-    else { if (defined $ret) { &$ret; &main; } else { exit; }  }
+    else { if (defined $ret) { my $func = $api{$ret}; &$func if $func; &main; } else { exit; }  }
   }
 }
 

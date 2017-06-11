@@ -8,7 +8,7 @@ Homepage: https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc
 
 Package: stsbl-iserv-scmc
 Architecture: all
-Depends: iserv-portal, stsbl-iserv3-maintenance, stsbl-iserv-perl-lib, zip, unzip
+Depends: iserv-portal, stsbl-iserv3-maintenance, stsbl-iserv-perl-lib, zip, unzip, libswitch-perl
 Description: Zeugnisverwaltungsconnector für IServ (EXPERIMENTELL)
  Dieses Modul ermöglicht eine für den Endanwender nahtlos erscheinene Integration eines Zeugnisverwaltungservers in den IDesk.
  Zeugnisverwalter können Schülerdaten auf den Server hochladen und die Eingaben wieder herunterladen.
