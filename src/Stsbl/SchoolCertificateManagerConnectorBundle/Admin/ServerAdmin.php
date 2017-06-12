@@ -145,4 +145,12 @@ class ServerAdmin extends AbstractAdmin
             _('Certificate Management') => $this->router->generate('admin_scmc')
         );
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function isAuthorized()
+    {
+        return $this->isGranted('PRIV_SCMC_ADMIN');
+    }
 }
