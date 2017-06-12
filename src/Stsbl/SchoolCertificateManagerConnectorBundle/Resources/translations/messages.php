@@ -36,3 +36,7 @@ _('Access the connector to up- and download data');
 // Validator
 _('Choose a valid server type.');
 _('Enter a valid domain.');
+
+// iservcfg
+_('Reset master password');
+_('Exit');

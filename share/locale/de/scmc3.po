@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-12 04:58+0200\n"
+"POT-Creation-Date: 2017-06-12 05:04+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -227,6 +227,14 @@ msgstr "Wählen Sie einen gültigen Server-Typ."
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:38
 msgid "Enter a valid domain."
 msgstr "Geben Sie eine gültige Domain an."
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:41
+msgid "Reset master password"
+msgstr "Masterpasswort zurücksetzen"
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:42
+msgid "Exit"
+msgstr "Beenden"
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:146
 msgid "You have to upload a zip file!"
