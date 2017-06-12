@@ -40,3 +40,11 @@ _('Enter a valid domain.');
 // iservcfg
 _('Reset master password');
 _('Exit');
+
+// Shell
+_('Are you sure that you want to reset the master password? (y/N)');
+_('Deleting master password ...');
+_('Running iservchk scmc ...');
+_('Success, you may now set the master password in the IDesk under ');
+_('Administration > Modules > Certifcate Management');
+_('again.');
