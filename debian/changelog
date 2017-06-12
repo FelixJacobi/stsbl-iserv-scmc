@@ -1,3 +1,44 @@
+stsbl-iserv-scmc (17.06.12-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Fixed l10n.
+  * Added module specific menu.; Improved cs.; Replaced patch with sed script.
+  * Added basic data downloading.
+  * Improved logging.
+  * Fixed login.
+  * MasterPasswordCommand: Use password generation from PasswordUtil.
+  * Added/Improved data cleanup.
+  * Added cron job to expire scmc sessions.
+  * Implemented basic data upload.
+  * Enabled livesearch for group filter in user password management.
+  * Added iservcfg menu to reset master password.
+  * Fixed undefined subroutine in iservcfg script.
+  * Fixed back title.
+  * Added basic server management.
+  * Added missing files.
+  * Added required dependencies.
+  * Added required dependency on libswitch-perl.
+  * Improved iservcfg script.
+  * Updated rules script.
+  * Implemented up- and downloading with real server data.
+  * Updated l10n.
+  * Improved constraint of Server entity.
+  * ServerAdmin: Added authorization check.
+  * Updated l10n for iservchk.
+  * Localized stsbl-scmc-reset-masterpassword.
+  * stsbl-scmc-reset-masterpassword: Fixed answer handling.
+  * Added missing l10n strings.
+
+  iserv: Dieses Modul stellt eine einfach zu bedienende
+    Verbindungsschnittstelle zu dem Zeugnisserver WZeugnis zur Verfügung.
+    Derzeit wird das Hoch- und Herunterladen von Zeugnisdaten unterstützt. Das
+    Modul ist nun auf diesem Server installiert, um es zu verwenden, müssen
+    Master- und Passwort, sowie zu verwendende Server konfiguriert werden.
+    Das Modul wird in den nächsten Wochen noch verbessert und unter anderem
+    mit einem Reverse-Proxy für den Zugriff auf den Zeugnisserver erweitert.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Mon, 12 Jun 2017 05:22:35 +0200
+
 stsbl-iserv-scmc (17.01.02-1) experimental; urgency=low
 
   * Initial release.
