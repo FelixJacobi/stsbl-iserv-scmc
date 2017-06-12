@@ -159,7 +159,7 @@ class ManagementController extends PageController
             '/usr/lib/iserv/scmcadm',
             'putdata',
             $act,
-            1,
+            $data['server']->getId(),
             $filePath
         ], null, [
             'SESSPW' => $sessionPassword,
@@ -228,7 +228,7 @@ class ManagementController extends PageController
             '/usr/lib/iserv/scmcadm',
             'getdata',
             $act,
-            1
+            $data['server']->getId()
         ], null, [
             'SESSPW' => $sessionPassword,
             'IP' => $request->getClientIp(),

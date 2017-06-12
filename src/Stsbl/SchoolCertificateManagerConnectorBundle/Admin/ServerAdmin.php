@@ -97,10 +97,10 @@ class ServerAdmin extends AbstractAdmin
     {
         $listMapper
             ->addIdentifier('host', null, ['label' => _('Host')])
-            ->add('tomcatType', null, ['label' => _('Tomcat version')])
             ->add('webDomain', null, ['label' => _('Domain')])
             ->add('group', null, ['label' => _('Assigned group')])
-            ->add('sshAccount', null, ['label' => _('SSH account')])
+            ->add('sshAccount', null, ['label' => _('SSH account'), 'responsive' => 'desktop'])
+            ->add('tomcatType', null, ['label' => _('Tomcat version'), 'responsive' => 'desktop'])
         ;
     }
     

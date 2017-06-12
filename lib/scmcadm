@@ -22,9 +22,10 @@ $ENV{PATH} = "/usr/sbin:/usr/bin:/sbin:/bin";
 
 if (@ARGV < 3)
 {
-  print STDERR "Usage: scmc_get_data COMMAND ARGS\n\n";
+  print STDERR "Usage: scmcadm COMMAND ARGS\n\n";
   print STDERR "Command getdata: LOGIN SERVERID\n";
-  print STDERR "Command putdata: LOGIN SERVERID ZIPFILE\n\n";
+  print STDERR "Command putdata: LOGIN SERVERID ZIPFILE\n";
+  print STDERR "Command storekey: LOGIN SERVERID KEYFILE\n\n";
   print STDERR "Environment: PASSWORD, IP, IPWD, SCMC_SESSIONTOKEN, SCMC_SESSIONPW\n";
   print STDERR "Return of getdata: Folder path of created zip file on STDOUT.\n";
   exit 1;
@@ -35,12 +36,33 @@ my $login_act = shift @ARGV;
 
 set_ips $login_ip, $login_ip_fwd;
 set_credentials $login_act, $login_pwd;
-sessauth_auth "scmc_get_data";
+sessauth_auth "scmcadm";
+
+sub check_server_id($)
+{
+  my $server_id = shift;
+  $server_id =~ /^([a-z0-9]([a-z0-9-]*[a-z0-9])?)$/i or error "Invalid Server ID!";
+  error "Invalid Server ID!" if not IServ::DB::Do "SELECT 1 FROM scmc_servers WHERE Host = ?", $server_id0;
+}
+
+sub ssh($$$$)
+{
+  my ($server_key, $server_user, $server_ip, $cmd) = @_;
+  system("ssh", "-i", $server_key, 
+    "-o", "StrictHostKeyChecking=no", 
+    "-o", "UserKnownHostsFile=/dev/null",
+    "-o", "ConnectTimeout=30",
+    "-o", "LogLevel=ERROR",
+    "-o", "PreferredAuthentications=publickey",
+    "$server_user\@$server_ip",
+    $cmd) == 0
+      or die "ssh failed: $!";
+
+}
 
 sub check_path($) 
 {
-  my $path = shift;
-  my $realpath = abs_path $path;
+  my $realpath = abs_path shift;
   $realpath =~ /\/tmp\/stsbl-iserv-scmc-(.*)/ or Stsbl::IServ::IO::error "Invalid file path!";
 }
 
@@ -58,18 +80,21 @@ if ($cmd eq "getdata")
   req_priv "scmc_access_frontend";
   req_scmc_auth; 
 
-  # TODO
   my $server_id = shift @ARGV;
-  my $server_ip = "10.5.6.1";
-  my $server_user = "root";
-  my $server_key = "/var/lib/iserv/config/id_rsa";
-
+  if ($server_id =~ /^(.*)$/)
+  {
+    $server_id = $1;
+  }
+  check_server_id $server_id;
+  my ($server_user, $server_type, $server_name, $server_ip) = IServ::DB::SelectRow "SELECT s.SSHAct, s.TomcatType, s.Host, h.IP FROM scmc_servers s JOIN hosts h ON (s.Host = h.Name) WHERE s.Host = ?", $server_id;
+  my $server_key = "/var/lib/stsbl/scmc/keys/$server_id";
+  
   my $dest_dir = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10)."/";
   my $dest_zip = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10).".zip";
 
   # untaint variables (TODO why is this neccessary?!)
   if ($dest_dir =~ /^(.*)$/) {
-  $dest_dir = $1;
+    $dest_dir = $1;
   } else {
     die "Failed to untaint data!";
   }
@@ -111,14 +136,15 @@ if ($cmd eq "getdata")
   req_priv "scmc_access_frontend";
   req_scmc_auth;
 
-  # TODO
   my $server_id = shift @ARGV;
+  if ($server_id =~ /^(.*)$/)
+  { 
+    $server_id = $1;
+  }
+  check_server_id $server_id;
   my $src_zip = shift @ARGV;
-  my $server_ip = "10.5.6.1";
-  my $server_user = "root";
-  my $server_key = "/var/lib/iserv/config/id_rsa";
-  my $server_type = "tomcat7";
-  my $server_name = "Test";
+  my ($server_user, $server_type, $server_name, $server_ip) = IServ::DB::SelectRow "SELECT s.SSHAct, s.TomcatType, s.Host, h.IP FROM scmc_servers s JOIN hosts h ON (s.Host = h.Name) WHERE s.Host = ?", $server_id;
+  my $server_key = "/var/lib/stsbl/scmc/keys/$server_id";
 
   my $dest_dir = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10)."/";
 
@@ -141,8 +167,7 @@ if ($cmd eq "getdata")
   die "Insecure destination!" if -d $dest_dir;
   die "Invalid zip file!" if not -f $src_zip;
 
-  # TODO
-  IServ::SSH::ssh_run $server_ip, "rm -rf /Zeugnisse/Jahrgang*/";
+  ssh $server_key, $server_user, $server_ip, "sh -c \"rm -rfv /Zeugnisse/Jahrgang*/ > /Zeugnisse/delete.log\"";
 
   mkdir $dest_dir, 00700 or die "Failed to create directory $dest_dir: $!";
   chdir $dest_dir or die "Failed to chdir to $dest_dir: $!";
@@ -157,12 +182,34 @@ if ($cmd eq "getdata")
     "$server_user\@$server_ip:/Zeugnisse") == 0
     or die "scp failed: $!";
   
-  # TODO
-  IServ::SSH::ssh_run $server_ip, "find /Zeugnisse/ -type f -exec chmod -v 664 {} \;";
-  IServ::SSH::ssh_run $server_ip, "find /Zeugnisse/ -type d -exec chmod -v 2775 {} \;";
-  IServ::SSH::ssh_run $server_ip, "chgrp -Rv $server_type /Zeugnisse/";
+  ssh $server_key, $server_user, $server_ip, "sh -c \"find /Zeugnisse/ -type f -exec chmod -v 664 {} \\; > /Zeugnisse/chmod-files.log\"";
+  ssh $server_key, $server_user, $server_ip, "sh -c \"find /Zeugnisse/ -type d -exec chmod -v 2775 {} \\; > /Zeugnisse/chmod-dirs.log\"";
+  ssh $server_key, $server_user, $server_ip, "sh -c \"chgrp -Rv $server_type /Zeugnisse/ > /Zeugnisse/chgrp.log\"";
 
   Stsbl::IServ::Log::write_for_module "Zeugnisdaten auf den Server \"$server_name\" hochgeladen", "School Certificate Manager Connector";
+} elsif ($cmd eq "storekey")
+{
+  req_admin;
+  req_priv "scmc_admin";
+
+  my $server_id = shift @ARGV;
+  if ($server_id =~ /^(.*)$/)
+  { 
+    $server_id = $1;
+  }
+  my $key_file = shift @ARGV =~ /^.*$/;
+  if ($key_file =~ /^(.*)$/)
+  {    
+    $key_file = $1;
+  }
+  check_server_id $server_id;
+  check_path $key_file;
+  my $dest = "/var/lib/stsbl/scmc/key/$server_id";
+  system("cp", $key_file, $dest) == 0 or die "Failed to copy key: $!";
+  chown 0, 0, $dest;
+  chmod 00600, $dest;
+  unlink $key_file;
+
 } else 
 {
   Stsbl::IServ::IO::error "Unknown command $cmd!";
