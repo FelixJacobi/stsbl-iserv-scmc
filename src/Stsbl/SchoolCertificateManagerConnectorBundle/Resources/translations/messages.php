@@ -48,3 +48,4 @@ _('Running iservchk scmc ...');
 _('Success, you may now set the master password in the IDesk under ');
 _('Administration > Modules > Certifcate Management');
 _('again.');
+_('Press enter to continue ...');

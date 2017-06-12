@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-12 05:10+0200\n"
+"POT-Creation-Date: 2017-06-12 05:15+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -259,6 +259,10 @@ msgstr "Verwaltung > Module > Zeugnisverwaltung"
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:50
 msgid "again."
 msgstr "erneut setzen."
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:51
+msgid "Press enter to continue ..."
+msgstr "Eingabetaste zum Fortfahren drücken ..."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:146
 msgid "You have to upload a zip file!"
