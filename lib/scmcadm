@@ -42,7 +42,7 @@ sub check_server_id($)
 {
   my $server_id = shift;
   $server_id =~ /^([a-z0-9]([a-z0-9-]*[a-z0-9])?)$/i or error "Invalid Server ID!";
-  error "Invalid Server ID!" if not IServ::DB::Do "SELECT 1 FROM scmc_servers WHERE Host = ?", $server_id0;
+  error "Invalid Server ID!" if not IServ::DB::Do "SELECT 1 FROM scmc_servers WHERE Host = ?", $server_id;
 }
 
 sub ssh($$$$)
@@ -197,7 +197,7 @@ if ($cmd eq "getdata")
   { 
     $server_id = $1;
   }
-  my $key_file = shift @ARGV =~ /^.*$/;
+  my $key_file = shift @ARGV;
   if ($key_file =~ /^(.*)$/)
   {    
     $key_file = $1;
