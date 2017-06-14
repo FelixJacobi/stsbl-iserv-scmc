@@ -1,0 +1,7 @@
+#!/usr/bin/php -n
+<?php
+require_once "/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Util/Password.php";
+
+use Stsbl\SchoolCertificateManagerConnectorBundle\Util\Password;
+
+echo Password::generateHash(getenv("SCMC_SESSIONPW"), getenv("SCMC_SESSIONSALT"));

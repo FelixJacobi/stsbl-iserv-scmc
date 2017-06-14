@@ -200,7 +200,7 @@ class ManagementController extends PageController
             'IP' => $request->getClientIp(),
             'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
             'SCMC_SESSIONTOKEN' => $securityHandler->getToken()->getAttribute('scmc_sessiontoken'),
-            'SCMC_SESSIONPW' => PasswordUtil::generateHash($securityHandler->getToken()->getAttribute('scmc_sessionpassword'), $securityHandler->getToken()->getAttribute('scmc_salt'), 11),
+            'SCMC_SESSIONPW' => $securityHandler->getToken()->getAttribute('scmc_sessionpassword'),
         ]);
         
         if (count($shell->getError()) > 0) {
@@ -212,7 +212,7 @@ class ManagementController extends PageController
         }
         
         // remove data
-        if (is_dir($dir)) {
+        if ($fs->exists($dir)) {
             $fs->remove($dir);
         }
         
@@ -280,7 +280,7 @@ class ManagementController extends PageController
             'IP' => $request->getClientIp(),
             'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
             'SCMC_SESSIONTOKEN' => $securityHandler->getToken()->getAttribute('scmc_sessiontoken'),
-            'SCMC_SESSIONPW' => PasswordUtil::generateHash($securityHandler->getToken()->getAttribute('scmc_sessionpassword'), $securityHandler->getToken()->getAttribute('scmc_salt'), 11),
+            'SCMC_SESSIONPW' => $securityHandler->getToken()->getAttribute('scmc_sessionpassword')
         ]);
         
         $zipPath = null;
