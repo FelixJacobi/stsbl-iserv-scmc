@@ -2,3 +2,7 @@
 
 # expire scmc sessions older than a day
 psql -q -c "DELETE FROM scmc_sessions WHERE created < now() - '24 hours'::INTERVAL" iserv postgres
+
+# remove left over temporary files (up- and download)
+find /tmp -type d -name "stsbl-iserv-scmc-*" -delete
+find /tmp -type f -name "stsbl-iserv-scmc-*.zip" -delete

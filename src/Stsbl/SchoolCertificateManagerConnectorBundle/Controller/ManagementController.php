@@ -211,6 +211,11 @@ class ManagementController extends PageController
             $this->get('iserv.flash')->success(join("\n", $shell->getOutput()));
         }
         
+        // remove data
+        if (is_dir($dir)) {
+            $fs->remove($dir);
+        }
+        
         return $this->redirectToRoute('scmc_upload');
     }
     
@@ -242,6 +247,7 @@ class ManagementController extends PageController
      */
     public function downloadZipAction(Request $request)
     {
+        $fs = new Filesystem();
         $form = $this->getDownloadForm();
         $form->handleRequest($request);
         if (!$form->isValid()) {
@@ -301,7 +307,8 @@ class ManagementController extends PageController
         }
         
         $zipContent = file_get_contents($zipPath);
-        unlink($zipPath);
+        $fs->remove($zipPath);
+        
         $quoted = sprintf('"%s"', addcslashes('zeugnis-download-'.date('d-m-Y-G-i-s').'.zip', '"\\'));
             
         $response = new Response($zipContent);
