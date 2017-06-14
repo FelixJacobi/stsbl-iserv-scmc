@@ -7,6 +7,7 @@ use IServ\AdminBundle\Admin\AbstractAdmin;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Crud\Batch;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /*
@@ -144,6 +145,17 @@ class ServerAdmin extends AbstractAdmin
         return array(
             _('Certificate Management') => $this->router->generate('admin_scmc')
         );
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function loadBatchActions() 
+    {
+        $res = parent::loadBatchActions();
+        $res->add(new Batch\UploadSSHKeyAction($this));
+        
+        return $res;
     }
     
     /**
