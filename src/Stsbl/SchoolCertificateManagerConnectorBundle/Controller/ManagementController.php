@@ -15,6 +15,7 @@ use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Util\Password as PasswordUtil;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,6 +63,32 @@ class ManagementController extends PageController
      * @var \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
      */
     private $menuBuilder;
+    
+    /**
+     * Get year choices for up- and download form
+     * 
+     * @return array
+     */
+    private function getYearChoices()
+    {
+        $ret = [
+            __('Year %s', 5) => 5,
+            __('Year %s', 6) => 6,
+            __('Year %s', 7) => 7,
+            __('Year %s', 8) => 8,
+            __('Year %s', 9) => 9,
+            __('Year %s', 10) => 10,
+            __('Year %s', 11) => 11,
+            __('Year %s', 12) => 12,
+        ];
+        
+        // add year 13 on demand
+        if ($this->get('iserv.config')->get('SCMCSchoolType') === 'stadtteilschule') {
+            $ret[__('Year %s', 13)] = 13;
+        }
+        
+        return $ret;
+    }
 
 
     public function setMenuBuilder()
@@ -153,15 +180,22 @@ class ManagementController extends PageController
         $securityHandler = $this->get('iserv.security_handler');
         $sessionPassword = $securityHandler->getSessionPassword();
         $act = $securityHandler->getToken()->getUser()->getUsername();
-        /* @var $shell \IServ\CoreBundle\Service\Shell */
-        $shell = $this->get('iserv.shell');
-        $shell->exec('sudo', [
+        
+        $args = [
             '/usr/lib/iserv/scmcadm',
             'putdata',
             $act,
             $data['server']->getId(),
             $filePath
-        ], null, [
+        ];
+        // add years on demand
+        if (count($data['years']) > 0) {
+            $args[] = join(',', $data['years']);
+        }
+        
+        /* @var $shell \IServ\CoreBundle\Service\Shell */
+        $shell = $this->get('iserv.shell');
+        $shell->exec('sudo', $args, null, [
             'SESSPW' => $sessionPassword,
             'IP' => $request->getClientIp(),
             'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
@@ -218,18 +252,24 @@ class ManagementController extends PageController
         
         $this->initalizeLogger();
         $this->log(sprintf('Zeugnisdaten vom Server "%s" heruntergeladen', (string)$data['server']->getHost()));
-
+        
         $securityHandler = $this->get('iserv.security_handler');
         $sessionPassword = $securityHandler->getSessionPassword();
         $act = $securityHandler->getToken()->getUser()->getUsername();
         /* @var $shell \IServ\CoreBundle\Service\Shell */
-        $shell = $this->get('iserv.shell');
-        $shell->exec('sudo', [
+        $args = [
             '/usr/lib/iserv/scmcadm',
             'getdata',
             $act,
             $data['server']->getId()
-        ], null, [
+        ];
+        // add years on demand
+        if (count($data['years']) > 0) {
+            $args[] = join(',', $data['years']);
+        }
+        
+        $shell = $this->get('iserv.shell');
+        $shell->exec('sudo', $args, null, [
             'SESSPW' => $sessionPassword,
             'IP' => $request->getClientIp(),
             'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
@@ -296,6 +336,15 @@ class ManagementController extends PageController
                     'help_text' => _('The zip file with the class data. It must contain sub folders with the class lists sorted by age group (Jahrgang5, Jahrgang6, ...). For more information please refer the WZeugnis Documentation.')
                     ]
             ])
+            ->add('years', ChoiceType::class, [
+                'label' => _('Limit upload to these years'),
+                'multiple' => true,
+                'choices' => $this->getYearChoices(),
+                'attr' => [
+                    'class' => 'select2',
+                    'help_text' => _('You can limit the upload to particular years. Only the course lists of the selected years will deleted and replaced on the server.'),
+                ]
+            ])
             ->add('confirm', BooleanType::class, [
                 'label' => _('Confirmation'),
                 'constraints' => [new IsTrue(['message' => _('You need to confirm that a new upload will delete all existing data on the server.')])],
@@ -331,6 +380,15 @@ class ManagementController extends PageController
                 'attr' => [
                     'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
                     ]
+            ])
+            ->add('years', ChoiceType::class, [
+                'label' => _('Limit download to these years'),
+                'multiple' => true,
+                'choices' => $this->getYearChoices(),
+                'attr' => [
+                    'class' => 'select2',
+                    'help_text' => _('You can limit the download to particular years. Only the selected years will be included in the Zip file.'),
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => _('Download data'), 

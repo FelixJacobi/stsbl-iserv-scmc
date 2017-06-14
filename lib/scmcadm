@@ -8,7 +8,6 @@ use IServ::DB;
 use IServ::SSH;
 use Stsbl::IServ::IO;
 use Stsbl::IServ::Log;
-#use Stsbl::IServ::SCP;
 use Stsbl::IServ::Security;
 
 my $m_ip = qr/[\d.:]{1,64}/;
@@ -20,11 +19,14 @@ my ($scmc_token, $scmc_sessionpw) = ($ENV{SCMC_SESSIONTOKEN}, $ENV{SCMC_SESSIONP
 undef %ENV;
 $ENV{PATH} = "/usr/sbin:/usr/bin:/sbin:/bin";
 
+my $has_years = 0;
+$has_years = 1 if ($ARGV[0] eq "getdata" and @ARGV >= 4) or ($ARGV[0] eq "putdata" and @ARGV >= 5);
+
 if (@ARGV < 3)
 {
   print STDERR "Usage: scmcadm COMMAND ARGS\n\n";
-  print STDERR "Command getdata: LOGIN SERVERID\n";
-  print STDERR "Command putdata: LOGIN SERVERID ZIPFILE\n";
+  print STDERR "Command getdata: LOGIN SERVERID [YEARS]\n";
+  print STDERR "Command putdata: LOGIN SERVERID ZIPFILE [YEARS]\n";
   print STDERR "Command storekey: LOGIN SERVERID KEYFILE\n\n";
   print STDERR "Environment: PASSWORD, IP, IPWD, SCMC_SESSIONTOKEN, SCMC_SESSIONPW\n";
   print STDERR "Return of getdata: Folder path of created zip file on STDOUT.\n";
@@ -57,13 +59,34 @@ sub ssh($$$$)
     "$server_user\@$server_ip",
     $cmd) == 0
       or die "ssh failed: $!";
+}
 
+sub scp($$$)
+{
+  my ($server_key, $src, $dest) = @_;
+  system("scp", "-i", $server_key, "-o",
+    "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null",
+    "-o", "ConnectTimeout=30",
+    "-o", "LogLevel=ERROR",
+    "-o", "PreferredAuthentications=publickey",
+    "-r",
+    $src,
+    $dest) == 0
+      or die "scp failed: $!";
 }
 
 sub check_path($) 
 {
   my $realpath = abs_path shift;
   $realpath =~ /\/tmp\/stsbl-iserv-scmc-(.*)/ or Stsbl::IServ::IO::error "Invalid file path!";
+}
+
+sub validate_years(@)
+{
+  foreach my $year (@_)
+  {
+    Stsbl::IServ::IO::error "Year $year invalid!" if not $year =~ /([0-9]|[1][0-3])/;
+  }
 }
 
 sub req_scmc_auth
@@ -86,6 +109,14 @@ if ($cmd eq "getdata")
     $server_id = $1;
   }
   check_server_id $server_id;
+
+  my @years;
+  if ($has_years)
+  {
+    @years = split /,/, shift(@ARGV);
+    validate_years @years;
+  }
+
   my ($server_user, $server_type, $server_name, $server_ip) = IServ::DB::SelectRow "SELECT s.SSHAct, s.TomcatType, s.Host, h.IP FROM scmc_servers s JOIN hosts h ON (s.Host = h.Name) WHERE s.Host = ?", $server_id;
   my $server_key = "/var/lib/stsbl/scmc/keys/$server_id";
   
@@ -109,17 +140,18 @@ if ($cmd eq "getdata")
   die "Insecure zip path!" if -f $dest_zip;
 
   mkdir $dest_dir, 00700 or die "Failed to create directory $dest_dir: $!";
-  # Net::SCP::Expect cannot handle directories :/
-  #Stsbl::IServ::SCP::scp $server_ip, ":/Zeugnisse", $dest_dir;
-  system("scp", "-i", $server_key, "-o", 
-    "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null",
-    "-o", "ConnectTimeout=30",
-    "-o", "LogLevel=ERROR",
-    "-o", "PreferredAuthentications=publickey",
-    "-r",
-    "$server_user\@$server_ip:/Zeugnisse/Jahrgang*/",
-    $dest_dir) == 0
-    or die "scp failed: $!";
+
+  if ($has_years)
+  {
+    foreach my $year (@years)
+    {
+      $year =~ /^(.*)$/;
+      scp $server_key, "$server_user\@$server_ip:/Zeugnisse/Jahrgang$1/", $dest_dir;
+    }
+  } else 
+  {
+    scp $server_key, "$server_user\@$server_ip:/Zeugnisse/Jahrgang*/", $dest_dir;
+  }
 
   chdir $dest_dir or die "Failed to chdir to $dest_dir: $!";
   system("zip", "-q", "-r", $dest_zip, "./") == 0 or
@@ -142,7 +174,16 @@ if ($cmd eq "getdata")
     $server_id = $1;
   }
   check_server_id $server_id;
+
   my $src_zip = shift @ARGV;
+
+  my @years;
+  if ($has_years)
+  {
+    @years = split /,/, shift(@ARGV);
+    validate_years @years;
+  }
+
   my ($server_user, $server_type, $server_name, $server_ip) = IServ::DB::SelectRow "SELECT s.SSHAct, s.TomcatType, s.Host, h.IP FROM scmc_servers s JOIN hosts h ON (s.Host = h.Name) WHERE s.Host = ?", $server_id;
   my $server_key = "/var/lib/stsbl/scmc/keys/$server_id";
 
@@ -167,20 +208,33 @@ if ($cmd eq "getdata")
   die "Insecure destination!" if -d $dest_dir;
   die "Invalid zip file!" if not -f $src_zip;
 
-  ssh $server_key, $server_user, $server_ip, "sh -c \"rm -rfv /Zeugnisse/Jahrgang*/ > /Zeugnisse/delete.log\"";
+  if ($has_years)
+  {
+    foreach my $year (@years)
+    {
+      $year =~ /^(.*)$/;
+      ssh $server_key, $server_user, $server_ip, "sh -c \"rm -rfv /Zeugnisse/Jahrgang$1/ > /Zeugnisse/delete.log\"";
+    }
+  } else
+  {
+    ssh $server_key, $server_user, $server_ip, "sh -c \"rm -rfv /Zeugnisse/Jahrgang*/ > /Zeugnisse/delete.log\"";
+  }
 
   mkdir $dest_dir, 00700 or die "Failed to create directory $dest_dir: $!";
   chdir $dest_dir or die "Failed to chdir to $dest_dir: $!";
   system("unzip", "-q", $src_zip) == 0 or die "Failed to unzip archive $src_zip: $!"; 
-  system("scp", "-i", $server_key, "-o",
-    "StrictHostKeyChecking=no", "-o", "UserKnownHostsFile=/dev/null",
-    "-o", "ConnectTimeout=30",
-    "-o", "LogLevel=ERROR",
-    "-o", "PreferredAuthentications=publickey",
-    "-r",
-    "./",
-    "$server_user\@$server_ip:/Zeugnisse") == 0
-    or die "scp failed: $!";
+  
+  if ($has_years)
+  {
+    foreach my $year (@years)
+    {
+      $year =~ /^(.*)$/;
+      scp $server_key, "./Jahrgang$1", "$server_user\@$server_ip:/Zeugnisse/";
+    }
+  } else
+  {
+    scp $server_key, "./", "$server_user\@$server_ip:/Zeugnisse/";
+  }
   
   ssh $server_key, $server_user, $server_ip, "sh -c \"find /Zeugnisse/ -type f -exec chmod -v 664 {} \\; > /Zeugnisse/chmod-files.log\"";
   ssh $server_key, $server_user, $server_ip, "sh -c \"find /Zeugnisse/ -type d -exec chmod -v 2775 {} \\; > /Zeugnisse/chmod-dirs.log\"";
@@ -199,13 +253,13 @@ if ($cmd eq "getdata")
   }
   my $key_file = shift @ARGV;
   if ($key_file =~ /^(.*)$/)
-  {    
+  { 
     $key_file = $1;
   }
   check_server_id $server_id;
   check_path $key_file;
   my $dest = "/var/lib/stsbl/scmc/key/$server_id";
-  system("cp", $key_file, $dest) == 0 or die "Failed to copy key: $!";
+  system("cp", "-f", $key_file, $dest) == 0 or die "Failed to copy key: $!";
   chown 0, 0, $dest;
   chmod 00600, $dest;
   unlink $key_file;
