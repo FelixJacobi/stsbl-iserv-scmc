@@ -51,7 +51,7 @@ class UserPasswordAdmin extends AbstractAdmin
         $this->title = _('User passwords');
         $this->itemTitle = _('User');
         $this->id = 'scmc_userpassword';
-        $this->routesPrefix = 'admin/scmc/userpasswords/';
+        $this->routesPrefix = 'admin/scmc/userpassword';
     }
     
     /**
@@ -131,7 +131,7 @@ class UserPasswordAdmin extends AbstractAdmin
     public function getRoutePattern($action, $id, $entityBased = true)
     {
         if ('index' === $action) {
-            return sprintf('/%s', $this->routesPrefix);
+            return sprintf('/%s', $this->routesPrefix.'s');
         } else if ('show' === $action) {
             return sprintf('/%s/%s/%s', $this->routesPrefix, $action, '{id}');
         } else {

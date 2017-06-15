@@ -221,7 +221,7 @@ class AdminController extends PageController
      * @param Request $request
      * @param string $user
      * @return array
-     * @Route("/userpasswords/set/{user}", name="admin_scmc_set_user_password")
+     * @Route("/userpassword/set/{user}", name="admin_scmc_set_user_password")
      * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:setuserpassword.html.twig")
      */
     public function setUserPasswordAction(Request $request, $user)
