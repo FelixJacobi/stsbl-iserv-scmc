@@ -113,7 +113,28 @@ class ManagementController extends PageController
         
         $this->setMenuBuilder();
         $menu = $this->menuBuilder->createSCMCMenu();
-        return ['menu' => $menu];
+        /* @var $qb \Doctrine\ORM\QueryBuilder */
+        $qb = $this
+            ->getDoctrine()
+            ->getRepository('IServCoreBundle:Log')
+            ->createQueryBuilder('l')
+        ;
+        
+        $qb
+            ->select('l')
+            ->where($qb->expr()->eq('l.module', ':module'))
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->like('l.text', ':pattern1'),
+                $qb->expr()->like('l.text', ':pattern2'))
+            )
+            ->orderBy('l.date', 'DESC')
+            ->setMaxResults(10)
+            ->setParameter('module', 'School Certificate Manager Connector')
+            ->setParameter('pattern1', 'Zeugnisdaten vom Server "%" heruntergeladen')
+            ->setParameter('pattern2', 'Zeugnisdaten auf den Server "%" hochgeladen')
+        ;
+        
+        return ['menu' => $menu, 'lastActions' => $qb->getQuery()->getResult()];
     }
     
     /**

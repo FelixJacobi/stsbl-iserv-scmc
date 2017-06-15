@@ -3,6 +3,57 @@
 
 {% block page_title %}{{ _('Start Page') }} - {{ _('Certificate Management') }}{% endblock %}
 
+{% block content %}
+    <h1>{{ _('Start Page') }}</h1>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ icon('fugue-drive-download') }}{{ _('Data Download') }}</h3>
+        </div>
+        <div class="panel-body">
+            {{ _('Download entered certificate data from the server.') }}
+        </div>
+        <div class="panel-footer">
+            <a class="btn btn-primary" href="{{ path('scmc_download') }}"><span class="glyphicon glyphicon-arrow-right"></span>{{ _('Download certifcate data') }}</a></p>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ icon('fugue-drive-upload') }}{{ _('Data Upload') }}</h3>
+        </div>
+        <div class="panel-body">
+            {{ _('Upload new class and course lists to the server.') }}
+        </div>
+        <div class="panel-footer">
+            <a class="btn btn-primary" href="{{ path('scmc_upload') }}"><span class="glyphicon glyphicon-arrow-right"></span>{{ _('Upload certifcate data') }}</a></p>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ icon('legacy-log') }}{{ _('Last actions') }}</h3>
+        </div>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ _('Name') }}</th>
+                    <th>{{ _('Date') }}</th>
+                    <th>{{ _('Action') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for action in lastActions %}
+                    <tr>
+                        <td>{{ action.name }}</td>
+                        <td>{{ action.date|ldatetime }}</td>
+                        <td>{{ action.text }}</td>
+                    </tr>
+                {% endfor %}
+            </tdbody>
+        </table>
+        </div>
+    </div>
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     {% if app.environment != 'prod' %}
