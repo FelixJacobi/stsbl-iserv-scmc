@@ -74,15 +74,15 @@ class MenuBuilder extends AbstractMenuBuilder
                 ->setExtra('icon_style', 'fugue')
         ;
         
-        $menu
-            ->addChild('scmc_menu_satus', [
+        /*$menu
+            ->addChild('scmc_menu_status', [
                 'route' => 'scmc_status',
                 'label' => _('Server Status')
             ])
                 ->setExtra('order', 40)
                 ->setExtra('icon', 'status')
                 ->setExtra('icon_style', 'fugue')
-        ;
+        ;*/
         
         $menu
             ->addChild('scmc_menu_logout', [
