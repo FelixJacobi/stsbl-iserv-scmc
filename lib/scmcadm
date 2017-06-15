@@ -94,7 +94,9 @@ sub req_scmc_auth
   local %ENV;
   $ENV{SCMC_SESSIONPW} = $scmc_sessionpw;
   ($ENV{SCMC_SESSIONSALT}) = IServ::DB::SelectRow "SELECT sessionpwsalt FROM scmc_sessions WHERE SessionToken = ? AND Act = ? LIMIT 1", $scmc_token, $login_act;
-  my $scmc_passwordhash = `/usr/lib/iserv/scmc_php_hash`;
+  # get password hash via php subcommand
+  # TODO reimplement hashing in perl?!
+  my $scmc_passwordhash = qx(/usr/lib/iserv/scmc_php_hash);
   IServ::DB::Do "SELECT 1 FROM scmc_sessions WHERE SessionToken = ? AND SessionPW = ? AND Act = ? LIMIT 1", $scmc_token, $scmc_passwordhash, $login_act 
     or Stsbl::IServ::IO::error "Invalid scmc session data!";
 }
