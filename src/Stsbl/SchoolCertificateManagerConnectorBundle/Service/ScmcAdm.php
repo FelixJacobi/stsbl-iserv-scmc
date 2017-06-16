@@ -159,8 +159,8 @@ class ScmcAdm
                 'SESSPW' => $this->securityHandler->getSessionPassword(),
                 'IP' => $this->request->getClientIp(),
                 'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
-                'SCMC_SESSIONTOKEN' =>  $this->securityHandler->getToken()->getAttribute('scmc_sessiontoken'),
-                'SCMC_SESSIONPW' =>  $this->securityHandler->getToken()->getAttribute('scmc_sessionpassword'),
+                'SCMC_SESSIONTOKEN' => $this->securityHandler->getToken()->hasAttribute('scmc_sessiontoken') ? $this->securityHandler->getToken()->getAttribute('scmc_sessiontoken') : null,
+                'SCMC_SESSIONPW' => $this->securityHandler->getToken()->hasAttribute('scmc_sessionpassword') ? $this->securityHandler->getToken()->getAttribute('scmc_sessionpassword') : null,
             ],
             $filterOutputCallBack);
     }
