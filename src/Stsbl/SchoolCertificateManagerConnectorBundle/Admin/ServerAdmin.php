@@ -289,6 +289,7 @@ class ServerAdmin extends AbstractAdmin
     {
         $res = parent::loadBatchActions();
         $res->add(new Batch\UploadSSHKeyAction($this));
+        $res->add(new Batch\DeleteSSHKeyAction($this));
         
         return $res;
     }
