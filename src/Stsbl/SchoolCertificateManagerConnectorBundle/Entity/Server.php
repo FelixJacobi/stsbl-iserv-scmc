@@ -85,7 +85,7 @@ class Server implements CrudInterface
 
     /**
      * @ORM\Column(name="sshAct", type="string", nullable=false)
-     * @Assert\Regex("/^[a-z][a-z0-9._-]*$/")
+     * @Assert\Regex("/^[a-z][a-z0-9._-]*$/", message = "Enter a valid Unix account name.")
      */
     private $sshAccount;
     
