@@ -2,8 +2,12 @@
 // src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Admin;
 
+use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
 use Doctrine\ORM\EntityRepository;
 use IServ\AdminBundle\Admin\AbstractAdmin;
+use IServ\CoreBundle\Service\Logger;
+use IServ\CrudBundle\Entity\CrudInterface;
+use IServ\CrudBundle\Entity\FlashMessageBag;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
@@ -49,6 +53,30 @@ class ServerAdmin extends AbstractAdmin
     private $scmcAdm;
 
     /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * @var FlashMessage
+     */
+    private $flashMessage;
+
+    /**
+     * Feeds iserv.flash with messages from FlashMessageBag entity
+     *
+     * @param FlashMessageBag $bag
+     */
+    private function createFlashMessagesFromBag(FlashMessageBag $bag)
+    {
+        foreach ($bag->getMessages() as $types) {
+            foreach ($types as $message) {
+                call_user_func_array([$this->flashMessage, $message->getType()], [$message->getMessage()]);
+            }
+        }
+    }
+
+    /**
      * Inject ScmcAdm
      *
      * @param ScmcAdm $scmcAdm
@@ -59,6 +87,26 @@ class ServerAdmin extends AbstractAdmin
     }
 
     /**
+     * Inject Logger
+     *
+     * @param Logger $logger
+     */
+    public function setLogger(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
+     * Inject FlashMessage
+     *
+     * @param FlashMessage $flashMessage
+     */
+    public function setFlashMessage(FlashMessage $flashMessage)
+    {
+        $this->flashMessage = $flashMessage;
+    }
+
+    /**
      * Get ScmcAdm
      *
      * @return ScmcAdm|null
@@ -66,6 +114,26 @@ class ServerAdmin extends AbstractAdmin
     public function getScmcAdm()
     {
         return $this->scmcAdm;
+    }
+
+    /**
+     * Get Logger
+     *
+     * @return Logger|null
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
+     * Get FlashMessage
+     *
+     * @return FlashMessage|null
+     */
+    public function getFlashMessage()
+    {
+        return $this->flashMessage;
     }
 
     /**
@@ -88,6 +156,8 @@ class ServerAdmin extends AbstractAdmin
             ->add('host', null, [
                 'label' => _('Host'),
                 'query_builder' => function (EntityRepository $er) {
+                    $route = $this->getCurrentRoute();
+
                     $subQb = $er->createQueryBuilder('s');
             
                     $subQb
@@ -97,10 +167,20 @@ class ServerAdmin extends AbstractAdmin
                         ->where('s.host = h.name')
                     ;
                 
-                    return $er->createQueryBuilder('h')
-                        ->where($subQb->expr()->not($subQb->expr()->exists($subQb)))
+                    $qb = $er->createQueryBuilder('h');
+
+                    // only remove already used hosts on server adding
+                    if ($route === 'admin_scmc_server_add') {
+                        $qb
+                            ->where($subQb->expr()->not($subQb->expr()->exists($subQb)))
+                        ;
+                    }
+
+                    $qb
                         ->orderBy('h.name', 'ASC')
                     ;
+
+                    return $qb;
                 }
             ])
             ->add('tomcatType', ChoiceType::class, [
@@ -172,7 +252,36 @@ class ServerAdmin extends AbstractAdmin
             _('Certificate Management') => $this->router->generate('admin_scmc')
         );
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postPersist(CrudInterface $object)
+    {
+        $this->logger->writeForModule(sprintf('Zeugnisserver "%s" hinzugefügt', (string)$object->getHost()), 'School Certificate Manager Connector');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postUpdate(CrudInterface $object, array $previousData = null)
+    {
+        if ((string)$object->getHost() != $previousData['host']) {
+            $this->logger->writeForModule(sprintf('Zeugnisserver "%s" verändert und umbenannt nach "%s"', $previousData['host'], (string)$object->getHost()), 'School Certificate Manager Connector');
+        } else {
+            $this->logger->writeForModule(sprintf('Zeugnisserver "%s" verändert', (string)$object->getHost()), 'School Certificate Manager Connector');
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function postRemove(CrudInterface $object)
+    {
+        $this->logger->writeForModule(sprintf('Zeugnisserver "%s" gelöscht', (string)$object->getHost()), 'School Certificate Manager Connector');
+        $this->createFlashMessagesFromBag($this->getScmcAdm()->deleteKey($object));
+    }
+
     /**
      * {@inheritdoc}
      */

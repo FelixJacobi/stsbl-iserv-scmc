@@ -27,7 +27,8 @@ if (@ARGV < 3)
   print STDERR "Usage: scmcadm COMMAND ARGS\n\n";
   print STDERR "Command getdata: LOGIN SERVERID [YEARS]\n";
   print STDERR "Command putdata: LOGIN SERVERID ZIPFILE [YEARS]\n";
-  print STDERR "Command storekey: LOGIN SERVERID KEYFILE\n\n";
+  print STDERR "Command storekey: LOGIN SERVERID KEYFILE\n";
+  print STDERR "Command deletekey: LOGIN SERVERID\n\n";
   print STDERR "Environment: PASSWORD, IP, IPWD, SCMC_SESSIONTOKEN, SCMC_SESSIONPW\n";
   print STDERR "Return of getdata: Folder path of created zip file on STDOUT.\n";
   exit 1;
@@ -277,6 +278,21 @@ if ($cmd eq "getdata")
   system("cp", "-f", $key_file, $dest) == 0 or warn "Failed to copy key: $!";
   unlink $key_file;
 
+} elsif ($cmd eq "deletekey") {
+  req_admin;
+  req_priv "scmc_admin";
+
+  my $server_id = shift @ARGV;
+  if ($server_id =~ /^(.*)$/)
+  {
+    $server_id = $1;
+  }
+
+  # no check_server_id checking here, as the host could already deleted from the database
+  Stsbl::IServ::IO::error "Invalid Server ID!" if not $server_id =~ /^([a-z0-9]([a-z0-9-]*[a-z0-9])?)$/i;
+
+  my $key = "/var/lib/stsbl/scmc/keys/$server_id";
+  unlink $key if -f $key;
 } else 
 {
   Stsbl::IServ::IO::error "Unknown command $cmd!";

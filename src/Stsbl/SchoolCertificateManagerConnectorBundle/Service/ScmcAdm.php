@@ -48,6 +48,7 @@ class ScmcAdm
     const SCMCADM_PUTDATA = 'putdata';
     const SCMCADM_GETDATA = 'getdata';
     const SCMCADM_STOREKEY = 'storekey';
+    const SCMCADM_DELETEKEY = 'deletekey';
     
     /**
      * @var Filesystem
@@ -152,7 +153,7 @@ class ScmcAdm
      */
     public function scmcAdm($command, array $args, callable $filterOutputCallBack = null)
     {
-        array_unshift($args, self::SCMCADM, $command);
+        array_unshift($args, self::SCMCADM, $command, $this->securityHandler->getUser()->getUsername());
         
         return $this->shellMsg('sudo', $args, null, [
                 'SESSPW' => $this->securityHandler->getSessionPassword(),
@@ -228,7 +229,7 @@ class ScmcAdm
         $filePath = $dir.$file->getClientOriginalName();
         $file->move($dir, $file->getClientOriginalName());
         
-        $args = [$this->securityHandler->getUser()->getUsername(), $server->getId(), $filePath];
+        $args = [$server->getId(), $filePath];
         // add years on demand
         if (count($years) > 0) {
             $args[] = join(',', $years);
@@ -256,7 +257,7 @@ class ScmcAdm
         $filePath = $dir.'key';
         $file->move($dir, 'key');
 
-        $args = [$this->securityHandler->getUser()->getUsername(), $server->getId(), $filePath];
+        $args = [$server->getId(), $filePath];
 
         $ret = $this->scmcAdm(self::SCMCADM_STOREKEY, $args);
 
@@ -267,4 +268,15 @@ class ScmcAdm
         return $ret;
     }
 
+    /**
+     * Calls deletekey sub command
+     *
+     * @param Server $server
+     * @return FlashMessageBag
+     */
+    public function deleteKey(Server $server)
+    {
+        $args = [$server->getId()];
+        return $this->scmcAdm(self::SCMCADM_DELETEKEY, $args);
+    }
 }

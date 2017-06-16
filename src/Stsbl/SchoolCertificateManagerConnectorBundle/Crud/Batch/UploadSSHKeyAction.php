@@ -114,6 +114,7 @@ class UploadSSHKeyAction extends AbstractBatchAction implements FormExtendingBat
         $servers = $data['multi'];
         foreach ($servers as $server) {
             $bag->addAll($this->crud->getScmcAdm()->storeKey($server, $data['key']));
+            $this->crud->getLogger()->writeForModule(sprintf('Neuen SSH-Schlüssel für Zeugnisserver "%s" hochgeladen', (string)$server->getHost()), 'School Certificate Manager Connector');
             $bag->addMessage('success', __('Uploaded new key for %s.', (string)$server->getHost()));
         }
 
