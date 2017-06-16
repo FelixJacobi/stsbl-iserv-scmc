@@ -13,7 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Util\Password as PasswordUtil;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
