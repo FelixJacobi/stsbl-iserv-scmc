@@ -42,6 +42,9 @@ _('Enter a valid Unix account name.');
 _('Reset master password');
 _('Exit');
 
+_('School Type');
+_('Module: School Certificate Manager Connector');
+
 // Shell
 _('Are you sure that you want to reset the master password? (y/N)');
 _('Deleting master password ...');

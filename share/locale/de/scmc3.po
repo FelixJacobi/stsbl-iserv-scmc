@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-17 01:22+0200\n"
+"POT-Creation-Date: 2017-06-17 01:48+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -23,8 +23,8 @@ msgstr "Anmelden"
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:129
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:781
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1170
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1362
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1559
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1358
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1550
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/EventListener/MenuListener.php:49
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/EventListener/MenuListener.php:72
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:84
@@ -205,8 +205,7 @@ msgid "Do you really want to delete the user password of %s?"
 msgstr "Möchten Sie das Benutzerpasswort von %s wirklich löschen?"
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1168
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1190
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1586
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1574
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:194
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:60
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:207
@@ -214,9 +213,8 @@ msgstr "Möchten Sie das Benutzerpasswort von %s wirklich löschen?"
 msgid "Data Download"
 msgstr "Daten-Download"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1360
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1382
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1609
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1356
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1597
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:103
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:70
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:164
@@ -224,7 +222,7 @@ msgstr "Daten-Download"
 msgid "Data Upload"
 msgstr "Daten-Upload"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1386
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1378
 msgid ""
 "Before you upload new class data, make sure that you have downloaded a "
 "security copy of the results. All existing data in the Jahrgang* folder "
@@ -236,8 +234,7 @@ msgstr ""
 "Jahrgang*-Ordnern innerhalb des /Zeugnisse/-Ordners auf dem "
 "Zeugnisverwaltungsserver werden gelöscht."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1557
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1579
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1548
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:85
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:51
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:125
@@ -245,36 +242,36 @@ msgstr ""
 msgid "Start Page"
 msgstr "Startseite"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1592
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1580
 msgid "Download entered certificate data from the server."
 msgstr "Eingebene Zeugnisdaten vom Server herunterladen."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1600
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1588
 msgid "Download certifcate data"
 msgstr "Zeugnisdaten und herunterladen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1615
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1603
 msgid "Upload new class and course lists to the server."
 msgstr "Neue Klassen- und Kurslisten auf den Server hochladen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1623
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1611
 msgid "Upload certifcate data"
 msgstr "Zeugnisdaten hochladen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1632
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1620
 msgid "Last actions"
 msgstr "Letzte Aktionen"
 
 # sprintf
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1641
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1629
 msgid "Name"
 msgstr "Name"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1645
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1633
 msgid "Date"
 msgstr "Datum"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1649
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1637
 msgid "Action"
 msgstr "Aktion"
 
@@ -319,37 +316,37 @@ msgid "Exit"
 msgstr "Beenden"
 
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:45
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:46
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:49
 msgid "Are you sure that you want to reset the master password? (y/N)"
 msgstr "Möchten Sie das Masterpasswort wirklich zurücksetzen? (y/N)"
 
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:46
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:47
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:50
 msgid "Deleting master password ..."
 msgstr "Lösche Masterpasswort ..."
 
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:47
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:48
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:51
 msgid "Running iservchk scmc ..."
 msgstr "Führe iservchk scmc aus ..."
 
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:48
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:49
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:52
 msgid "Success, you may now set the master password in the IDesk under "
 msgstr "Erfolg, Sie sollten das Masterpasswort jetzt im IDesk unter "
 
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:49
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:50
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:53
 msgid "Administration > Modules > Certifcate Management"
 msgstr "Verwaltung > Module > Zeugnisverwaltung"
 
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:50
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:51
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:54
 msgid "again."
 msgstr "erneut setzen."
 
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:51
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:52
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:55
 msgid "Press enter to continue ..."
 msgstr "Eingabetaste zum Fortfahren drücken ..."
 
@@ -673,6 +670,14 @@ msgstr "SSH-Konto"
 msgid "Enter a valid Unix account name."
 msgstr "Geben Sie einen gültigen Unix-Kontonamen an."
 
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:45
+msgid "School Type"
+msgstr "Schultyp"
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:46
+msgid "Module: School Certificate Manager Connector"
+msgstr "Modul: Zeugnisverwaltungsconnector"
+
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:88
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:89
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:90
@@ -695,8 +700,9 @@ msgid ""
 "You can limit the upload to particular years. Only the course lists of the "
 "selected years will deleted and replaced on the server."
 msgstr ""
-"Sie können den Upload auf bestimmte Jahrgänge beschränken. Nur die Kurslisten der "
-"gewählten Jahrgänge werden auf dem Server gelöscht und ersetzt."
+"Sie können den Upload auf bestimmte Jahrgänge beschränken. Nur die "
+"Kurslisten der gewählten Jahrgänge werden auf dem Server gelöscht und "
+"ersetzt."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:319
 msgid "Limit download to these years"
@@ -707,8 +713,8 @@ msgid ""
 "You can limit the download to particular years. Only the selected years will "
 "be included in the Zip file."
 msgstr ""
-"Sie können den Download auf einzelne Jahrgänge beschränken. Nur die ausgewählten "
-"Jahrgänge werden in der ZIP-Datei enthalten sein."
+"Sie können den Download auf einzelne Jahrgänge beschränken. Nur die "
+"ausgewählten Jahrgänge werden in der ZIP-Datei enthalten sein."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Validator/Constraints/NotPortalServerDomain.php:46
 msgid ""
@@ -721,7 +727,8 @@ msgstr ""
 msgid ""
 "The entered domain must not be equivalent with the host name of the portal "
 "server."
-msgstr "Die eingebene Domain darf nicht dem Hostnamen des Portalservers entsprechen."
+msgstr ""
+"Die eingebene Domain darf nicht dem Hostnamen des Portalservers entsprechen."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Validator/Constraints/NotPortalServerDomain.php:66
 msgid "The entered domain must not use the WWW group homepage."
@@ -734,8 +741,8 @@ msgstr "Die eingebene Domain darf keine der Alias-Domains sein."
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:161
 msgid "Select the host which should be the target for up- and downloading."
 msgstr ""
-"Wählen Sie das Gerät, auf das die Daten hoch- und heruntergeladen "
-"werden soll."
+"Wählen Sie das Gerät, auf das die Daten hoch- und heruntergeladen werden "
+"soll."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:194
 msgid ""
@@ -749,8 +756,8 @@ msgid ""
 "The domain, under which the reverse proxy is reachable. Must be different "
 "from the main domain or an alias domain of the portal server."
 msgstr ""
-"Die Domain, unter der der Reverse-Proxy erreichbar ist. Diese muss sich "
-"von der Haupt-Domain oder einer Alias-Domain des Portalservers unterscheiden."
+"Die Domain, unter der der Reverse-Proxy erreichbar ist. Diese muss sich von "
+"der Haupt-Domain oder einer Alias-Domain des Portalservers unterscheiden."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:211
 msgid ""
@@ -758,9 +765,9 @@ msgid ""
 "privilege \"Show link to certificate management\". You can limit the "
 "visibility of the link to one group."
 msgstr ""
-"Standardmäßig wird ein Link auf den Reverse-Proxy allen Benutzern mit "
-"dem Recht \"Link zur Zeugnisverwaltung anzeigen\" angezeigt. Sie können "
-"die Sichtbarkeit des Links auf eine Gruppe beschränken."
+"Standardmäßig wird ein Link auf den Reverse-Proxy allen Benutzern mit dem "
+"Recht \"Link zur Zeugnisverwaltung anzeigen\" angezeigt. Sie können die "
+"Sichtbarkeit des Links auf eine Gruppe beschränken."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:217
 msgid ""
@@ -769,8 +776,9 @@ msgid ""
 "must upload a SSH key for this user in the server overview."
 msgstr ""
 "Das Konto, welches genutzt wird, um die Daten hoch- und herunterzuladen. Das "
-"Konto muss Mitglied der tomcat6/7/8-Gruppe auf dem Zeugnisverwaltungsserver sein. "
-"Sie müssen eine SSH-Schlüssel für diesen Benutzer in der Server-Übersicht hochladen."
+"Konto muss Mitglied der tomcat6/7/8-Gruppe auf dem Zeugnisverwaltungsserver "
+"sein. Sie müssen eine SSH-Schlüssel für diesen Benutzer in der Server-"
+"Übersicht hochladen."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Crud/Batch/UploadSSHKeyAction.php:70
 msgid "SSH key"
