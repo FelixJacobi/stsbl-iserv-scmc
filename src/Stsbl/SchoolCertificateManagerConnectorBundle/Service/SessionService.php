@@ -81,7 +81,7 @@ class SessionService
             $authentificated = $this->securityHandler->getToken()->getAttribute('scmc_authentificated');
         } else {
             $authentificated = false;
-            $this->securityHandler->getToken()->setAttribute('scmc_authentificated', null);
+            $this->securityHandler->getToken()->setAttribute('scmc_authentificated', false);
         }
         
         return $authentificated;

@@ -122,7 +122,7 @@ class SessionCommand extends ContainerAwareCommand
         
         $privilegeDB = $this->getIServDBConnection();
         $statement = $privilegeDB->prepare("SELECT count(*) FROM users_priv WHERE Act = :act AND privilege = 'scmc_access_frontend'");
-        $statement->bindParam(':act', $act, \PDO::PARAM_STR);
+        $statement->bindParam(':act', $act, PDO::PARAM_STR);
         $statement->execute();
         if ($statement->fetchColumn() < 1) {
             throw new \RuntimeException('User '.$act.' has not enough privileges to authentificate.');
@@ -136,7 +136,7 @@ class SessionCommand extends ContainerAwareCommand
         $masterPasswordSalt = file_get_contents(self::SALT_FILE); 
         $suppliedMasterPasswordHash = PasswordUtil::generateHash($suppliedMasterPassword, $masterPasswordSalt, 11);
         
-        if ($suppliedMasterPasswordHash !== $masterPasswordHash) {
+        if (!hash_equals($masterPasswordHash, $suppliedMasterPasswordHash)) {
             $output->writeln('Wrong');
             return;
         }
@@ -162,7 +162,7 @@ class SessionCommand extends ContainerAwareCommand
         
         $suppliedUserPasswordHash = PasswordUtil::generateHash($suppliedUserPassword, $userPasswordSalt, 11);
         
-        if ($userPasswordHash !== $suppliedUserPasswordHash) {
+        if (!hash_equals($userPasswordHash, $suppliedUserPasswordHash)) {
             $output->writeln('Wrong UserPassword');
             return;
         }

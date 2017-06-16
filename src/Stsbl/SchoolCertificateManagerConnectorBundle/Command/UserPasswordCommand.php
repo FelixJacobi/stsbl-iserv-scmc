@@ -56,7 +56,7 @@ class UserPasswordCommand extends ContainerAwareCommand
     {
         $this
             ->setName('stsbl:scmc:userpassword')
-            ->setDescription('Manage SCMC sessions.')
+            ->setDescription('Manage SCMC user passwords.')
             ->setDefinition(
                 new InputDefinition([
                     new InputOption('action', 'a', InputOption::VALUE_REQUIRED),
