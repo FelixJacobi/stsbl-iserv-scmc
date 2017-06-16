@@ -1,3 +1,49 @@
+stsbl-iserv-scmc (17.06.17-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Updated install file.
+  * Updated build deps and rules.
+  * scmcadm: syntax fixes.
+  * Implemented year-based restriction.
+  * Fixed and improved deleting of temporary files.
+  * Authentificate with clear password instead of password hash to prevent 
+    attacks with stolen password hashes.
+  * role definition: Fixed module name.
+  * Added UploadSSHKeyAction.
+  * scmcadm: Switched to qx for php sub process.
+  * User password management: Reworked route generation.
+  * Disabled unused status menu for now.
+  * Added content for index action.
+  * session login: Switched to hash_equals.
+  * Implemented ScmcService.
+  * ManagementController: Removed unused use statements.
+  * Implemented ssh key uploading.
+  * Fixed host editing.
+  * Added safe key deleting after server deleting.
+  * Implemented logging on server {adding,deleting,editing}.
+  * Added DeleteSSHKeyAction.
+  * ScmcAdmin service: Fixed usage with empty token attribute.
+  * Switched server handling and key storing to nummeric ids.
+  * Added help text to server form fields.
+  * Improved form of UploadSSHKeyAction.
+  * Added deletion of SSH keys.
+  * Added extended domain validation.
+  * Added custom message for account validation.
+  * Updated l10n.
+  * Removed h1 titles in management section.
+
+  iserv: Die neue Version enthält diverse neue Funktionen: Zum einem können
+    nun gezielt die Kurslisten einzelne Jahrgänge von den verbundenen Zeugnisservern 
+    hoch- und heruntergeladen werden. Damit die Funktion ordnungsgemäß funktioniert, stellen
+    Sie bitte unter iserv > Modul: Zeugnisverwlatungsconnector > Schultyp die
+    Form Ihrer Schule (Gymnasium oder Stadtteilschule) ein. Als Administrator
+    kann der SSH-Schlüssel, der für das Hoch- und Herunterladen benötigt wird, nun direkt 
+    über die Oberfläche hinterlegt sowie gelöscht werden. Die Startseite der
+    des Zeugnisverwalter-Bereiches enthält außerdem nun eine Überblick über
+    die zehn zuletzt durchgeführten Download- und Upload-Aktionen.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sat, 17 Jun 2017 01:39:58 +0200
+
 stsbl-iserv-scmc (17.06.12-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
