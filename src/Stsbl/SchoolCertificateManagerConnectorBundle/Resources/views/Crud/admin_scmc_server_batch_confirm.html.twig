@@ -1,0 +1,20 @@
+{# src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/views/Crud/admin_scmc_server_batch_confirm.html.twig #}
+{% extends "IServCrudBundle:Crud:batch_confirm.html.twig" %}
+
+{% block crud_table_foot %}
+    <tfoot>
+        {% if confirmForm.form.key is defined %}
+            <tr><td{% if colspan is defined%} colspan="{{ colspan }}"{% endif %}>
+                {{ form_label(confirmForm.form.key) }}
+                <div class="col-lg-10">
+                    {{ form_widget(confirmForm.form.key) }}
+                </div>
+            </td></tr>
+        {% endif %}
+        <tr><td{% if colspan is defined%} colspan="{{ colspan }}"{% endif %}>
+            <div class="batch-actions">
+                {{ form_widget(confirmForm.form.actions, {'style': null}) }}
+            </div>
+        </td></tr>
+    </tfoot>
+{% endblock %}

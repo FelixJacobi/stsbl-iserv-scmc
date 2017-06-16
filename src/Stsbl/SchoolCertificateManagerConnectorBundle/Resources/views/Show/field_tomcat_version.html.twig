@@ -1,0 +1,14 @@
+{# src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/views/Show/field_tomcat_version.html.twig #}
+{% extends admin.getTemplate('show_field_base') %}
+
+{% block field %}
+    {%  if value == 'tomcat6' %}
+        {{  __('Tomcat %s', 6) }}
+    {%  elseif value == 'tomcat7' %}
+        {{  __('Tomcat %s', 7) }}
+    {%  elseif value == 'tomcat8' %}
+        {{  __('Tomcat %s', 8) }}
+    {%  else %}
+        {{  value }}
+    {%  endif %}
+{% endblock %}

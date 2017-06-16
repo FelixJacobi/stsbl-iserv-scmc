@@ -9,6 +9,7 @@ use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Entity\FlashMessageBag;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Admin\ServerAdmin;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Server;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -110,6 +111,11 @@ class UploadSSHKeyAction extends AbstractBatchAction implements FormExtendingBat
     public function handleFormData(array $data)
     {
         $bag = new FlashMessageBag();
+
+        if (!$data['key'] instanceof UploadedFile) {
+            $bag->addMessage('error', _('You must select a SSH key for uploading.'));
+            return $bag;
+        }
         /* @var $servers Server */
         $servers = $data['multi'];
         foreach ($servers as $server) {

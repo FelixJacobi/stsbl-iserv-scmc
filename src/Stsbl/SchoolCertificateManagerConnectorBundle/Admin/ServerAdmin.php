@@ -145,6 +145,8 @@ class ServerAdmin extends AbstractAdmin
         $this->itemTitle = _('Server');
         $this->id = 'scmc_server';
         $this->routesPrefix = 'admin/scmc/server';
+
+        $this->templates['crud_batch_confirm'] = 'StsblSchoolCertificateManagerConnectorBundle:Crud:admin_scmc_server_batch_confirm.html.twig';
     }
     
     /**
@@ -155,6 +157,9 @@ class ServerAdmin extends AbstractAdmin
         $formMapper
             ->add('host', null, [
                 'label' => _('Host'),
+                'attr' => [
+                    'help_text' => _('Select the host which should be the target for up- and downloading.'),
+                ],
                 'query_builder' => function (EntityRepository $er) {
                     $route = $this->getCurrentRoute();
 
@@ -185,15 +190,33 @@ class ServerAdmin extends AbstractAdmin
             ])
             ->add('tomcatType', ChoiceType::class, [
                 'label' => _('Tomcat version'),
+                'attr' => [
+                    'help_text' => _('The version of Tomcat server which is running on the certificate management server.'),
+                ],
                 'choices' => [
                     _('Tomcat 6') => 'tomcat6',
                     _('Tomcat 7') => 'tomcat7',
                     _('Tomcat 8') => 'tomcat8',
                 ]
             ])
-            ->add('webDomain', null, ['label' => _('Domain')])
-            ->add('group', null, ['label' => _('Assigned group')])
-            ->add('sshAccount', null, ['label' => _('SSH account')])
+            ->add('webDomain', null, [
+                'label' => _('Domain'),
+                'attr' => [
+                    'help_text' => _('The domain, under which the reverse proxy is reachable. Must be different from the main domain or an alias domain of the portal server.'),
+                ],
+            ])
+            ->add('group', null, [
+                'label' => _('Assigned group'),
+                'attr' => [
+                    'help_text' => _('By default a link to the reverse proxy is shown to all users with the privilege "Show link to certificate management". You can limit the visibility of the link to one group.'),
+                ],
+            ])
+            ->add('sshAccount', null, [
+                'label' => _('SSH account'),
+                'attr' => [
+                    'help_text' => _('The account which is used to up- and download the data. The account must be member of the tomcat6/7/8 group on the certificate management server. You must upload a SSH key for this user in the server overview.'),
+                ],
+            ])
         ;
     }
     
@@ -203,11 +226,24 @@ class ServerAdmin extends AbstractAdmin
     public function configureListFields(ListMapper $listMapper) 
     {
         $listMapper
-            ->addIdentifier('host', null, ['label' => _('Host')])
-            ->add('webDomain', null, ['label' => _('Domain')])
-            ->add('group', null, ['label' => _('Assigned group')])
-            ->add('sshAccount', null, ['label' => _('SSH account'), 'responsive' => 'desktop'])
-            ->add('tomcatType', null, ['label' => _('Tomcat version'), 'responsive' => 'desktop'])
+            ->addIdentifier('host', null, [
+                'label' => _('Host'),
+            ])
+            ->add('webDomain', null, [
+                'label' => _('Domain'),
+            ])
+            ->add('group', null, [
+                'label' => _('Assigned group'),
+            ])
+            ->add('sshAccount', null, [
+                'label' => _('SSH account'),
+                'responsive' => 'desktop',
+            ])
+            ->add('tomcatType', null, [
+                'label' => _('Tomcat version'),
+                'template' => 'StsblSchoolCertificateManagerConnectorBundle:List:field_tomcat_version.html.twig',
+                'responsive' => 'desktop',
+            ])
         ;
     }
     
@@ -217,11 +253,22 @@ class ServerAdmin extends AbstractAdmin
     public function configureShowFields(ShowMapper $showMapper) 
     {
         $showMapper
-            ->add('host', null, ['label' => _('Host')])
-            ->add('tomcatType', null, ['label' => _('Tomcat version')])
-            ->add('webDomain', null, ['label' => _('Domain')])
-            ->add('group', null, ['label' => _('Assigned group')])
-            ->add('sshAccount', null, ['label' => _('SSH account')])
+            ->add('host', null, [
+                'label' => _('Host')
+            ])
+            ->add('tomcatType', null, [
+                'label' => _('Tomcat version'),
+                'template' => 'StsblSchoolCertificateManagerConnectorBundle:Show:field_tomcat_version.html.twig',
+            ])
+            ->add('webDomain', null, [
+                'label' => _('Domain')
+            ])
+            ->add('group', null, [
+                'label' => _('Assigned group')
+            ])
+            ->add('sshAccount', null, [
+                'label' => _('SSH account')
+            ])
         ;
     }
     
