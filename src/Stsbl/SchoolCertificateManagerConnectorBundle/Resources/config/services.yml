@@ -25,3 +25,7 @@ services:
     stsbl.scmc.menu_builder:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
         arguments: ["@knp_menu.factory", "@security.token_storage", "@security.authorization_checker", "@event_dispatcher"]
+        
+    stsbl.scmc.service.scmcadm:
+        class: Stsbl\SchoolCertificateManagerConnectorBundle\Service\ScmcAdm
+        arguments: ["@iserv.shell", "@request_stack", "@iserv.security_handler"]

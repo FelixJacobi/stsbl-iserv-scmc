@@ -5,6 +5,7 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Traits\LoggerTrait;
+use IServ\CrudBundle\Entity\FlashMessageBag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -63,6 +64,20 @@ class ManagementController extends PageController
      * @var \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
      */
     private $menuBuilder;
+
+    /**
+     * Feeds iserv.flash with messages from FlashMessageBag entity
+     *
+     * @param FlashMessageBag $bag
+     */
+    private function createFlashMessagesFromBag(FlashMessageBag $bag)
+    {
+        foreach ($bag->getMessages() as $types) {
+            foreach ($types as $message) {
+                call_user_func_array([$this->get('iserv.flash'), $message->getType()], [$message->getMessage()]);
+            }
+        }
+    }
     
     /**
      * Get year choices for up- and download form
@@ -174,68 +189,9 @@ class ManagementController extends PageController
 
         $fs = new Filesystem();
         $data = $form->getData();
-        $randomNumber = rand(1000, getrandmax());
-        $dirPrefix = '/tmp/stsbl-iserv-scmc-';
-        $dir = $dirPrefix.$randomNumber.'/';
-        
-        if (!$fs->exists($dir)) {
-            $fs->mkdir($dir);
-        }
-        
-        $fs->chmod($dir, 0700);
-        
-        if (!is_writeable($dir)) {
-            throw new \RuntimeException(sprintf('%s must be writeable, it is not.', $dir));
-        }
-        /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
-        $file = $data['class_data'];
-        
-        if ($file->getMimeType() != 'application/zip') {
-            $this->get('iserv.flash')->error(_('You have to upload a zip file!'));
-            return $this->redirectToRoute('scmc_upload');
-        }
-        
-        $filePath = $dir.$file->getClientOriginalName();
-        $file->move($dir, $file->getClientOriginalName());
-        
-        $securityHandler = $this->get('iserv.security_handler');
-        $sessionPassword = $securityHandler->getSessionPassword();
-        $act = $securityHandler->getToken()->getUser()->getUsername();
-        
-        $args = [
-            '/usr/lib/iserv/scmcadm',
-            'putdata',
-            $act,
-            $data['server']->getId(),
-            $filePath
-        ];
-        // add years on demand
-        if (count($data['years']) > 0) {
-            $args[] = join(',', $data['years']);
-        }
-        
-        /* @var $shell \IServ\CoreBundle\Service\Shell */
-        $shell = $this->get('iserv.shell');
-        $shell->exec('sudo', $args, null, [
-            'SESSPW' => $sessionPassword,
-            'IP' => $request->getClientIp(),
-            'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
-            'SCMC_SESSIONTOKEN' => $securityHandler->getToken()->getAttribute('scmc_sessiontoken'),
-            'SCMC_SESSIONPW' => $securityHandler->getToken()->getAttribute('scmc_sessionpassword'),
-        ]);
-        
-        if (count($shell->getError()) > 0) {
-            $this->get('iserv.flash')->error(join("\n", $shell->getError()));
-        }
-        
-        if (count($shell->getOutput()) > 0) {
-            $this->get('iserv.flash')->success(join("\n", $shell->getOutput()));
-        }
-        
-        // remove data
-        if ($fs->exists($dir)) {
-            $fs->remove($dir);
-        }
+        /* @var $scmcAdm \Stsbl\SchoolCertificateManagerConnectorBundle\Service\ScmcAdm */
+        $scmcAdm = $this->get('stsbl.scmc.service.scmcadm');
+        $this->createFlashMessagesFromBag($scmcAdm->putData($data['server'], $data['class_data'], $data['years']));
         
         return $this->redirectToRoute('scmc_upload');
     }
@@ -276,67 +232,21 @@ class ManagementController extends PageController
             return $this->redirectToRoute('scmc_download');
         }
         $data = $form->getData();
-        
-        $this->initalizeLogger();
-        $this->log(sprintf('Zeugnisdaten vom Server "%s" heruntergeladen', (string)$data['server']->getHost()));
-        
-        $securityHandler = $this->get('iserv.security_handler');
-        $sessionPassword = $securityHandler->getSessionPassword();
-        $act = $securityHandler->getToken()->getUser()->getUsername();
-        /* @var $shell \IServ\CoreBundle\Service\Shell */
-        $args = [
-            '/usr/lib/iserv/scmcadm',
-            'getdata',
-            $act,
-            $data['server']->getId()
-        ];
-        // add years on demand
-        if (count($data['years']) > 0) {
-            $args[] = join(',', $data['years']);
-        }
-        
-        $shell = $this->get('iserv.shell');
-        $shell->exec('sudo', $args, null, [
-            'SESSPW' => $sessionPassword,
-            'IP' => $request->getClientIp(),
-            'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
-            'SCMC_SESSIONTOKEN' => $securityHandler->getToken()->getAttribute('scmc_sessiontoken'),
-            'SCMC_SESSIONPW' => $securityHandler->getToken()->getAttribute('scmc_sessionpassword')
-        ]);
-        
-        $zipPath = null;
-        $output = [];
-        foreach ($shell->getOutput() as $line) {
-            if (preg_match('|^path=|', $line)) {
-                $zipPath = preg_replace('|^path=|', '', $line);
-            } else {
-                $output[] = $line;
-            }
-        }
-        
-        if (count($shell->getError()) > 0) {
-            $this->get('iserv.flash')->error(join("\n", $shell->getError()));
-        }
-        
-        if (count($output) > 0) {
-            $this->get('iserv.flash')->success(join("\n", $output));
-        }
-        
-        if ($zipPath == null) {
-            $this->get('iserv.flash')->error(_('Something went wrong.'));
+
+        /* @var $scmcAdm \Stsbl\SchoolCertificateManagerConnectorBundle\Service\ScmcAdm */
+        $scmcAdm = $this->get('stsbl.scmc.service.scmcadm');
+        $getData = $scmcAdm->getData($data['server'], $data['years']);
+
+        $this->createFlashMessagesFromBag($getData[0]);
+        // assume error, if no prepared response is given
+        if (!$getData[1] instanceof Response) {
             return $this->redirectToRoute('scmc_download');
         }
-        
-        $zipContent = file_get_contents($zipPath);
-        $fs->remove($zipPath);
-        
-        $quoted = sprintf('"%s"', addcslashes('zeugnis-download-'.date('d-m-Y-G-i-s').'.zip', '"\\'));
-            
-        $response = new Response($zipContent);
-        $response->headers->set('Content-Type', 'application/zip');
-        $response->headers->set('Content-Disposition', 'attachment; filename='.$quoted);
-        
-        return $response;
+
+        $this->initalizeLogger();
+        $this->log(sprintf('Zeugnisdaten vom Server "%s" heruntergeladen', (string)$data['server']->getHost()));
+
+        return $getData[1];
     }
     
     /**
