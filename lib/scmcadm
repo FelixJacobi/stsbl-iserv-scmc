@@ -19,9 +19,6 @@ my ($scmc_token, $scmc_sessionpw) = ($ENV{SCMC_SESSIONTOKEN}, $ENV{SCMC_SESSIONP
 undef %ENV;
 $ENV{PATH} = "/usr/sbin:/usr/bin:/sbin:/bin";
 
-my $has_years = 0;
-$has_years = 1 if ($ARGV[0] eq "getdata" and @ARGV >= 4) or ($ARGV[0] eq "putdata" and @ARGV >= 5);
-
 if (@ARGV < 3)
 {
   print STDERR "Usage: scmcadm COMMAND ARGS\n\n";
@@ -37,6 +34,9 @@ if (@ARGV < 3)
 my $cmd = shift @ARGV;
 my $login_act = shift @ARGV;
 
+my $has_years = 0;
+$has_years = 1 if ($cmd eq "getdata" and @ARGV >= 4 - 2) or ($cmd eq "putdata" and @ARGV >= 5 - 2);
+
 set_ips $login_ip, $login_ip_fwd;
 set_credentials $login_act, $login_pwd;
 sessauth_auth "scmcadm";
@@ -44,10 +44,15 @@ sessauth_auth "scmcadm";
 sub check_server_id($)
 {
   my $server_id = shift;
-  $server_id =~ /^([a-z0-9]([a-z0-9-]*[a-z0-9])?)$/i or error "Invalid Server ID!";
-  error "Invalid Server ID!" if not IServ::DB::Do "SELECT 1 FROM scmc_servers WHERE Host = ?", $server_id;
+  $server_id =~ /^\d+$/i or error "Invalid Server ID!";
+  error "Invalid Server ID!" if not IServ::DB::Do "SELECT 1 FROM scmc_servers WHERE ID = ?", $server_id;
 }
 
+sub get_server_data($)
+{
+  return IServ::DB::SelectRow "SELECT s.SSHAct, s.TomcatType, s.Host, h.IP FROM scmc_servers s ".
+    "JOIN hosts h ON (s.Host = h.Name) WHERE s.ID = ?", shift;
+}
 sub ssh($$$$)
 {
   my ($server_key, $server_user, $server_ip, $cmd) = @_;
@@ -94,7 +99,7 @@ sub req_scmc_auth
 {
   local %ENV;
   $ENV{SCMC_SESSIONPW} = $scmc_sessionpw;
-  ($ENV{SCMC_SESSIONSALT}) = IServ::DB::SelectRow "SELECT sessionpwsalt FROM scmc_sessions WHERE SessionToken = ? AND Act = ? LIMIT 1", $scmc_token, $login_act;
+  ($ENV{SCMC_SESSIONSALT}) = IServ::DB::SelectVal "SELECT SessionPWSalt FROM scmc_sessions WHERE SessionToken = ? AND Act = ? LIMIT 1", $scmc_token, $login_act;
   # get password hash via php subcommand
   # TODO reimplement hashing in perl?!
   my $scmc_passwordhash = qx(/usr/lib/iserv/scmc_php_hash);
@@ -124,9 +129,10 @@ if ($cmd eq "getdata")
     validate_years @years;
   }
 
-  my ($server_user, $server_type, $server_name, $server_ip) = IServ::DB::SelectRow "SELECT s.SSHAct, s.TomcatType, s.Host, h.IP FROM scmc_servers s JOIN hosts h ON (s.Host = h.Name) WHERE s.Host = ?", $server_id;
+  my ($server_user, $server_type, $server_name, $server_ip) = get_server_data $server_id;
   my $server_key = "/var/lib/stsbl/scmc/keys/$server_id";
-  
+  Stsbl::IServ::IO::error "SSH-Schlüssel fehlt für Server $server_name." if not -f $server_key;
+
   my $dest_dir = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10)."/";
   my $dest_zip = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10).".zip";
 
@@ -191,8 +197,9 @@ if ($cmd eq "getdata")
     validate_years @years;
   }
 
-  my ($server_user, $server_type, $server_name, $server_ip) = IServ::DB::SelectRow "SELECT s.SSHAct, s.TomcatType, s.Host, h.IP FROM scmc_servers s JOIN hosts h ON (s.Host = h.Name) WHERE s.Host = ?", $server_id;
+  my ($server_user, $server_type, $server_name, $server_ip) = get_server_data $server_id;
   my $server_key = "/var/lib/stsbl/scmc/keys/$server_id";
+  Stsbl::IServ::IO::error "SSH-Schlüssel fehlt für Server $server_name." if not -f $server_key;
 
   my $dest_dir = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10)."/";
 

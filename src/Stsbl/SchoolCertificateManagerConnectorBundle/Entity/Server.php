@@ -43,9 +43,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Server implements CrudInterface
 {
     /**
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
      * @ORM\OneToOne(targetEntity="\IServ\HostBundle\Entity\Host", fetch="EAGER")
      * @ORM\JoinColumn(name="host", referencedColumnName="name")
-     * @ORM\Id
      * 
      * @var Host
      */
@@ -94,7 +100,7 @@ class Server implements CrudInterface
      */
     public function getId()
     {
-        return $this->host->getName();
+        return $this->id;
     }
 
 

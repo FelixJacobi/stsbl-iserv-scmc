@@ -174,7 +174,7 @@ class ScmcAdm
      */
     public function getData(Server $server, array $years)
     {
-        $args = [$this->securityHandler->getUser()->getUsername(), $server->getId()];
+        $args = [$server->getId()];
         // add years on demand
         if (count($years) > 0) {
             $args[] = join(',', $years);

@@ -1,0 +1,24 @@
+#!/usr/bin/perl -CSDAL
+
+use File::Copy::Recursive;
+use IServ::DB;
+
+chdir "/var/lib/stsbl/scmc/keys" or die "Failed to change directory: $!";
+
+foreach my $key_file (glob "*")
+{
+  # skip converted keys
+  next if $key_file =~ /\d+/;
+
+  my $server_id;
+  
+  # don't die on select error
+  eval 
+  {
+    ($server_id) = IServ::DB::SelectVal "SELECT ID FROM scmc_servers WHERE Host = ?", $key_file;
+  };
+  (warn "Failed to get ID for host $key_file: $@" and next) if $@;
+  
+  print "Rename $key_file -> $server_id\n";
+  File::Copy::Recursive::fmove $key_file, $server_id;
+}

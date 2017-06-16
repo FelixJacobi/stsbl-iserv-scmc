@@ -31,7 +31,8 @@ CREATE TABLE scmc_userpasswords (
 
 -- table for scmc servers
 CREATE TABLE scmc_servers (
-    Host            TEXT        PRIMARY KEY REFERENCES hosts(Name)
+    ID              SERIAL      PRIMARY KEY,
+    Host            TEXT        REFERENCES hosts(Name)
                                     ON UPDATE CASCADE
                                     ON DELETE CASCADE
                                     NOT NULL,
@@ -45,9 +46,13 @@ CREATE TABLE scmc_servers (
     SSHAct          TEXT        NOT NULL
 );
 
+CREATE UNIQUE INDEX scmc_servers_host_key ON scmc_servers (lower(Host));
+
 -- permissions
 GRANT USAGE, SELECT ON "scmc_sessions_id_seq" TO "scmc_session";
 GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_sessions" TO "scmc_session";
 
 GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_userpasswords" TO "symfony";
+
+GRANT USAGE, SELECT ON "scmc_servers_id_seq" TO "symfony";
 GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_servers" TO "symfony";
