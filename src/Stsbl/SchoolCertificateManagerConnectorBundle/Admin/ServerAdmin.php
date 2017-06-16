@@ -8,6 +8,7 @@ use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Crud\Batch;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Service\ScmcAdm;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /*
@@ -42,6 +43,31 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  */
 class ServerAdmin extends AbstractAdmin
 {
+    /**
+     * @var ScmcAdm
+     */
+    private $scmcAdm;
+
+    /**
+     * Inject ScmcAdm
+     *
+     * @param ScmcAdm $scmcAdm
+     */
+    public function setScmcAdm(ScmcAdm $scmcAdm)
+    {
+        $this->scmcAdm = $scmcAdm;
+    }
+
+    /**
+     * Get ScmcAdm
+     *
+     * @return ScmcAdm|null
+     */
+    public function getScmcAdm()
+    {
+        return $this->scmcAdm;
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -5,8 +5,13 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Crud\Batch;
 use Doctrine\Common\Collections\ArrayCollection;
 use IServ\CrudBundle\Crud\Batch\AbstractBatchAction;
 use IServ\CrudBundle\Crud\Batch\FormExtendingBatchActionInterface;
+use IServ\CrudBundle\Entity\CrudInterface;
+use IServ\CrudBundle\Entity\FlashMessageBag;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Admin\ServerAdmin;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Server;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /*
@@ -41,6 +46,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class UploadSSHKeyAction extends AbstractBatchAction implements FormExtendingBatchActionInterface
 {
+    /**
+     * @var ServerAdmin
+     */
+    protected $crud;
+
     /**
      * {@inheritdoc}
      */
@@ -97,8 +107,25 @@ class UploadSSHKeyAction extends AbstractBatchAction implements FormExtendingBat
     /**
      * {@inheritdoc}
      */
-    public function handleFormData(array $data) {
-        
+    public function handleFormData(array $data)
+    {
+        $bag = new FlashMessageBag();
+        /* @var $servers Server */
+        $servers = $data['multi'];
+        foreach ($servers as $server) {
+            $bag->addAll($this->crud->getScmcAdm()->storeKey($server, $data['key']));
+            $bag->addMessage('success', __('Uploaded new key for %s.', (string)$server->getHost()));
+        }
+
+        return $bag;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAllowedToExecute(CrudInterface $object, UserInterface $user)
+    {
+        return $this->crud->getAuthorizationChecker()->isGranted('PRIV_SCMC_ADMIN');
     }
 
 }

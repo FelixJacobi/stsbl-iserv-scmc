@@ -19,6 +19,8 @@ services:
     stsbl.scmc.admin.server:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Admin\ServerAdmin # Our CRUD class
         arguments: [Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Server]  # Sets the controlled entity class
+        calls:
+            - [ setScmcAdm, ["@stsbl.scmc.service.scmcadm"] ]
         tags:
             - { name: iserv.crud } # Tells IServ about our CRUD
     

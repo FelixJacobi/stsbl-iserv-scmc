@@ -47,6 +47,7 @@ class ScmcAdm
     const SCMCADM = '/usr/lib/iserv/scmcadm';
     const SCMCADM_PUTDATA = 'putdata';
     const SCMCADM_GETDATA = 'getdata';
+    const SCMCADM_STOREKEY = 'storekey';
     
     /**
      * @var Filesystem
@@ -72,6 +73,8 @@ class ScmcAdm
      * The constructor.
      * 
      * @param Shell $shell
+     * @param RequestStack $stack
+     * @param SecurityHandler $securityHandler
      */
     public function __construct(Shell $shell, RequestStack $stack, SecurityHandler $securityHandler) 
     {
@@ -184,6 +187,7 @@ class ScmcAdm
         foreach ($this->shell->getOutput() as $line) {
             if (preg_match('|^path=|', $line)) {
                 $zipPath = preg_replace('|^path=|', '', $line);
+                break;
             }
         }
 
@@ -238,4 +242,29 @@ class ScmcAdm
         
         return $ret;
     }
+
+    /**
+     * Calls storekey sub command
+     *
+     * @param Server $server
+     * @param UploadedFile $file
+     * @return FlashMessageBag
+     */
+    public function storeKey(Server $server, UploadedFile $file)
+    {
+        $dir = $this->getTemporaryDirectory();
+        $filePath = $dir.'key';
+        $file->move($dir, 'key');
+
+        $args = [$this->securityHandler->getUser()->getUsername(), $server->getId(), $filePath];
+
+        $ret = $this->scmcAdm(self::SCMCADM_STOREKEY, $args);
+
+        if ($this->filesystem->exists($dir)) {
+            $this->filesystem->remove($dir);
+        }
+
+        return $ret;
+    }
+
 }

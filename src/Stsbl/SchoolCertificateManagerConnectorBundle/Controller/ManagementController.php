@@ -14,7 +14,6 @@ use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -186,7 +185,6 @@ class ManagementController extends PageController
             return $this->redirectToRoute('scmc_upload');
         }
 
-        $fs = new Filesystem();
         $data = $form->getData();
         /* @var $scmcAdm \Stsbl\SchoolCertificateManagerConnectorBundle\Service\ScmcAdm */
         $scmcAdm = $this->get('stsbl.scmc.service.scmcadm');
@@ -223,7 +221,6 @@ class ManagementController extends PageController
      */
     public function downloadZipAction(Request $request)
     {
-        $fs = new Filesystem();
         $form = $this->getDownloadForm();
         $form->handleRequest($request);
         if (!$form->isValid()) {

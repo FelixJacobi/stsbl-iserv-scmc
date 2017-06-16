@@ -267,10 +267,14 @@ if ($cmd eq "getdata")
   }
   check_server_id $server_id;
   check_path $key_file;
-  my $dest = "/var/lib/stsbl/scmc/key/$server_id";
-  system("cp", "-f", $key_file, $dest) == 0 or die "Failed to copy key: $!";
+  my $dest = "/var/lib/stsbl/scmc/keys/$server_id";
+  open FH, ">", $dest or die "Failed to open file $dest: $!";
+  print FH "";
+  close FH;
+
   chown 0, 0, $dest;
   chmod 00600, $dest;
+  system("cp", "-f", $key_file, $dest) == 0 or warn "Failed to copy key: $!";
   unlink $key_file;
 
 } else 
