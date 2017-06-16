@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use IServ\CoreBundle\Entity\Group;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\HostBundle\Entity\Host;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Validator\Constraints as StsblAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /*
@@ -68,6 +69,7 @@ class Server implements CrudInterface
     /**
      * @ORM\Column(name="webDomain", type="string", nullable=false)
      * @Assert\Regex("/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/", message = "Enter a valid domain.")
+     * @StsblAssert\NotPortalServerDomain()
      *
      * @var string
      */

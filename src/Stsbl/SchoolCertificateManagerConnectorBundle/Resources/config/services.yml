@@ -32,3 +32,9 @@ services:
     stsbl.scmc.service.scmcadm:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Service\ScmcAdm
         arguments: ["@iserv.shell", "@request_stack", "@iserv.security_handler"]
+
+    stsbl.scmc.validator.nac:
+        class: Stsbl\SchoolCertificateManagerConnectorBundle\Validator\Constraints\NotPortalServerDomainValidator
+        arguments: ["@iserv.config"]
+        tags:
+            - { name: validator.constraint_validator, alias: stsbl_scmc_not_portalserver_domain_validator }
