@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (17.06.17-2) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added missing iservchk script.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sat, 17 Jun 2017 03:20:56 +0200
+
 stsbl-iserv-scmc (17.06.17-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
