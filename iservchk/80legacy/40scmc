@@ -1,0 +1,4 @@
+Test "move pre-id scmc ssh keys"
+  "grep ^40scmc /var/lib/iserv/config/update.log"
+  "/usr/share/iserv/upgrade/scmc_move_keys && echo 40scmc >> /var/lib/iserv/config/update.log"
+
