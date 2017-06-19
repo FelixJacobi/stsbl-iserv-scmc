@@ -1,3 +1,11 @@
+stsbl-iserv-scmc (17.06.19-2) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Use standard passwd path.
+  * iservchk: Fixed permissions of passwd files.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Mon, 19 Jun 2017 22:03:40 +0200
+
 stsbl-iserv-scmc (17.06.19-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
