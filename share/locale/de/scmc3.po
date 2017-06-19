@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-19 12:50+0200\n"
+"POT-Creation-Date: 2017-06-19 23:17+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -14,8 +14,8 @@ msgstr ""
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:56
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:213
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:187
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:187
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:202
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:202
 msgid "Login"
 msgstr "Anmelden"
 
@@ -30,7 +30,7 @@ msgstr "Anmelden"
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:124
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:163
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:206
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:128
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:135
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:75
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:266
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:358
@@ -41,7 +41,7 @@ msgstr "Anmelden"
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:124
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:163
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:206
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:128
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:135
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:75
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:266
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:358
@@ -62,8 +62,8 @@ msgid ""
 "Currently for your account is not a user password set. Please contact your "
 "administrator."
 msgstr ""
-"Derzeit ist für ihr Konto kein Benutzerpasswort gesetzt. Bitte kontaktieren "
-"Sie ihren Administrator."
+"Derzeit ist für Ihr Konto kein Benutzerpasswort gesetzt. Bitte kontaktieren "
+"Sie Ihren Administrator."
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:185
 msgid ""
@@ -72,7 +72,7 @@ msgid ""
 msgstr ""
 "Bitte geben Sie beide Passwörter ein, das Masterpasswort und Ihr "
 "persönliches Benutzerkennwort. Wenn Sie diese nicht kennen, kontaktieren Sie "
-"bitte ihren Administrator."
+"bitte Ihren Administrator."
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:380
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:387
@@ -134,8 +134,8 @@ msgstr ""
 "IDesk nicht angezeigt."
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:826
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:171
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:171
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:186
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:186
 msgid "Master password"
 msgstr "Masterpasswort"
 
@@ -275,13 +275,13 @@ msgstr "Datum"
 msgid "Action"
 msgstr "Aktion"
 
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:196
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:196
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:203
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:249
 msgid "Something went wrong."
 msgstr "Etwas ist schiefgelaufen."
 
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:224
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:224
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:231
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:277
 msgid "You have to upload a zip file!"
 msgstr "Sie müssen eine ZIP-Datei hochladen!"
 
@@ -374,6 +374,11 @@ msgstr "erneut setzen."
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:55
 msgid "Press enter to continue ..."
 msgstr "Eingabetaste zum Fortfahren drücken ..."
+
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Security/ScmcAuth.php:348
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Security/ScmcAuth.php:348
+msgid "Please login to access the certificate management area."
+msgstr ""
 
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:88
 #: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:89
@@ -498,40 +503,44 @@ msgstr ""
 msgid "Download data"
 msgstr "Daten herunterladen"
 
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:92
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:92
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:95
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:95
 msgid "The master password is wrong."
 msgstr "Das Masterpasswort ist falsch."
 
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:96
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:96
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:99
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:99
 msgid "The user password is wrong."
 msgstr "Das Benutzerpasswort ist falsch."
 
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:101
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:101
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:103
+msgid "Something went wrong"
+msgstr ""
+
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:108
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:108
 msgid "You have logged in successfully in the Certificate Management Section."
 msgstr "Sie haben sich erfolgreich im Zeugnisverwaltungsbereich angemeldet."
 
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:151
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:151
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:166
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:166
 msgid ""
 "You have logged out successfully from the Certificate Management Section."
 msgstr ""
 "Sie haben sich erfolgreich aus dem Zeugnisverwaltungsbereich abgemeldet."
 
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:169
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:169
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:184
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:184
 msgid "Please enter the master password and try it again."
 msgstr "Bitte geben Sie das Masterpasswort ein und versuchen Sie es erneut."
 
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:179
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:179
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:194
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:194
 msgid "Please enter the user password and try it again."
 msgstr "Bitte geben Sie das Benutzerpasswort ein und probieren Sie es erneut."
 
-#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:181
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:181
+#: debian/stsbl-iserv-scmc/usr/share/iserv/src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:196
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:196
 msgid "User password"
 msgstr "Benutzerpasswort"
 
@@ -837,6 +846,10 @@ msgstr "SSH-Schlüssel löschen"
 #, php-format
 msgid "Deleted SSH key for %s."
 msgstr "SSH-Schlüssel für %s gelöscht."
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:103
+msgid "Something went wrong:"
+msgstr ""
 
 #~ msgid "Server Status"
 #~ msgstr "Server-Status"
