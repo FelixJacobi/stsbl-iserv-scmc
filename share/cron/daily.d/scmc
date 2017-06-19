@@ -6,3 +6,12 @@ psql -q -c "DELETE FROM scmc_sessions WHERE created < now() - '24 hours'::INTERV
 # remove left over temporary files (up- and download)
 find /tmp -type d -name "stsbl-iserv-scmc-*" -delete
 find /tmp -type f -name "stsbl-iserv-scmc-*.zip" -delete
+
+# expire scmc login log
+psql iserv postgres -qc "DELETE FROM log
+  WHERE Date < now() - '6 month'::interval AND Text IN (
+    'Zeugnisverwaltungs-Login erfolgreich',
+    'Zeugnisverwaltungs-Logout erfolgreich'
+  )"
+
+
