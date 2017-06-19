@@ -3,8 +3,8 @@ Test "move pre-id scmc ssh keys"
   "/usr/share/iserv/upgrade/scmc_move_keys && echo 40scmc >> /var/lib/iserv/config/update.log"
 
 Test "migrate master password"
-  '[ -f "/var/lib/stsbl/scmc/auth/masterpassword.pwd" ]'
-  "echo $(cat /var/lib/stsbl/scmc/auth/masterpassword.pwd):$(cat /var/lib/stsbl/scmc/auth/masterpassword.salt) > /etc/stsbl/masterpasswd &&
+  '[ ! -f "/var/lib/stsbl/scmc/auth/masterpassword.pwd" ]'
+  "echo $(cat /var/lib/stsbl/scmc/auth/masterpassword.pwd):$(cat /var/lib/stsbl/scmc/auth/masterpassword.salt) > /etc/stsbl/scmcmasterpasswd &&
      rm -rf /var/lib/stsbl/scmc/auth/"
 
 Test "convert scmcpasswd file"
