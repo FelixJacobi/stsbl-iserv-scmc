@@ -6,6 +6,7 @@ use IServ\CoreBundle\Security\Core\SecurityHandler;
 use IServ\CoreBundle\Service\Shell;
 use IServ\CrudBundle\Entity\FlashMessageBag;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Server;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Security\ScmcAuth;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -69,6 +70,11 @@ class ScmcAdm
      * @var Shell
      */
     private $shell;
+
+    /**
+     * @var ScmcAuth
+     */
+    private $scmcAuth;
     
     /**
      * The constructor.
@@ -76,13 +82,15 @@ class ScmcAdm
      * @param Shell $shell
      * @param RequestStack $stack
      * @param SecurityHandler $securityHandler
+     * @param ScmcAuth $scmcAuth
      */
-    public function __construct(Shell $shell, RequestStack $stack, SecurityHandler $securityHandler) 
+    public function __construct(Shell $shell, RequestStack $stack, SecurityHandler $securityHandler, ScmcAuth $scmcAuth)
     {
         $this->request = $stack->getCurrentRequest();
         $this->shell = $shell;
         $this->securityHandler = $securityHandler;
         $this->filesystem = new Filesystem();
+        $this->scmcAuth = $scmcAuth;
     }
     
     /**
@@ -159,8 +167,7 @@ class ScmcAdm
                 'SESSPW' => $this->securityHandler->getSessionPassword(),
                 'IP' => $this->request->getClientIp(),
                 'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
-                'SCMC_SESSIONTOKEN' => $this->securityHandler->getToken()->hasAttribute('scmc_sessiontoken') ? $this->securityHandler->getToken()->getAttribute('scmc_sessiontoken') : null,
-                'SCMC_SESSIONPW' => $this->securityHandler->getToken()->hasAttribute('scmc_sessionpassword') ? $this->securityHandler->getToken()->getAttribute('scmc_sessionpassword') : null,
+                'SCMC_SESSIONPW' => $this->scmcAuth->getScmcSessionPassword()
             ],
             $filterOutputCallBack);
     }

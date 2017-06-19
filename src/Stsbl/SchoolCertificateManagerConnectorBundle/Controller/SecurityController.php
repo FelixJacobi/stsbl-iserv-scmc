@@ -66,10 +66,13 @@ class SecurityController extends PageController
             throw $this->createAccessDeniedException("You don't have the privileges to access the connector.");
         }
         
-        if ($this->get('stsbl.scmc.service.session')->isAuthentificated()) {
+        if ($this->get('stsbl.scmc.security.sessauth')->isAuthenticated()) {
             // go to index
             return $this->redirect($this->generateUrl('scmc_index'));
         }
+
+        $loginNotice = $this->get('session')->has('scmc_login_notice') ? $this->get('session')->get('scmc_login_notice') : null;
+        $this->get('session')->remove('scmc_login_notice');
         
         $error = '';
         $form = $this->getLoginForm();
@@ -84,16 +87,20 @@ class SecurityController extends PageController
             $data = $form->getData();
             $this->initalizeLogger();
             
-            $ret = $this->get('stsbl.scmc.service.session')->openSession($data['masterpassword'], $data['userpassword']);
-            
-            if ($ret === true) {
-            } else if ($ret == 'wrong') {
+            $ret = $this->get('stsbl.scmc.security.sessauth')->login($data['masterpassword'], $data['userpassword']);
+
+            if ($ret === true || empty($ret)) {
+            } else if ($ret === 'master password wrong') {
                 $this->log('Zeugnisverwaltungs-Login: Falsches Masterpasswort');
                 $error = _('The master password is wrong.');
                 goto render;
-            } else if ($ret == 'wrong userpassword') {
+            } else if ($ret === sprintf('user password for %s wrong', $this->getUser()->getUsername())) {
                 $this->log('Zeugnisverwaltungs-Login: Falsches Benuterpasswort');
                 $error = _('The user password is wrong.');
+                goto render;
+            } else {
+                $this->log('Zeugnisverwaltungs-Login: Allgemeiner Fehler');
+                $error = _('Something went wrong').': '.$ret;
                 goto render;
             }
             
@@ -127,7 +134,13 @@ class SecurityController extends PageController
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));
         
-        return array('login_form' => $view, 'emptyMasterPassword' => $emptyMasterPassword, 'hasUserPassword' => $hasUserPassword, 'error' => $error);
+        return [
+            'login_form' => $view,
+            'emptyMasterPassword' => $emptyMasterPassword,
+            'hasUserPassword' => $hasUserPassword,
+            'error' => $error,
+            'loginNotice' => $loginNotice
+        ];
     }
     
     /**
@@ -144,7 +157,9 @@ class SecurityController extends PageController
             throw $this->createAccessDeniedException("You don't have the privileges to access the connector.");
         }
         
-        $this->get('stsbl.scmc.service.session')->closeSession();
+        if (!$this->get('stsbl.scmc.security.sessauth')->close($this->getUser()->getUsername())) {
+            throw new \RuntimeException('scmc_sess_close failed!');
+        }
             
         $this->initalizeLogger();
         $this->log('Zeugnisverwaltungs-Logout erfolgreich');

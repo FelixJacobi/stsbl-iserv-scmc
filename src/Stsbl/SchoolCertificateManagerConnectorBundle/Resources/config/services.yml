@@ -9,7 +9,13 @@ services:
     stsbl.scmc.service.session:
         class:  Stsbl\SchoolCertificateManagerConnectorBundle\Service\SessionService # Our Service class
         arguments: ["@iserv.security_handler", "@iserv.shell"] # Inject SecurityHandler and Shell into the class
-    
+
+    stsbl.scmc.security.sessauth:
+        class: Stsbl\SchoolCertificateManagerConnectorBundle\Security\ScmcAuth
+        arguments: ["@request_stack", "@router.default", "@iserv.security_handler", "@session"]
+        tags:
+              - { name: kernel.event_subscriber }
+
     stsbl.scmc.admin.userpassword:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Admin\UserPasswordAdmin # Our CRUD class
         arguments: [IServ\CoreBundle\Entity\User]  # Sets the controlled entity class
@@ -31,9 +37,9 @@ services:
         
     stsbl.scmc.service.scmcadm:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Service\ScmcAdm
-        arguments: ["@iserv.shell", "@request_stack", "@iserv.security_handler"]
+        arguments: ["@iserv.shell", "@request_stack", "@iserv.security_handler", "@stsbl.scmc.security.sessauth"]
 
-    stsbl.scmc.validator.nac:
+    stsbl.scmc.validator.not_portalserver_domain:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Validator\Constraints\NotPortalServerDomainValidator
         arguments: ["@iserv.config"]
         tags:

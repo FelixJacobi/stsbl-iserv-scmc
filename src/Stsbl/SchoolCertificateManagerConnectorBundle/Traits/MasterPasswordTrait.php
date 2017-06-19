@@ -42,6 +42,7 @@ trait MasterPasswordTrait
     {
         $securityHandler = $this->get('iserv.security_handler');
         $sessionPassword = $securityHandler->getSessionPassword();
+        die($sessionPassword);
         $act = $securityHandler->getToken()->getUser()->getUsername();
         /* @var $shell \IServ\CoreBundle\Service\Shell */
         $shell = $this->get('iserv.shell');

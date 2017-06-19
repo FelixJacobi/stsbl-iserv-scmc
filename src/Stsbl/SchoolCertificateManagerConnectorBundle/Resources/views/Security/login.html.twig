@@ -33,11 +33,16 @@
                             {{ _('Currently for your account is not a user password set. Please contact your administrator.') }}
                         </div>
                     {% else %}
-                        {% if not error == '' %}
+                        {% if not error is empty %}
                             <div class="alert alert-danger">
                                 {{ error }}
                             </div>
                         {% endif %}
+                        {%  if not loginNotice is empty %}
+                            <div class="alert alert-warning">
+                                {{  loginNotice }}
+                            </div>
+                        {%  endif %}
                         <div class="alert alert-info">
                             {{ _('Please enter both passwords, the master password and your personal user password. If you do not know them, please conact your administrator.') }}
                         </div>

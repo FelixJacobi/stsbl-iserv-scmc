@@ -5,7 +5,7 @@ use strict;
 use Bytes::Random::Secure;
 use Cwd qw(abs_path);
 use IServ::DB;
-use IServ::SSH;
+use scmcauth;
 use Stsbl::IServ::IO;
 use Stsbl::IServ::Log;
 use Stsbl::IServ::Security;
@@ -15,7 +15,7 @@ my $m_ip = qr/[\d.:]{1,64}/;
 my $login_pwd = $ENV{PASSWORD} // $ENV{SESSPW};
 my ($login_ip) = ($ENV{IP} // "") =~ /^($m_ip)$/;
 my ($login_ip_fwd) = ($ENV{IPFWD} // "") =~ /^($m_ip)$/;
-my ($scmc_token, $scmc_sessionpw) = ($ENV{SCMC_SESSIONTOKEN}, $ENV{SCMC_SESSIONPW});
+my $scmc_sessionpw = $ENV{SCMC_SESSIONPW};
 undef %ENV;
 $ENV{PATH} = "/usr/sbin:/usr/bin:/sbin:/bin";
 
@@ -97,14 +97,7 @@ sub validate_years(@)
 
 sub req_scmc_auth
 {
-  local %ENV;
-  $ENV{SCMC_SESSIONPW} = $scmc_sessionpw;
-  ($ENV{SCMC_SESSIONSALT}) = IServ::DB::SelectVal "SELECT SessionPWSalt FROM scmc_sessions WHERE SessionToken = ? AND Act = ? LIMIT 1", $scmc_token, $login_act;
-  # get password hash via php subcommand
-  # TODO reimplement hashing in perl?!
-  my $scmc_passwordhash = qx(/usr/lib/iserv/scmc_php_hash);
-  IServ::DB::Do "SELECT 1 FROM scmc_sessions WHERE SessionToken = ? AND SessionPW = ? AND Act = ? LIMIT 1", $scmc_token, $scmc_passwordhash, $login_act 
-    or Stsbl::IServ::IO::error "Invalid scmc session data!";
+  scmcauth::simple_login $login_act, $login_pwd, "scmcadm", $scmc_sessionpw or Stsbl::IServ::IO::error "scmc auth login failed!";
 }
 
 my $random = new Bytes::Random::Secure();
