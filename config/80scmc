@@ -1,0 +1,6 @@
+SCMCSchoolType:
+name            School Type
+description     Select the type of your school, this setting is required for the available years for up -and downloading.
+group           Module: School Certificate Manager Connector
+type            select[stadtteilschule=Stadtteilschule|gymnasium=Gymnasium]
+default         
