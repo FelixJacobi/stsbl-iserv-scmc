@@ -15,7 +15,7 @@ BEGIN
 }
 
 my $fn_master_passwd = "/etc/stsbl/scmcmasterpasswd";
-my $fn_user_passwd = "/etc/stsbl/scmcpasswd.new";
+my $fn_user_passwd = "/etc/stsbl/scmcpasswd";
 
 sub getusrnam($)
 {

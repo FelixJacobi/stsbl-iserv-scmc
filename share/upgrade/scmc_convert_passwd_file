@@ -6,7 +6,7 @@ use utf8;
 use Fcntl ":flock";
 
 # convert scmcpasswd from comma to colon separators
-my $fn_user_passwd = "/etc/stsbl/scmcpasswd.new";
+my $fn_user_passwd = "/etc/stsbl/scmcpasswd";
 my %out;
 
 open my $fh, "<", $fn_user_passwd;
