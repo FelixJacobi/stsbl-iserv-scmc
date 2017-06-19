@@ -1,3 +1,14 @@
+stsbl-iserv-scmc (17.06.19-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Fixed build deps.
+  * Added missing iservcfg file.; Updated l10n.
+  * Added support for scmcauthd.
+  * Added upgrade script to convert passwd file.
+  * Added dependency on scmcauthd.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Mon, 19 Jun 2017 21:46:22 +0200
+
 stsbl-iserv-scmc (17.06.17-2) experimental; urgency=medium
 
   [ Felix Jacobi ]
