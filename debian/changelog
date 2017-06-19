@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (17.06.19-1) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added legacy scripts to upgrade old password system.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Mon, 19 Jun 2017 21:54:00 +0200
+
 stsbl-iserv-scmc (17.06.19-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
