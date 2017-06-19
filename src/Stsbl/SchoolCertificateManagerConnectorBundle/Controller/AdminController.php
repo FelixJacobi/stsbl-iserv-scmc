@@ -51,7 +51,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class AdminController extends PageController
 {
-    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait, FormTrait;
+    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait, FormTrait, FlashMessageBagTrait;
     
     /**
      * Overview page
@@ -239,24 +239,10 @@ class AdminController extends PageController
             return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
         } else if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $this->initalizeLogger();
             $password = $data['userpassword'];
             
-            $securityHandler = $this->get('iserv.security_handler');
-            $sessionPassword = $securityHandler->getSessionPassword();
-            // echo $sessionPassword;
-            $act = $securityHandler->getToken()->getUser()->getUsername();
-        
-            /* @var $shell \IServ\CoreBundle\Service\Shell */
-            $shell = $this->get('iserv.shell');
-            $shell->exec('/usr/bin/setsid', ['-w', '/usr/bin/sudo', '/usr/lib/iserv/scmc_userpassword_set', $user], null, ['SESSPW' => $sessionPassword, 'SCMC_ACT' => $act, 'SCMC_USERPW' => $password]);
-            $exitCode = $shell->getExitCode();
-            if ($exitCode !== 0) {
-                throw new \RuntimeException('Shell returned exit code '.$exitCode.'.');
-            }
-            
-            $this->get('iserv.flash')->success(__('User password of %s set.', $FullName));
-            $this->log(sprintf('Benutzerpasswort von %s gesetzt', $FullName));
+            $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->setUserPasswd($user, $password));
+
             return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
             
         } else {
@@ -379,7 +365,7 @@ class AdminController extends PageController
         try {
             $userEntity = $repository->findOneByUsername($act);
         } catch (NoResultException $e) {
-            throw new \RuntimeException('User was not found.');
+            throw $this->createNotFoundException('User '.$act.' was not found.');
         }
         
         return $userEntity;

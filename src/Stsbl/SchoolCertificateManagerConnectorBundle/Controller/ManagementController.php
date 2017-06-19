@@ -56,26 +56,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ManagementController extends PageController 
 {
-    use FormTrait, LoggerTrait, LoggerInitalizationTrait, SecurityTrait;
+    use FormTrait, LoggerTrait, LoggerInitalizationTrait, SecurityTrait, FlashMessageBagTrait;
     
     /*
      * @var \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
      */
     private $menuBuilder;
-
-    /**
-     * Feeds iserv.flash with messages from FlashMessageBag entity
-     *
-     * @param FlashMessageBag $bag
-     */
-    private function createFlashMessagesFromBag(FlashMessageBag $bag)
-    {
-        foreach ($bag->getMessages() as $types) {
-            foreach ($types as $message) {
-                call_user_func_array([$this->get('iserv.flash'), $message->getType()], [$message->getMessage()]);
-            }
-        }
-    }
     
     /**
      * Get year choices for up- and download form

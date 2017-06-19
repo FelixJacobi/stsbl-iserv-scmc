@@ -51,6 +51,7 @@ class ScmcAdm
     const SCMCADM_STOREKEY = 'storekey';
     const SCMCADM_DELETEKEY = 'deletekey';
     const SCMCADM_MASTERPASSWDEMPTY = 'masterpasswdempty';
+    const SCMCADM_SETUSERPASSWD = 'setuserpasswd';
     
     /**
      * @var Filesystem
@@ -167,10 +168,11 @@ class ScmcAdm
      * 
      * @param string $command
      * @param array $args
+     * @param string $arg
      * @param callable $filterOutputCallBack
      * @return FlashMessageBag
      */
-    public function scmcAdm($command, array $args = [], callable $filterOutputCallBack = null)
+    public function scmcAdm($command, array $args = [], $arg = null, callable $filterOutputCallBack = null)
     {
         array_unshift($args, self::SCMCADM, $command, $this->securityHandler->getUser()->getUsername());
 
@@ -184,7 +186,8 @@ class ScmcAdm
                 'SESSPW' => $this->securityHandler->getSessionPassword(),
                 'IP' => $this->request->getClientIp(),
                 'IPFWD' => $this->getIpFwd(),
-                'SCMC_SESSIONPW' => $sessionPassword
+                'SCMC_SESSIONPW' => $sessionPassword,
+                'ARG' => $arg,
             ],
             $filterOutputCallBack);
     }
@@ -233,7 +236,7 @@ class ScmcAdm
             $args[] = join(',', $years);
         }
 
-        $ret = $this->scmcAdm(self::SCMCADM_GETDATA, $args, function($o) {
+        $ret = $this->scmcAdm(self::SCMCADM_GETDATA, $args, null, function($o) {
             return strpos($o, 'path=') != 0;
         });
         $zipPath = null;
@@ -350,5 +353,17 @@ class ScmcAdm
         }
 
         return false;
+    }
+
+    /**
+     * Calls setuserpasswd sub command
+     *
+     * @param string $user
+     * @param string $password
+     * @return FlashMessageBag
+     */
+    public function setUserPasswd($user, $password)
+    {
+        return $this->scmcAdm(self::SCMCADM_SETUSERPASSWD, [$user], $password);
     }
 }

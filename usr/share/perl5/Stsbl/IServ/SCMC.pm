@@ -6,6 +6,10 @@ use utf8;
 use strict;
 use Fcntl ":flock";
 use IServ::Act;
+use IServ::DB;
+use IServ::Valid;
+use Stsbl::IServ::IO;
+use Stsbl::IServ::Security;
 
 BEGIN
 {
@@ -77,10 +81,10 @@ sub UserPasswdEnc($$)
   while (<$fh>)
   {
     my @line = split /:/;
-    if (my (undef, undef, $uid) = getpwuid $line[0])
+    if (my ($name, undef, $uid) = getpwuid $line[0])
     {
       # skip account which should get the new password
-      unless ($line[0] eq $act)
+      unless ($name eq $act)
       {
         # we need to have uid in passwd file, as we cannot handle account name updates :/ .
         $line[0] = $uid;
@@ -114,4 +118,33 @@ sub UserPasswd($$)
   $pw = IServ::Act::crypt_auto $pw if defined $pw;
   UserPasswdEnc $act, $pw;
 }
+
+sub SetUserPasswd($$)
+{
+  my ($act, $pw) = @_;
+  eval
+  {
+    Stsbl::IServ::Security::valid_user $act;
+    IServ::Valid::Passwd $pw;
+    UserPasswd $act, $pw;
+  };
+  error "Setzen des Benutzerpasswortes fehlgeschlagen: $@" if $@;
+  my $fullname = IServ::DB::SelectVal "SELECT firstname || ' ' || lastname ".
+    "FROM users_name WHERE act = ?", $act;
+  # trim
+  $fullname =~ s/^\s+|\s+$//g;
+  
+  # update state
+  if (IServ::DB::Do "SELECT 1 FROM scmc_userpasswords WHERE act = ?", $act)
+  {
+    IServ::DB::Do "UPDATE scmc_userpasswords SET password = true WHERE act = ?", $act;
+  } else
+  {
+    IServ::DB::Do "INSERT INTO scmc_userpasswords (act, password) VALUES (?, true)", $act;
+  }
+
+  Stsbl::IServ::Log::write_for_module "Benutzerpasswort von $fullname gesetzt", 
+    "School Certificate Manager Connector";
+}
+
 1;

@@ -8,6 +8,7 @@ use IServ::DB;
 use scmcauth;
 use Stsbl::IServ::IO;
 use Stsbl::IServ::Log;
+use Stsbl::IServ::SCMC;
 use Stsbl::IServ::Security;
 
 my $m_ip = qr/[\d.:]{1,64}/;
@@ -18,6 +19,7 @@ my $login_pwd = $ENV{PASSWORD} // $ENV{SESSPW};
 my ($login_ip) = ($ENV{IP} // "") =~ /^($m_ip)$/;
 my ($login_ip_fwd) = ($ENV{IPFWD} // "") =~ /^($m_ip)$/;
 my $scmc_sessionpw = $ENV{SCMC_SESSIONPW};
+my ($arg) = ($ENV{ARG} // "") =~ /^(.*)$/;
 
 undef %ENV;
 $ENV{PATH} = "/usr/sbin:/usr/bin:/sbin:/bin";
@@ -29,7 +31,8 @@ if (@ARGV < 3)
   print STDERR "Command putdata: LOGIN SERVERID ZIPFILE [YEARS]\n";
   print STDERR "Command storekey: LOGIN SERVERID KEYFILE\n";
   print STDERR "Command deletekey: LOGIN SERVERID\n";
-  print STDERR "Command masterpasswdempty: LOGIN\n\n";
+  print STDERR "Command masterpasswdempty: LOGIN\n";
+  print STDERR "Command setuserpasswd: LOGIN DESACT\n\n";
   print STDERR "Environment: PASSWORD, IP, IPWD, SCMC_SESSIONTOKEN, SCMC_SESSIONPW\n";
   print STDERR "Return of getdata: Folder path of created zip file on STDOUT.\n";
   exit 1;
@@ -310,6 +313,13 @@ if ($cmd eq "getdata")
   {
     print "res=false\n";
   }
+} elsif ($cmd eq "setuserpasswd")
+{
+  req_admin;
+  req_priv "scmc_admin";
+
+  my $user = shift @ARGV;
+  Stsbl::IServ::SCMC::SetUserPasswd $user, $arg;
 } else 
 {
   Stsbl::IServ::IO::error "Unknown command $cmd!";
