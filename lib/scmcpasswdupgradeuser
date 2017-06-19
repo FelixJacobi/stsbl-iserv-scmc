@@ -1,0 +1,33 @@
+#!/usr/bin/perl -T -CSDAL
+
+use warnings;
+use strict;
+use IServ::Valid;
+use Stsbl::IServ::SCMC;
+
+undef %ENV;
+
+my $pwd = IServ::Valid::Passwd <STDIN>;
+chomp $pwd;
+my $act = IServ::Valid::User $ARGV[0];
+
+sub upgradepwd($$)
+{
+  my ($act, $userpwd) = @_;
+  my @usrnam = getusrnam $act;
+  
+  if ($usrnam[1] =~ /^\$2y/)
+  {
+     my $legacy_crypt = legacy_crypt $userpwd, $usrnam[2];
+     die "wrong user password\n" if not $legacy_crypt eq $usrnam[1];
+
+     Stsbl::IServ::SCMC::UserPasswd $act, $userpwd;
+     print "user password upgrade done\n";
+  }
+  else
+  {
+    die "user password does not need upgrade\n";
+  }
+}
+
+upgradepwd $act, $pwd;

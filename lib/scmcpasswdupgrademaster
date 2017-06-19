@@ -1,0 +1,41 @@
+#!/usr/bin/perl -T -CSDAL
+
+use warnings;
+use strict;
+use IServ::Valid;
+use Stsbl::IServ::SCMC;
+
+undef %ENV;
+
+my $pwd = IServ::Valid::Passwd <STDIN>;
+chomp $pwd;
+my $fn_master_passwd = "/etc/stsbl/scmcmasterpasswd";
+
+sub upgradepwd($)
+{
+  my $masterpwd = shift;
+  my $upgrade = 0;
+  my ($crypt, $old_salt);
+  open my $fp, "<", $fn_master_passwd;
+  while (<$fp>)
+  {
+    chomp;
+    $upgrade = 1 if $_ =~ /^\$2y/;
+    ($crypt, $old_salt) = split /:/ if $upgrade;
+  }
+
+  if ($upgrade)
+  {
+     my $legacy_crypt = legacy_crypt $masterpwd, $old_salt;
+     die "wrong master password\n" if not $legacy_crypt eq $crypt;
+
+     Stsbl::IServ::SCMC::MasterPasswd $masterpwd;
+     print "master password upgrade done\n";
+  }
+  else
+  {
+    die "master password does not need upgrade\n";
+  }
+}
+
+upgradepwd $pwd;
