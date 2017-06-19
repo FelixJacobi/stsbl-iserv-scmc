@@ -1,0 +1,40 @@
+#!/usr/bin/perl -CSDAL
+
+use warnings;
+use strict;
+use utf8;
+use Fcntl ":flock";
+
+# convert scmcpasswd from comma to colon separators
+my $fn_user_passwd = "/etc/stsbl/scmcpasswd.new";
+my %out;
+
+open my $fh, "<", $fn_user_passwd;
+
+while (<$fh>)
+{
+  my @line = split /,/;
+  if (my (undef, undef, $uid) = getpwnam $line[0])
+  {
+    # we need to have uid in passwd file, as we cannot handle account name updates :/ .
+    $line[0] = $uid;
+    $out{$line[0]} = \@line;
+  } else
+  {
+    print STDERR "user $line[0] seems to does not exists!\n".
+      "password of user $line[0] will not transferred to converted passwd file!\n";
+  }
+}
+
+close $fh;
+
+open $fh, ">", $fn_user_passwd;
+flock $fh, LOCK_EX or die "Couldn't lock file $fn_user_passwd: $!\n";
+
+foreach my $index (keys %out)
+{
+  my $line = join ":", @{ $out{$index} };
+  print $fh $line;
+}
+
+close $fh;
