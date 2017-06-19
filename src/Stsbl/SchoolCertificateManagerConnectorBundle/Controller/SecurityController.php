@@ -100,7 +100,7 @@ class SecurityController extends PageController
                 goto render;
             } else {
                 $this->log('Zeugnisverwaltungs-Login: Allgemeiner Fehler');
-                $error = _('Something went wrong').': '.$ret;
+                $error = _('Something went wrong:').' '.$ret;
                 goto render;
             }
             
@@ -121,7 +121,7 @@ class SecurityController extends PageController
         /* @var $object \Stsbl\SchoolCertificateManagerConnectorBundle\Entity\User */
         $object = $em->find('StsblSchoolCertificateManagerConnectorBundle:UserPassword', $act);
         
-        if (!is_null($object)) {
+        if ($object != null) {
             $hasUserPassword = $object->getPassword();
         } else {
             $hasUserPassword = false;
@@ -129,7 +129,7 @@ class SecurityController extends PageController
             
         // parameters
         $view = $form->createView();
-        $emptyMasterPassword = $this->isMasterPasswordEmpty();
+        $emptyMasterPassword = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
         
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));

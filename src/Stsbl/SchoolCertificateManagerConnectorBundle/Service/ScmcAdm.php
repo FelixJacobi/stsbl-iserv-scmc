@@ -50,6 +50,7 @@ class ScmcAdm
     const SCMCADM_GETDATA = 'getdata';
     const SCMCADM_STOREKEY = 'storekey';
     const SCMCADM_DELETEKEY = 'deletekey';
+    const SCMCADM_MASTERPASSWDEMPTY = 'masterpasswdempty';
     
     /**
      * @var Filesystem
@@ -150,6 +151,16 @@ class ScmcAdm
 
         return $messages;
     }
+
+    /**
+     * Get X-FORWARDED-FOR ip
+     *
+     * @return string|null
+     */
+    private function getIpFwd()
+    {
+        return $this->request->server->has('HTTP_X_FORWARDED_FOR') ? $this->request->server->get('HTTP_X_FORWARDED_FOR') : null;
+    }
     
     /**
      * Calls scmcadm command
@@ -159,17 +170,52 @@ class ScmcAdm
      * @param callable $filterOutputCallBack
      * @return FlashMessageBag
      */
-    public function scmcAdm($command, array $args, callable $filterOutputCallBack = null)
+    public function scmcAdm($command, array $args = [], callable $filterOutputCallBack = null)
     {
         array_unshift($args, self::SCMCADM, $command, $this->securityHandler->getUser()->getUsername());
-        
+
+        try {
+            $sessionPassword = $this->scmcAuth->getScmcSessionPassword();
+        } catch (\Exception $e) {
+            $sessionPassword = null;
+        }
+
         return $this->shellMsg('sudo', $args, null, [
                 'SESSPW' => $this->securityHandler->getSessionPassword(),
                 'IP' => $this->request->getClientIp(),
-                'IPFWD' => @$_SERVER['HTTP_X_FORWARDED_FOR'],
-                'SCMC_SESSIONPW' => $this->scmcAuth->getScmcSessionPassword()
+                'IPFWD' => $this->getIpFwd(),
+                'SCMC_SESSIONPW' => $sessionPassword
             ],
             $filterOutputCallBack);
+    }
+
+    /**
+     * Calls scmcadm command and returns raw Shell object
+     *
+     * @param $command
+     * @param array $args
+     * @return Shell
+     */
+    public function scmcAdmRaw($command, array $args = [])
+    {
+        // work with local copy
+        $shell = clone $this->shell;
+        array_unshift($args, self::SCMCADM, $command, $this->securityHandler->getUser()->getUsername());
+
+        try {
+            $sessionPassword = $this->scmcAuth->getScmcSessionPassword();
+        } catch (\Exception $e) {
+            $sessionPassword = null;
+        }
+
+        $shell->exec('sudo', $args, null, [
+            'SESSPW' => $this->securityHandler->getSessionPassword(),
+            'IP' => $this->request->getClientIp(),
+            'IPFWD' => $this->getIpFwd(),
+            'SCMC_SESSIONPW' => $sessionPassword
+        ]);
+
+        return $shell;
     }
 
     /**
@@ -285,5 +331,24 @@ class ScmcAdm
     {
         $args = [$server->getId()];
         return $this->scmcAdm(self::SCMCADM_DELETEKEY, $args);
+    }
+
+    /**
+     * Calls masterpasswdempty sub command
+     *
+     * @return boolean
+     */
+    public function masterPasswdEmpty()
+    {
+        $res = $this->scmcAdmRaw(self::SCMCADM_MASTERPASSWDEMPTY);
+
+        foreach ($res->getOutput() as $o)
+        {
+            if (preg_match('|^res=(true|false)$|', $o, $m)) {
+                return (boolean)$m[1];
+            }
+        }
+
+        return false;
     }
 }

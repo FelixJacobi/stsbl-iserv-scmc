@@ -12,10 +12,13 @@ use Stsbl::IServ::Security;
 
 my $m_ip = qr/[\d.:]{1,64}/;
 
+my $fn_master_passwd = "/etc/stsbl/scmcmasterpasswd";
+
 my $login_pwd = $ENV{PASSWORD} // $ENV{SESSPW};
 my ($login_ip) = ($ENV{IP} // "") =~ /^($m_ip)$/;
 my ($login_ip_fwd) = ($ENV{IPFWD} // "") =~ /^($m_ip)$/;
 my $scmc_sessionpw = $ENV{SCMC_SESSIONPW};
+
 undef %ENV;
 $ENV{PATH} = "/usr/sbin:/usr/bin:/sbin:/bin";
 
@@ -25,7 +28,8 @@ if (@ARGV < 3)
   print STDERR "Command getdata: LOGIN SERVERID [YEARS]\n";
   print STDERR "Command putdata: LOGIN SERVERID ZIPFILE [YEARS]\n";
   print STDERR "Command storekey: LOGIN SERVERID KEYFILE\n";
-  print STDERR "Command deletekey: LOGIN SERVERID\n\n";
+  print STDERR "Command deletekey: LOGIN SERVERID\n";
+  print STDERR "Command masterpasswdempty: LOGIN\n\n";
   print STDERR "Environment: PASSWORD, IP, IPWD, SCMC_SESSIONTOKEN, SCMC_SESSIONPW\n";
   print STDERR "Return of getdata: Folder path of created zip file on STDOUT.\n";
   exit 1;
@@ -289,10 +293,23 @@ if ($cmd eq "getdata")
   }
 
   # no check_server_id checking here, as the host could already deleted from the database
-  Stsbl::IServ::IO::error "Invalid Server ID!" if not $server_id =~ /^([a-z0-9]([a-z0-9-]*[a-z0-9])?)$/i;
+  Stsbl::IServ::IO::error "Invalid Server ID!" if not $server_id =~ /^\d+$/i;
 
   my $key = "/var/lib/stsbl/scmc/keys/$server_id";
   unlink $key if -f $key;
+} elsif ($cmd eq "masterpasswdempty")
+{
+  req_auth;
+  my @privs = ("scmc_access_frontend", "scmc_admin");
+  req_one_priv \@privs;
+  
+  if (-s $fn_master_passwd == 0)
+  {
+    print "res=true\n";
+  } else
+  {
+    print "res=false\n";
+  }
 } else 
 {
   Stsbl::IServ::IO::error "Unknown command $cmd!";
