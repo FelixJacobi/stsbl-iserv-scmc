@@ -52,7 +52,7 @@ CREATE UNIQUE INDEX scmc_servers_host_key ON scmc_servers (lower(Host));
 GRANT USAGE, SELECT ON "scmc_sessions_id_seq" TO "scmc_session";
 GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_sessions" TO "scmc_session";
 
-GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_userpasswords" TO "symfony";
+GRANT SELECT ON "scmc_userpasswords" TO "symfony";
 
 GRANT USAGE, SELECT ON "scmc_servers_id_seq" TO "symfony";
 GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_servers" TO "symfony";
