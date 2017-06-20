@@ -1,3 +1,28 @@
+stsbl-iserv-scmc (17.06.20-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * legacy: Fixed master password migrating.
+  * Moved empty master password checking to scmcadm.
+  * Expire scmc login log older than six months.
+  * Updated l10n.
+  * Moved setting of user passwords to scmcadm.
+  * Moved deleting of user passwords to scmcadm.
+  * Fixed encoding of logs.
+  * Database: Limit access to scmc_userpasswords web interface to SELECT.
+  * Removed database table and user for legacy session management.
+  * Added iservchk script to remove old session user and table.
+  * Moved master password updating to scmcadm.
+  * Dropped legacy session code.
+  * Moved traits to Controller folder.
+  * Removed legacy session commands.
+  * Fixed empty master password handling.
+  * Removed legacy session cleanup.
+  * Replaced SecurityTrait with Sensio annotations.
+  * Moved download logging to scmcadm
+  * Fixed old security call.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Tue, 20 Jun 2017 15:07:50 +0200
+
 stsbl-iserv-scmc (17.06.19-3) experimental; urgency=medium
 
   [ Felix Jacobi ]
