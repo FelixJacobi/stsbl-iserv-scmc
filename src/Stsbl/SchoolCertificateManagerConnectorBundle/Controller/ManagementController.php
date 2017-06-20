@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitializationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -56,7 +56,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ManagementController extends PageController 
 {
-    use FormTrait, LoggerTrait, LoggerInitalizationTrait, SecurityTrait, FlashMessageBagTrait;
+    use FormTrait, LoggerTrait, LoggerInitializationTrait, SecurityTrait, FlashMessageBagTrait;
     
     /*
      * @var \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder

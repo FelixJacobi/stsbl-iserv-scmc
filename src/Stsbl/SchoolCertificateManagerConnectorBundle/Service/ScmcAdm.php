@@ -53,6 +53,7 @@ class ScmcAdm
     const SCMCADM_MASTERPASSWDEMPTY = 'masterpasswdempty';
     const SCMCADM_SETUSERPASSWD = 'setuserpasswd';
     const SCMCADM_DELETEUSERPASSWD = 'deleteuserpasswd';
+    const SCMCADM_SETMASTERPASSWD = 'setmasterpasswd';
     
     /**
      * @var Filesystem
@@ -171,9 +172,10 @@ class ScmcAdm
      * @param array $args
      * @param string $arg
      * @param callable $filterOutputCallBack
+     * @param array $envAppend
      * @return FlashMessageBag
      */
-    public function scmcAdm($command, array $args = [], $arg = null, callable $filterOutputCallBack = null)
+    public function scmcAdm($command, array $args = [], $arg = null, callable $filterOutputCallBack = null, array $envAppend)
     {
         array_unshift($args, self::SCMCADM, $command, $this->securityHandler->getUser()->getUsername());
 
@@ -183,13 +185,13 @@ class ScmcAdm
             $sessionPassword = null;
         }
 
-        return $this->shellMsg('sudo', $args, null, [
+        return $this->shellMsg('sudo', $args, null, array_merge([
                 'SESSPW' => $this->securityHandler->getSessionPassword(),
                 'IP' => $this->request->getClientIp(),
                 'IPFWD' => $this->getIpFwd(),
                 'SCMC_SESSIONPW' => $sessionPassword,
                 'ARG' => $arg,
-            ],
+            ], $envAppend),
             $filterOutputCallBack);
     }
 
@@ -369,7 +371,7 @@ class ScmcAdm
     }
 
     /**
-     * Calls deleteuserpassword sub command
+     * Calls deleteuserpasswd sub command
      *
      * @param string $user
      * @return FlashMessageBag
@@ -377,5 +379,20 @@ class ScmcAdm
     public function deleteUserPasswd($user)
     {
         return $this->scmcAdm(self::SCMCADM_DELETEUSERPASSWD, [$user]);
+    }
+
+    /**
+     * Calls setmasterpasswd sub command
+     *
+     * @param string $newPassword
+     * @param string $oldPassword
+     * @return FlashMessageBag
+     */
+    public function setMasterPasswd($newPassword, $oldPassword = null)
+    {
+        return $this->scmcAdm(self::SCMCADM_SETMASTERPASSWD, [], null, null, [
+            'SCMC_NEWMASTERPW' => $newPassword,
+            'SCMC_OLDMASTERPW' => $oldPassword
+        ]);
     }
 }

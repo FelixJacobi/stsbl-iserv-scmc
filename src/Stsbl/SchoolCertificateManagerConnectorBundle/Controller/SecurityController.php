@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitializationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\MasterPasswordTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -50,7 +50,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class SecurityController extends PageController 
 {
-    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait, FormTrait;
+    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitializationTrait, FormTrait;
     
     /**
      * Displays login form

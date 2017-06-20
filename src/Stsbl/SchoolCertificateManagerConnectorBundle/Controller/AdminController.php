@@ -9,7 +9,7 @@ use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitalizationTrait;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitializationTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\MasterPasswordTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -51,7 +51,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class AdminController extends PageController
 {
-    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitalizationTrait, FormTrait, FlashMessageBagTrait;
+    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitializationTrait, FormTrait, FlashMessageBagTrait;
     
     /**
      * Overview page
@@ -67,7 +67,7 @@ class AdminController extends PageController
             throw $this->createAccessDeniedException('You must be an administrator.');
         }
         
-        $isMasterPasswordEmtpy = $this->isMasterPasswordEmpty();
+        $isMasterPasswordEmtpy = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
         $this->handleMasterPasswordForm($request);
         $view = $this->getMasterPasswordUpdateForm()->createView();
         
@@ -80,7 +80,7 @@ class AdminController extends PageController
     /**
      * Try to update the master password
      * 
-     * @param Form $form
+     * @param Request $request
      */
     private function handleMasterPasswordForm(Request $request)
     {
@@ -105,18 +105,7 @@ class AdminController extends PageController
                 $newMasterPassword = $data['newmasterpassword'];
             }
             
-            $update = $this->updateMasterPassword($oldMasterPassword, $newMasterPassword);
-            
-            if ($update === true) {
-                
-                $this->get('iserv.flash')->success(_('Master password updated successfully.'));
-                $this->log('Masterpasswort erfolgreich aktualisiert');
-            } else if ($update === 'wrong') {
-                $this->get('iserv.flash')->error(_('Old master password is wrong.'));
-                $this->log('Masterpasswortaktualisierung fehlgeschlagen: Altes Passwort falsch');
-            } else {
-                $this->get('iserv.flash')->error(_('This should never happen.'));
-            }
+            $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->setMasterPasswd($newMasterPassword, $oldMasterPassword));
         } else {
             $this->handleFormErrors($form);
         }
@@ -129,7 +118,7 @@ class AdminController extends PageController
      */
     private function getMasterPasswordUpdateForm()
     {
-        $isMasterPasswordEmpty = $this->isMasterPasswordEmpty();
+        $isMasterPasswordEmpty = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
         $builder = $this->createFormBuilder();
         
         if (!$isMasterPasswordEmpty) {
