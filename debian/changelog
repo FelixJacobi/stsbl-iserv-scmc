@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (17.06.20-1) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * SCMC.pm: Added missing Log.pm import.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Tue, 20 Jun 2017 15:39:02 +0200
+
 stsbl-iserv-scmc (17.06.20-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
