@@ -1,0 +1,10 @@
+Test "remove table scmc_sessions"
+  '! psql -tc "\dt" iserv postgres | grep "^ public | scmc_sessions"'
+  '(psql -qc "DROP TABLE scmc_sessions" iserv postgres &&
+     psql -qc "DROP SEQUENCE scmc_sessions_id_seq" iserv postgres) || 
+     exit 1'
+
+Test "remove role scmc_session"
+  '! psql -tc "\du" iserv postgres | grep "^ scmc_session"'
+  'psql -qc "DROP ROLE scmc_session" iserv postgres'
+
