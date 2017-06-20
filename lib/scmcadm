@@ -21,9 +21,11 @@ my ($login_ip) = ($ENV{IP} // "") =~ /^($m_ip)$/;
 my ($login_ip_fwd) = ($ENV{IPFWD} // "") =~ /^($m_ip)$/;
 my $scmc_sessionpw = $ENV{SCMC_SESSIONPW};
 my ($arg) = ($ENV{ARG} // "") =~ /^(.*)$/;
+my $sudo_uid = $ENV{SUDO_UID};
 
 undef %ENV;
 $ENV{PATH} = "/usr/sbin:/usr/bin:/sbin:/bin";
+$ENV{SUDO_UID} = $sudo_uid;
 
 if (@ARGV < 3)
 {

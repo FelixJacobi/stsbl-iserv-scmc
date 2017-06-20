@@ -4,7 +4,7 @@ package Stsbl::IServ::SCMC;
 use warnings;
 use strict;
 use utf8;
-use Encode qw(encode);
+use Encode qw(decode encode);
 use Fcntl ":flock";
 use IServ::Act;
 use IServ::DB;
@@ -175,9 +175,12 @@ sub DeleteUserPasswd($)
   }
 
   # workaround for umlaut issues
-  my $log = encode "utf8", "Benutzerpasswort von $fullname gelöscht";
-  Stsbl::IServ::Log::write_for_module $log,
-    "School Certificate Manager Connector";
+  my $text = "Benutzerpasswort von $fullname gelöscht";
+  my $out = encode "UTF-8", $text;
+  print "$out\n";
+  my %row;
+  $row{module} = "School Certificate Manager Connector";
+  Stsbl::IServ::Log::log_store $text, %row;
 }
 
 1;
