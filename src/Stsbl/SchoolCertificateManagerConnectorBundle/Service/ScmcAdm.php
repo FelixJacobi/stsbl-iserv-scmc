@@ -204,8 +204,7 @@ class ScmcAdm
      */
     public function scmcAdmRaw($command, array $args = [])
     {
-        // work with local copy
-        $shell = clone $this->shell;
+        $shell = $this->shell;
         array_unshift($args, self::SCMCADM, $command, $this->securityHandler->getUser()->getUsername());
 
         try {
@@ -350,8 +349,12 @@ class ScmcAdm
 
         foreach ($res->getOutput() as $o)
         {
-            if (preg_match('|^res=(true|false)$|', $o, $m)) {
-                return (boolean)$m[1];
+            if (preg_match('/^res=(.*)$/', $o, $m)) {
+                if ($m[1] === "true") {
+                    return true;
+                } else if ($m[1] === "false") {
+                    return false;
+                }
             }
         }
 

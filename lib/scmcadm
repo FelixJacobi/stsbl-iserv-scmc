@@ -310,8 +310,7 @@ if ($cmd eq "getdata")
 } elsif ($cmd eq "masterpasswdempty")
 {
   req_auth;
-  my @privs = ("scmc_access_frontend", "scmc_admin");
-  req_one_priv \@privs;
+  req_one_priv ("scmc_access_frontend", "scmc_admin");
   
   if (-s $fn_master_passwd == 0)
   {

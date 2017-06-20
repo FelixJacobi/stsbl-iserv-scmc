@@ -63,10 +63,10 @@ class AdminController extends PageController
         if(!$this->isAdmin()) {
             throw $this->createAccessDeniedException('You must be an administrator.');
         }
-        
-        $isMasterPasswordEmtpy = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
+
         $this->handleMasterPasswordForm($request);
         $view = $this->getMasterPasswordUpdateForm()->createView();
+        $isMasterPasswordEmtpy = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
         
         // track path
         $this->addBreadcrumb(_('Certificate Management'));
@@ -88,7 +88,7 @@ class AdminController extends PageController
             $data = $form->getData();
             $this->initalizeLogger();
          
-            if (!isset($data['oldmasterpassword']) && $this->isMasterPasswordEmpty()) {
+            if (!isset($data['oldmasterpassword']) && $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty()) {
                 $oldMasterPassword = '';
             } else {
                 $oldMasterPassword = $data['oldmasterpassword'];
