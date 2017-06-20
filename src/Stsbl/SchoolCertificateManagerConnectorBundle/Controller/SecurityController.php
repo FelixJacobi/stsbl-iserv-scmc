@@ -7,10 +7,7 @@ use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitializationTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\MasterPasswordTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -50,7 +47,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class SecurityController extends PageController 
 {
-    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitializationTrait, FormTrait;
+    use SecurityTrait, LoggerTrait, LoggerInitializationTrait, FormTrait;
     
     /**
      * Displays login form
@@ -66,7 +63,7 @@ class SecurityController extends PageController
             throw $this->createAccessDeniedException("You don't have the privileges to access the connector.");
         }
         
-        if ($this->get('stsbl.scmc.security.sessauth')->isAuthenticated()) {
+        if ($this->get('stsbl.scmc.security.scmcauth')->isAuthenticated()) {
             // go to index
             return $this->redirect($this->generateUrl('scmc_index'));
         }
@@ -87,7 +84,7 @@ class SecurityController extends PageController
             $data = $form->getData();
             $this->initalizeLogger();
             
-            $ret = $this->get('stsbl.scmc.security.sessauth')->login($data['masterpassword'], $data['userpassword']);
+            $ret = $this->get('stsbl.scmc.security.scmcauth')->login($data['masterpassword'], $data['userpassword']);
 
             if ($ret === true || empty($ret)) {
             } else if ($ret === 'master password wrong') {
@@ -149,7 +146,7 @@ class SecurityController extends PageController
      * @param Request $request
      * @return RedirectResponse
      * @Route("/logout", name="scmc_logout")
-     * @Security("token.hasAttribute('scmc_authentificated') and token.getAttribute('scmc_authentificated') == true")
+     * @Security("token.hasAttribute('scmc_authenticated') and token.getAttribute('scmc_authenticated') == true")
      */
     public function logoutAction(Request $request)
     {
@@ -157,7 +154,7 @@ class SecurityController extends PageController
             throw $this->createAccessDeniedException("You don't have the privileges to access the connector.");
         }
         
-        if (!$this->get('stsbl.scmc.security.sessauth')->close($this->getUser()->getUsername())) {
+        if (!$this->get('stsbl.scmc.security.scmcauth')->close($this->getUser()->getUsername())) {
             throw new \RuntimeException('scmc_sess_close failed!');
         }
             

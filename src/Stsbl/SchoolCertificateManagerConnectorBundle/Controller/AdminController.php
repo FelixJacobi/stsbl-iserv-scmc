@@ -8,10 +8,7 @@ use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\FormTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitializationTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\MasterPasswordTrait;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
@@ -51,7 +48,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class AdminController extends PageController
 {
-    use MasterPasswordTrait, SecurityTrait, LoggerTrait, LoggerInitializationTrait, FormTrait, FlashMessageBagTrait;
+    use SecurityTrait, LoggerTrait, LoggerInitializationTrait, FormTrait, FlashMessageBagTrait;
     
     /**
      * Overview page

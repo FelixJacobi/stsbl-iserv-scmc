@@ -4,7 +4,6 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 
 use IServ\CoreBundle\Controller\PageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\SecurityTrait;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -56,7 +55,7 @@ class EntryPointController extends PageController
             throw $this->createAccessDeniedException("You don't have the privileges to access the connector.");
         }
         
-        if ($this->get('stsbl.scmc.service.session')->isAuthentificated()) {
+        if ($this->get('stsbl.scmc.security.scmcauth')->isAuthenticated()) {
             return $this->forward('StsblSchoolCertificateManagerConnectorBundle:Management:index');
         } else {
             return $this->forward('StsblSchoolCertificateManagerConnectorBundle:Security:login');

@@ -219,7 +219,7 @@ class ScmcAuth implements EventSubscriberInterface
         $sesspw = substr($spw, 0, 32); // return first part of sesspw
         $this->setSecurityCookie(substr($spw, 32)); // store second part in cookie
 
-        $this->securityHandler->getToken()->setAttribute('scmc_authentificated', true);
+        $this->securityHandler->getToken()->setAttribute('scmc_authenticated', true);
         $this->securityHandler->getToken()->setAttribute('scmc_sessiontoken', $sid);
         $this->securityHandler->getToken()->setAttribute('scmc_sessionpassword', $sesspw);
 
@@ -247,7 +247,7 @@ class ScmcAuth implements EventSubscriberInterface
         $res = $this->execute($args, $secondArgs) === 'OK';
 
         if ($res) {
-            $this->securityHandler->getToken()->setAttribute('scmc_authentificated', false);
+            $this->securityHandler->getToken()->setAttribute('scmc_authenticated', false);
             $this->securityHandler->getToken()->setAttribute('scmc_sessiontoken', null);
             $this->securityHandler->getToken()->setAttribute('scmc_sessionpassword', null);
 
@@ -341,10 +341,10 @@ class ScmcAuth implements EventSubscriberInterface
         }
 
         // redirect request without authorization
-        if (strpos($route, 'scmc_') === 0 && (!$this->securityHandler->getToken()->hasAttribute('scmc_authentificated') ||
-            $this->securityHandler->getToken()->getAttribute('scmc_authentificated') != true)
+        if (strpos($route, 'scmc_') === 0 && (!$this->securityHandler->getToken()->hasAttribute('scmc_authenticated') ||
+            $this->securityHandler->getToken()->getAttribute('scmc_authenticated') != true)
         ) {
-            $this->securityHandler->getToken()->setAttribute('scmc_authentificated', false);
+            $this->securityHandler->getToken()->setAttribute('scmc_authenticated', false);
             $this->session->set('scmc_login_notice', _('Please login to access the certificate management area.'));
             $event->setResponse(new RedirectResponse($this->router->generate('scmc_login')));
         }
@@ -354,7 +354,7 @@ class ScmcAuth implements EventSubscriberInterface
             $this->securityHandler->getToken()->hasAttribute('scmc_sessionpassword') &&
             strpos($route, 'scmc_') === 0 && !$this->authenticate($this->securityHandler->getUser()->getUsername(), $this->getScmcSessionPassword())
         ) {
-            $this->securityHandler->getToken()->setAttribute('scmc_authentificated', false);
+            $this->securityHandler->getToken()->setAttribute('scmc_authenticated', false);
             $this->securityHandler->getToken()->setAttribute('scmc_sessionpassword', null);
             $this->securityHandler->getToken()->setAttribute('scmc_token', null);
             $this->session->set('scmc_login_notice', _('Your session is expired. Please login again.'));
@@ -367,7 +367,7 @@ class ScmcAuth implements EventSubscriberInterface
      */
     public function isAuthenticated()
     {
-        return $this->securityHandler->getToken()->hasAttribute('scmc_authentificated') &&
-            $this->securityHandler->getToken()->getAttribute('scmc_authentificated') === true;
+        return $this->securityHandler->getToken()->hasAttribute('scmc_authenticated') &&
+            $this->securityHandler->getToken()->getAttribute('scmc_authenticated') === true;
     }
 }

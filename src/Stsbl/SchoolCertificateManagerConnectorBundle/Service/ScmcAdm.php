@@ -175,7 +175,7 @@ class ScmcAdm
      * @param array $envAppend
      * @return FlashMessageBag
      */
-    public function scmcAdm($command, array $args = [], $arg = null, callable $filterOutputCallBack = null, array $envAppend)
+    public function scmcAdm($command, array $args = [], $arg = null, callable $filterOutputCallBack = null, array $envAppend = [])
     {
         array_unshift($args, self::SCMCADM, $command, $this->securityHandler->getUser()->getUsername());
 
