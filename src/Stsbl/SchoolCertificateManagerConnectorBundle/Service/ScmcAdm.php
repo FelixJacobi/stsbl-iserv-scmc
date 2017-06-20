@@ -52,6 +52,7 @@ class ScmcAdm
     const SCMCADM_DELETEKEY = 'deletekey';
     const SCMCADM_MASTERPASSWDEMPTY = 'masterpasswdempty';
     const SCMCADM_SETUSERPASSWD = 'setuserpasswd';
+    const SCMCADM_DELETEUSERPASSWD = 'deleteuserpasswd';
     
     /**
      * @var Filesystem
@@ -365,5 +366,16 @@ class ScmcAdm
     public function setUserPasswd($user, $password)
     {
         return $this->scmcAdm(self::SCMCADM_SETUSERPASSWD, [$user], $password);
+    }
+
+    /**
+     * Calls deleteuserpassword sub command
+     *
+     * @param string $user
+     * @return FlashMessageBag
+     */
+    public function deleteUserPasswd($user)
+    {
+        return $this->scmcAdm(self::SCMCADM_DELETEUSERPASSWD, [$user]);
     }
 }

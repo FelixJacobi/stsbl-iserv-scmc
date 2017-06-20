@@ -2,6 +2,7 @@
 
 use warnings;
 use strict;
+use utf8;
 use Bytes::Random::Secure;
 use Cwd qw(abs_path);
 use IServ::DB;
@@ -32,8 +33,9 @@ if (@ARGV < 3)
   print STDERR "Command storekey: LOGIN SERVERID KEYFILE\n";
   print STDERR "Command deletekey: LOGIN SERVERID\n";
   print STDERR "Command masterpasswdempty: LOGIN\n";
-  print STDERR "Command setuserpasswd: LOGIN DESACT\n\n";
-  print STDERR "Environment: PASSWORD, IP, IPWD, SCMC_SESSIONTOKEN, SCMC_SESSIONPW\n";
+  print STDERR "Command setuserpasswd: LOGIN DESTACT\n";
+  print STDERR "Command deleteuserpasswd: LOGIN DESTCACT\n\n";
+  print STDERR "Environment: ARG, PASSWORD, IP, IPWD, SCMC_SESSIONPW\n";
   print STDERR "Return of getdata: Folder path of created zip file on STDOUT.\n";
   exit 1;
 }
@@ -320,6 +322,13 @@ if ($cmd eq "getdata")
 
   my $user = shift @ARGV;
   Stsbl::IServ::SCMC::SetUserPasswd $user, $arg;
+} elsif ($cmd eq "deleteuserpasswd")
+{
+  req_admin;
+  req_priv "scmc_admin";
+
+  my $user = shift @ARGV;
+  Stsbl::IServ::SCMC::DeleteUserPasswd $user;
 } else 
 {
   Stsbl::IServ::IO::error "Unknown command $cmd!";

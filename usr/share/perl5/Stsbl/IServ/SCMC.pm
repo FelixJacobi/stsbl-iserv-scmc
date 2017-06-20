@@ -2,8 +2,9 @@
 
 package Stsbl::IServ::SCMC;
 use warnings;
-use utf8;
 use strict;
+use utf8;
+use Encode qw(encode);
 use Fcntl ":flock";
 use IServ::Act;
 use IServ::DB;
@@ -72,7 +73,7 @@ sub MasterPasswd($)
   MasterPasswdEnc $pw;
 }
 
-sub UserPasswdEnc($$)
+sub UserPasswdEnc($;$)
 {
   my ($act, $pw) = @_;
   my %out;
@@ -106,13 +107,16 @@ sub UserPasswdEnc($$)
     print $fh $line;
   }
 
-  my (undef, undef, $uid) = getpwnam $act;
-  # add new password at bottom
-  print $fh "$uid:$pw\n";
+  if (defined $pw)
+  {
+    my (undef, undef, $uid) = getpwnam $act;
+    # add new password at bottom
+    print $fh "$uid:$pw\n";
+  }
   close $fh;
 }
 
-sub UserPasswd($$)
+sub UserPasswd($;$)
 {
   my ($act, $pw) = @_;
   $pw = IServ::Act::crypt_auto $pw if defined $pw;
@@ -144,6 +148,35 @@ sub SetUserPasswd($$)
   }
 
   Stsbl::IServ::Log::write_for_module "Benutzerpasswort von $fullname gesetzt", 
+    "School Certificate Manager Connector";
+}
+
+sub DeleteUserPasswd($)
+{
+  my $act = shift;
+  eval
+  {
+    Stsbl::IServ::Security::valid_user $act;
+    UserPasswd $act;
+  };
+  error "Löschen des Benutzerpasswortes fehlgeschlagen: $@" if $@;
+  my $fullname = IServ::DB::SelectVal "SELECT firstname || ' ' || lastname ".
+    "FROM users_name WHERE act = ?", $act;
+  # trim
+  $fullname =~ s/^\s+|\s+$//g;
+  
+  # update state
+  if (IServ::DB::Do "SELECT 1 FROM scmc_userpasswords WHERE act = ?", $act)
+  {
+    IServ::DB::Do "UPDATE scmc_userpasswords SET password = false WHERE act = ?", $act;
+  } else
+  {
+    IServ::DB::Do "INSERT INTO scmc_userpasswords (act, password) VALUES (?, false)", $act;
+  }
+
+  # workaround for umlaut issues
+  my $log = encode "utf8", "Benutzerpasswort von $fullname gelöscht";
+  Stsbl::IServ::Log::write_for_module $log,
     "School Certificate Manager Connector";
 }
 

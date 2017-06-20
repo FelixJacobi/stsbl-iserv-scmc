@@ -229,21 +229,22 @@ class AdminController extends PageController
         if(!$this->isAdmin()) {
             throw $this->createAccessDeniedException('You must be an administrator.');
         }
-        
-        $FullName = $this->getUserEntity($user)->getName();
+
+        $user = $this->getUserEntity($user);
+        $FullName = $user->getName();
         
         $form = $this->getNewUserPasswordForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->getClickedButton()->getName() === 'cancel') {
             // go back, if user pressed cancel
-            return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
+            return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user->getId()]);
         } else if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $password = $data['userpassword'];
             
-            $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->setUserPasswd($user, $password));
+            $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->setUserPasswd($user->getUsername(), $password));
 
-            return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
+            return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user->getId()]);
             
         } else {
             // show form errors if any
@@ -260,7 +261,7 @@ class AdminController extends PageController
             
             foreach ($userPrivileges as $privilege) {
                 /* @var $privilege \IServ\CoreBundle\Entity\Privilege */
-                if ($privilege->getPriv() == 'PRIV_SCMC_ACCESS_FRONTEND') {
+                if ($privilege->getPriv() === 'PRIV_SCMC_ACCESS_FRONTEND') {
                     $hasPrivilege = true;
                     break;
                 }
@@ -273,7 +274,7 @@ class AdminController extends PageController
                 $permissionNotice = false;
             }
             
-            return ['password_form' => $form->createView(), 'act' => $user, 'fullname' => $FullName, 'permissionnotice' => $permissionNotice];
+            return ['password_form' => $form->createView(), 'act' => $user->getUsername(), 'fullname' => $FullName, 'permissionnotice' => $permissionNotice];
         }
     }
 
@@ -291,8 +292,9 @@ class AdminController extends PageController
         if(!$this->isAdmin()) {
             throw $this->createAccessDeniedException('You must be an administrator.');
         }
-        
-        $FullName = $this->getUserEntity($user)->getName();
+
+        $user = $this->getUserEntity($user);
+        $FullName = $user->getName();
         
         $builder = $this->createFormBuilder();
         $builder
@@ -321,32 +323,19 @@ class AdminController extends PageController
             $this->initalizeLogger();
             $button = $form->getClickedButton()->getName();
             if ($button === 'approve') {
-                $securityHandler = $this->get('iserv.security_handler');
-                $sessionPassword = $securityHandler->getSessionPassword();
-                // echo $sessionPassword;
-                $act = $securityHandler->getToken()->getUser()->getUsername();
-        
-                /* @var $shell \IServ\CoreBundle\Service\Shell */
-                $shell = $this->get('iserv.shell');
-                $shell->exec('/usr/bin/setsid', ['-w', '/usr/bin/sudo', '/usr/lib/iserv/scmc_userpassword_delete', $user], null, ['SESSPW' => $sessionPassword, 'SCMC_ACT' => $act]);
-                $exitCode = $shell->getExitCode();
-                if ($exitCode !== 0) {
-                    throw new \RuntimeException('Shell returned exit code '.$exitCode.'.');
-                }
-            
-                $this->get('iserv.flash')->success(__('User password of %s deleted.', $FullName));
-                $this->log(sprintf('Benutzerpasswort von %s gelöscht', $FullName));
-                return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
+                $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->deleteUserPasswd($user->getUsername()));
+
+                return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user->getId()]);
             } else {
-                return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user]);
+                return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user->getId()]);
             }
         } else {
             $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('admin_scmc'));
             $this->addBreadcrumb(_('User passwords'), $this->generateUrl('admin_scmc_userpassword_index'));
-            $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user]));
+            $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user->getId()]));
             $this->addBreadcrumb(_('Delete user password'));
             
-            return ['fullname' => $FullName, 'act' => $user, 'delete_form' => $form->createView()];
+            return ['fullname' => $FullName, 'act' => $user->getUsername(), 'delete_form' => $form->createView()];
         }
     }
     
