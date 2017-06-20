@@ -10,6 +10,7 @@ use IServ::Act;
 use IServ::DB;
 use IServ::Valid;
 use Stsbl::IServ::IO;
+use Stsbl::IServ::Log;
 use Stsbl::IServ::Security;
 
 BEGIN
