@@ -4,22 +4,6 @@
  * License: http://opensource.org/licenses/MIT MIT license
  */
 
--- own user for session management
-CREATE USER scmc_session;
-
--- session table
-CREATE TABLE scmc_sessions (
-    ID              SERIAL              PRIMARY KEY,
-    Sessiontoken    VARCHAR(60) NOT NULL,
-    SessionPW       VARCHAR(255) NOT NULL,
-    SessionPWSalt   VARCHAR(255) NOT NULL,
-    Act             VARCHAR(255) REFERENCES users(act)
-                             ON DELETE CASCADE
-                             ON UPDATE CASCADE
-                             NOT NULL,
-    Created         TIMESTAMPTZ(0) NOT NULL DEFAULT now()
-);
-
 -- table for storing user password state
 CREATE TABLE scmc_userpasswords (
     Act             TEXT PRIMARY KEY REFERENCES users(act)
@@ -49,9 +33,6 @@ CREATE TABLE scmc_servers (
 CREATE UNIQUE INDEX scmc_servers_host_key ON scmc_servers (lower(Host));
 
 -- permissions
-GRANT USAGE, SELECT ON "scmc_sessions_id_seq" TO "scmc_session";
-GRANT INSERT, DELETE, SELECT, UPDATE ON "scmc_sessions" TO "scmc_session";
-
 GRANT SELECT ON "scmc_userpasswords" TO "symfony";
 
 GRANT USAGE, SELECT ON "scmc_servers_id_seq" TO "symfony";
