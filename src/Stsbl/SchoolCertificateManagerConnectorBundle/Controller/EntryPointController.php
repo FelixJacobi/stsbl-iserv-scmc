@@ -51,10 +51,6 @@ class EntryPointController extends PageController
      */
     public function forwardAction(Request $request)
     {
-        if(!$this->isManager()) {
-            throw $this->createAccessDeniedException("You don't have the privileges to access the connector.");
-        }
-        
         if ($this->get('stsbl.scmc.security.scmcauth')->isAuthenticated()) {
             return $this->forward('StsblSchoolCertificateManagerConnectorBundle:Management:index');
         } else {

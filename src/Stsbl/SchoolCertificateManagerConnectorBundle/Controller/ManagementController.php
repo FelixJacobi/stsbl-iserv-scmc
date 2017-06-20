@@ -223,9 +223,6 @@ class ManagementController extends PageController
             return $this->redirectToRoute('scmc_download');
         }
 
-        $this->initalizeLogger();
-        $this->log(sprintf('Zeugnisdaten vom Server "%s" heruntergeladen', (string)$data['server']->getHost()));
-
         return $getData[1];
     }
     

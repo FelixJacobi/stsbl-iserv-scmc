@@ -182,6 +182,10 @@ if ($cmd eq "getdata")
 
   system("rm", "-rf",  $dest_dir) == 0 or warn "Failed to remove destination directory: $!"; 
   print "path=$dest_zip\n";
+  
+  my %row;
+  $row{module} = "School Certificate Manager Connector";
+  Stsbl::IServ::Log::log_store "Zeugnisdaten vom Server \"$server_name\" heruntergeladen", %row;
 } elsif ($cmd eq "putdata") 
 {
   req_auth;
