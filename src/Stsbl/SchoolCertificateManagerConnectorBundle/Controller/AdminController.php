@@ -7,6 +7,7 @@ use Doctrine\ORM\NoResultException;
 use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -45,10 +46,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("admin/scmc")
+ * @Security("is_granted('PRIV_SCMC_ADMIN')")
  */
 class AdminController extends PageController
 {
-    use SecurityTrait, LoggerTrait, LoggerInitializationTrait, FormTrait, FlashMessageBagTrait;
+    use LoggerTrait, LoggerInitializationTrait, FormTrait, FlashMessageBagTrait;
     
     /**
      * Overview page
@@ -60,14 +62,10 @@ class AdminController extends PageController
      */
     public function indexAction(Request $request)
     {
-        if(!$this->isAdmin()) {
-            throw $this->createAccessDeniedException('You must be an administrator.');
-        }
-
         $this->handleMasterPasswordForm($request);
         $view = $this->getMasterPasswordUpdateForm()->createView();
         $isMasterPasswordEmtpy = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
-        
+
         // track path
         $this->addBreadcrumb(_('Certificate Management'));
         
@@ -212,10 +210,6 @@ class AdminController extends PageController
      */
     public function setUserPasswordAction(Request $request, $user)
     {
-        if(!$this->isAdmin()) {
-            throw $this->createAccessDeniedException('You must be an administrator.');
-        }
-
         $user = $this->getUserEntity($user);
         $FullName = $user->getName();
         
@@ -275,10 +269,6 @@ class AdminController extends PageController
      */
     public function deleteUserPasswordAction(Request $request, $user)
     {
-        if(!$this->isAdmin()) {
-            throw $this->createAccessDeniedException('You must be an administrator.');
-        }
-
         $user = $this->getUserEntity($user);
         $FullName = $user->getName();
         

@@ -44,10 +44,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("scmc", schemes="https")
+ * @Security("is_granted('PRIV_SCMC_ACCESS_FRONTEND')")
  */
 class SecurityController extends PageController 
 {
-    use SecurityTrait, LoggerTrait, LoggerInitializationTrait, FormTrait;
+    use FormTrait, LoggerTrait, LoggerInitializationTrait;
     
     /**
      * Displays login form
@@ -59,10 +60,6 @@ class SecurityController extends PageController
      */
     public function loginAction(Request $request)
     {
-        if (!$this->isManager()) {
-            throw $this->createAccessDeniedException("You don't have the privileges to access the connector.");
-        }
-        
         if ($this->get('stsbl.scmc.security.scmcauth')->isAuthenticated()) {
             // go to index
             return $this->redirect($this->generateUrl('scmc_index'));
@@ -150,10 +147,6 @@ class SecurityController extends PageController
      */
     public function logoutAction(Request $request)
     {
-        if (!$this->isManager()) {
-            throw $this->createAccessDeniedException("You don't have the privileges to access the connector.");
-        }
-        
         if (!$this->get('stsbl.scmc.security.scmcauth')->close($this->getUser()->getUsername())) {
             throw new \RuntimeException('scmc_sess_close failed!');
         }

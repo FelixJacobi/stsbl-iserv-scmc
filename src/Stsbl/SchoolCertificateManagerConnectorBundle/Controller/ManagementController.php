@@ -54,7 +54,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ManagementController extends PageController 
 {
-    use FormTrait, LoggerTrait, LoggerInitializationTrait, SecurityTrait, FlashMessageBagTrait;
+    use FlashMessageBagTrait, FormTrait, LoggerInitializationTrait, LoggerTrait;
     
     /*
      * @var \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder

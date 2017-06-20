@@ -4,6 +4,7 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 
 use IServ\CoreBundle\Controller\PageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,11 +38,10 @@ use Symfony\Component\HttpFoundation\Request;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("scmc")
+ * @Security("is_granted('PRIV_SCMC_ACCESS_FRONTEND')")
  */
 class EntryPointController extends PageController
 {
-    use SecurityTrait;
-    
     /**
      * Check if user is already authentificated and redirect to index or login
      * 

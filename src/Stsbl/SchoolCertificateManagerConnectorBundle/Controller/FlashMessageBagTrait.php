@@ -39,7 +39,7 @@ trait FlashMessageBagTrait
      *
      * @param FlashMessageBag $bag
      */
-    private function createFlashMessagesFromBag(FlashMessageBag $bag)
+    protected function createFlashMessagesFromBag(FlashMessageBag $bag)
     {
         foreach ($bag->getMessages() as $types) {
             foreach ($types as $message) {
