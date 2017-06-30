@@ -75,9 +75,14 @@ class ManagementController extends PageController
             __('Year %s', 8) => 8,
             __('Year %s', 9) => 9,
             __('Year %s', 10) => 10,
-            __('Year %s', 11) => 11,
-            __('Year %s', 12) => 12,
         ];
+
+        // add year 11 + 12 on demand
+        if ($this->get('iserv.config')->get('SCMCSchoolType') === 'gymnasium' ||
+            $this->get('iserv.config')->get('SCMCSchoolType') === 'stadtteilschule') {
+            $ret[__('Year %s', 11)] = 11;
+            $ret[__('Year %s', 12)] = 12;
+        }
         
         // add year 13 on demand
         if ($this->get('iserv.config')->get('SCMCSchoolType') === 'stadtteilschule') {

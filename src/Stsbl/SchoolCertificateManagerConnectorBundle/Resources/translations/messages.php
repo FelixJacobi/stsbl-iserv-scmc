@@ -44,6 +44,7 @@ _('Exit');
 
 _('School Type');
 _('Module: School Certificate Manager Connector');
+_('Stadtteilschule (Class 5-10)');
 
 // Shell
 _('Are you sure that you want to reset the master password? (y/N)');
