@@ -1,3 +1,12 @@
+stsbl-iserv-scmc (17.06.30-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Moved KernelResponse handling from ScmcAuth to own event subscriber class.
+  * Updated l10n.
+  * Force https also on EntryPoint.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Fri, 30 Jun 2017 20:02:32 +0200
+
 stsbl-iserv-scmc (17.06.20-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
