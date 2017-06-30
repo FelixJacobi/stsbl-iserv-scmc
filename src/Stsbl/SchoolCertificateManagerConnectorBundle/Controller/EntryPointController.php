@@ -37,7 +37,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
- * @Route("scmc")
+ * @Route("scmc", schemes="https")
  * @Security("is_granted('PRIV_SCMC_ACCESS_FRONTEND')")
  */
 class EntryPointController extends PageController
