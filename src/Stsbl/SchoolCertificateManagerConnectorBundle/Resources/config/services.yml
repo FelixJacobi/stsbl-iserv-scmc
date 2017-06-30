@@ -6,11 +6,15 @@ services:
           - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu } # Tells IServ about the main menu method
           - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu } # Tells IServ about the admin menu method
 
+    stsbl.scmc.kernel_response_subscriber:
+        class: Stsbl\SchoolCertificateManagerConnectorBundle\EventListener\KernelResponseSubscriber
+        arguments: ["@router.default", "@iserv.security_handler", "@session"]
+        tags:
+          - { name: kernel.event_subscriber }
+
     stsbl.scmc.security.scmcauth:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Security\ScmcAuth
-        arguments: ["@request_stack", "@router.default", "@iserv.security_handler", "@session"]
-        tags:
-              - { name: kernel.event_subscriber }
+        arguments: ["@request_stack", "@iserv.security_handler", "@session"]
 
     stsbl.scmc.admin.userpassword:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Admin\UserPasswordAdmin # Our CRUD class

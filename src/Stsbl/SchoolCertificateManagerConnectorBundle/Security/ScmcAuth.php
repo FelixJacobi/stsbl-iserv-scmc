@@ -5,14 +5,9 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Security;
 use IServ\CoreBundle\Security\Core\SecurityHandler;
 use IServ\CoreBundle\Security\Exception\ClientSecurityException;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Security\Exception\ScmcAuthException;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 
 /*
  * The MIT License
@@ -42,7 +37,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licneses/MIT>
  */
-class ScmcAuth implements EventSubscriberInterface
+class ScmcAuth
 {
     /**
      * The name of the client security token.
@@ -55,11 +50,6 @@ class ScmcAuth implements EventSubscriberInterface
      * @var Request
      */
     private $request;
-
-    /**
-     * @var Router
-     */
-    private $router;
 
     /**
      * @var SecurityHandler
@@ -75,14 +65,12 @@ class ScmcAuth implements EventSubscriberInterface
      * The constructor.
      *
      * @param RequestStack $stack
-     * @param Router $router
      * @param SecurityHandler $securityHandler
      * @param Session $session
      */
-    public function __construct(RequestStack $stack, Router $router, SecurityHandler $securityHandler, Session $session)
+    public function __construct(RequestStack $stack, SecurityHandler $securityHandler, Session $session)
     {
         $this->request = $stack->getCurrentRequest();
-        $this->router = $router;
         $this->securityHandler = $securityHandler;
         $this->session = $session;
     }
@@ -174,7 +162,7 @@ class ScmcAuth implements EventSubscriberInterface
     }
 
     /**
-     * Does a user login with given account/password
+     * Login a user with given account/password
      *
      * @param string $masterPassword
      * @param string $userPassword
@@ -203,7 +191,7 @@ class ScmcAuth implements EventSubscriberInterface
         $res = $this->execute([$act, $pwd, $service, json_encode([$masterPassword, $userPassword])]);
         $arr = explode(" ", $res);
 
-        if ("OK" !== $arr[0]) {
+        if ("OK" != $arr[0]) {
             array_shift($arr);
             return implode(" ", $arr);
         }
@@ -230,7 +218,6 @@ class ScmcAuth implements EventSubscriberInterface
      * Logs a user out.
      *
      * @param string $account
-     * @param string $password
      * @return boolean
      */
     public function close($account)
@@ -316,50 +303,6 @@ class ScmcAuth implements EventSubscriberInterface
     public function getScmcSessionPassword()
     {
         return $this->securityHandler->getToken()->getAttribute('scmc_sessionpassword') . $this->getSecurityCookie();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return [KernelEvents::RESPONSE => 'onKernelResponse'];
-    }
-
-    /**
-     * Redirects user to scmc login form if he tries to access a page directly without auth.
-     *
-     * @param FilterResponseEvent $event
-     * @return RedirectResponse|null
-     */
-    public function onKernelResponse(FilterResponseEvent $event)
-    {
-        $route = $event->getRequest()->get('_route');
-
-        if ($route === 'scmc_login' || $route === 'scmc_logout' || $route === 'scmc_forward') {
-            return;
-        }
-
-        // redirect request without authorization
-        if (strpos($route, 'scmc_') === 0 && (!$this->securityHandler->getToken()->hasAttribute('scmc_authenticated') ||
-            $this->securityHandler->getToken()->getAttribute('scmc_authenticated') != true)
-        ) {
-            $this->securityHandler->getToken()->setAttribute('scmc_authenticated', false);
-            $this->session->set('scmc_login_notice', _('Please login to access the certificate management area.'));
-            $event->setResponse(new RedirectResponse($this->router->generate('scmc_login')));
-        }
-
-        // check if password is still valid
-        /*if ($this->securityHandler->getToken() != null &&
-            $this->securityHandler->getToken()->hasAttribute('scmc_sessionpassword') &&
-            strpos($route, 'scmc_') === 0 && !$this->authenticate($this->securityHandler->getUser()->getUsername(), $this->getScmcSessionPassword())
-        ) {
-            $this->securityHandler->getToken()->setAttribute('scmc_authenticated', false);
-            $this->securityHandler->getToken()->setAttribute('scmc_sessionpassword', null);
-            $this->securityHandler->getToken()->setAttribute('scmc_token', null);
-            $this->session->set('scmc_login_notice', _('Your session is expired. Please login again.'));
-            $event->setResponse(new RedirectResponse($this->router->generate('scmc_login')));
-        }*/
     }
 
     /**
