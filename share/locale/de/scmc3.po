@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-30 20:09+0200\n"
+"POT-Creation-Date: 2017-06-30 20:13+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -303,31 +303,39 @@ msgstr "Modul: Zeugnisverwaltungsconnector"
 msgid "Stadtteilschule (Class 5-10)"
 msgstr "Stadtteilschule (Klasse 5-10)"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:50
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:48
+msgid ""
+"Select the type of your school, this setting is required for the available "
+"years for up -and downloading."
+msgstr ""
+"Wählen Sie den Typ Ihrer Schule, diese Einstellung wird für die verfügbaren "
+"Jahrgänge beim Up- und Download benötigt."
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:51
 msgid "Are you sure that you want to reset the master password? (y/N)"
 msgstr "Möchten Sie das Masterpasswort wirklich zurücksetzen? (y/N)"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:51
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:52
 msgid "Deleting master password ..."
 msgstr "Lösche Masterpasswort ..."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:52
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:53
 msgid "Running iservchk scmc ..."
 msgstr "Führe iservchk scmc aus ..."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:53
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:54
 msgid "Success, you may now set the master password in the IDesk under "
 msgstr "Erfolg, Sie sollten das Masterpasswort jetzt im IDesk unter "
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:54
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:55
 msgid "Administration > Modules > Certifcate Management"
 msgstr "Verwaltung > Module > Zeugnisverwaltung"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:55
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:56
 msgid "again."
 msgstr "erneut setzen."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:56
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:57
 msgid "Press enter to continue ..."
 msgstr "Eingabetaste zum Fortfahren drücken ..."
 

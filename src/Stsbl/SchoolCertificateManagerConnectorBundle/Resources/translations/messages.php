@@ -45,6 +45,7 @@ _('Exit');
 _('School Type');
 _('Module: School Certificate Manager Connector');
 _('Stadtteilschule (Class 5-10)');
+_('Select the type of your school, this setting is required for the available years for up -and downloading.');
 
 // Shell
 _('Are you sure that you want to reset the master password? (y/N)');
