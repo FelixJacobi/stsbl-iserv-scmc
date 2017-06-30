@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-30 19:50+0200\n"
+"POT-Creation-Date: 2017-06-30 20:09+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -26,9 +26,9 @@ msgstr "Anmelden"
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1567
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/EventListener/MenuListener.php:49
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/EventListener/MenuListener.php:72
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:108
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:147
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:190
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:113
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:152
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:195
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:129
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:70
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:233
@@ -184,14 +184,14 @@ msgstr "Möchten Sie das Benutzerpasswort von %s wirklich löschen?"
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1185
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1591
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:191
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:196
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:60
 msgid "Data Download"
 msgstr "Daten-Download"
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1373
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1614
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:148
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:153
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:70
 msgid "Data Upload"
 msgstr "Daten-Upload"
@@ -209,7 +209,7 @@ msgstr ""
 "Zeugnisverwaltungsserver werden gelöscht."
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1565
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:109
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:114
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:51
 msgid "Start Page"
 msgstr "Startseite"
@@ -299,39 +299,42 @@ msgstr "Schultyp"
 msgid "Module: School Certificate Manager Connector"
 msgstr "Modul: Zeugnisverwaltungsconnector"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:49
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:47
+msgid "Stadtteilschule (Class 5-10)"
+msgstr "Stadtteilschule (Klasse 5-10)"
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:50
 msgid "Are you sure that you want to reset the master password? (y/N)"
 msgstr "Möchten Sie das Masterpasswort wirklich zurücksetzen? (y/N)"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:50
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:51
 msgid "Deleting master password ..."
 msgstr "Lösche Masterpasswort ..."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:51
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:52
 msgid "Running iservchk scmc ..."
 msgstr "Führe iservchk scmc aus ..."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:52
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:53
 msgid "Success, you may now set the master password in the IDesk under "
 msgstr "Erfolg, Sie sollten das Masterpasswort jetzt im IDesk unter "
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:53
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:54
 msgid "Administration > Modules > Certifcate Management"
 msgstr "Verwaltung > Module > Zeugnisverwaltung"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:54
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:55
 msgid "again."
 msgstr "erneut setzen."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:55
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:56
 msgid "Press enter to continue ..."
 msgstr "Eingabetaste zum Fortfahren drücken ..."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/EventListener/KernelResponseSubscriber.php:97
 msgid "Please login to access the certificate management area."
 msgstr ""
-"Bitte melden Sie sich an, um auf den Zeugnisverwaltungsbereich "
-"zuzugreifen."
+"Bitte melden Sie sich an, um auf den Zeugnisverwaltungsbereich zuzugreifen."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:72
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:73
@@ -339,20 +342,20 @@ msgstr ""
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:75
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:76
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:77
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:78
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:79
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:83
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:84
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:89
 #, php-format
 msgid "Year %s"
 msgstr "Jahrgang %s"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:242
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:294
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:247
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:299
 msgid "Select destination server"
 msgstr "Zielserver wählen"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:244
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:296
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:249
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:301
 msgid ""
 "If your administrator has configured multiple servers (for example a primary "
 "and backup server), you can select the destination server."
@@ -360,15 +363,15 @@ msgstr ""
 "Wenn Ihr Administrator mehrere Server konfiguriert hat (zum Beispiel einen "
 "primären und einen Sicherungs-Server), können Sie einen Zielserver wählen."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:248
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:253
 msgid "Zip file with class data"
 msgstr "ZIP-Datei mit Klassendaten"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:249
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:254
 msgid "Please select a file to upload."
 msgstr "Bitte wählen Sie eine Datei zum Hochladen aus."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:251
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:256
 msgid ""
 "The zip file with the class data. It must contain sub folders with the class "
 "lists sorted by age group (Jahrgang5, Jahrgang6, ...). For more information "
@@ -378,11 +381,11 @@ msgstr ""
 "Klassenlisten enthalten, sortiert nach Jahrgang (Jahrgang5, Jahrgang6, ...). "
 "Für mehr Informationen schauen Sie bitte in die WZeugnis-Dokumentation."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:255
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:260
 msgid "Limit upload to these years"
 msgstr "Upload auf diese Jahrgänge beschränken"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:260
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:265
 msgid ""
 "You can limit the upload to particular years. Only the course lists of the "
 "selected years will deleted and replaced on the server."
@@ -391,11 +394,11 @@ msgstr ""
 "Kurslisten der gewählten Jahrgänge werden auf dem Server gelöscht und "
 "ersetzt."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:264
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:269
 msgid "Confirmation"
 msgstr "Bestätigung"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:265
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:270
 msgid ""
 "You need to confirm that a new upload will delete all existing data on the "
 "server."
@@ -403,7 +406,7 @@ msgstr ""
 "Sie müssen bestätigen, dass ein neuer Upload alle existierenden Daten auf "
 "dem Server löscht."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:268
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:273
 msgid ""
 "Before you can upload new class data, you have to confirm that will lead to "
 "loosing all data currently stored on the certificate server."
@@ -411,15 +414,15 @@ msgstr ""
 "Bevor Sie neue Klassendaten hochladen, müssen Sie bestätigen, dass ein neuer "
 "Upload alle existierenden gespeicherten Daten auf dem Server löscht."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:272
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:277
 msgid "Upload data"
 msgstr "Daten hochladen"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:300
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:305
 msgid "Limit download to these years"
 msgstr "Download auf diese Jahrgänge beschränken"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:305
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:310
 msgid ""
 "You can limit the download to particular years. Only the selected years will "
 "be included in the Zip file."
@@ -427,7 +430,7 @@ msgstr ""
 "Sie können den Download auf einzelne Jahrgänge beschränken. Nur die "
 "ausgewählten Jahrgänge werden in der ZIP-Datei enthalten sein."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:309
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:314
 msgid "Download data"
 msgstr "Daten herunterladen"
 
@@ -441,7 +444,7 @@ msgstr "Das Benutzerpasswort ist falsch."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:97
 msgid "Something went wrong:"
-msgstr ""
+msgstr "Etwas ist schiefgelaufen:"
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:102
 msgid "You have logged in successfully in the Certificate Management Section."
