@@ -55,7 +55,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
         parent::configure();
         
         $this->title = _('Allowed Rooms');
-        $this->itemTitle = _('Allowed Room');
+        $this->itemTitle = _('Room');
         $this->id = 'scmc_rooms';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc';
         $this->templates['crud_index'] = 'StsblSchoolCertificateManagerConnectorBundle:Crud:admin_scmc_rooms_index.html.twig';
