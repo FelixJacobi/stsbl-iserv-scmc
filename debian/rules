@@ -15,6 +15,7 @@ binary-indep:
 	dh_fixperms
 	dh_iservinstall3
 	dh_installdeb
+	dh_installdocs
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
