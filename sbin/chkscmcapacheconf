@@ -33,7 +33,6 @@ sub gen_conf($$$)
    "  LogLevel info\n".
    "  SSLProxyEngine on\n".
    "  ProxyRequests off\n".
-   "  AddCharset utf-8 .html\n".
    "  DocumentRoot /var/lib/stsbl/scmc/webroot\n".
    "\n".
    "  Header set Host $domain\n".
@@ -51,9 +50,11 @@ sub gen_conf($$$)
    "\n".   
    "    # Redirect from HTTP to HTTPS\n".
    "    RewriteCond %{HTTPS} off\n".
+   "    RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/.*\$\n".
    "    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n".
    "\n".
-   "    RewriteCond %{REQUEST_URI} !^/WZeugnis.*\n".
+   "    # Redirect to reverse proxy\n".
+   "    RewriteCond %{REQUEST_URI} ^/\$\n".
    "    RewriteRule (.*) /WZeugnis/WZeugnis.html [R=301,L]\n".
    "  </Location>\n".
    "  <Location /WZeugnis>\n".
