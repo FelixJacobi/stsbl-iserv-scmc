@@ -1,0 +1,163 @@
+#!/usr/bin/perl -CSDAL
+
+use warnings;
+use strict;
+use utf8;
+use Getopt::Long qw(:config bundling);
+use File::Slurp::Unicode;
+use IServ::Conf;
+use IServ::DB;
+
+my @domains = IServ::DB::SelectCol "SELECT WebDomain FROM scmc_servers";
+my $portal_domain = $conf->{Domain};
+my @alias_domains = @{ $conf->{AliasDomains} };
+
+sub gen_conf($$)
+{
+my ($domain, $subdomains) = @_;
+
+my @ips = split /\n/, qx(netquery -p ip);
+my $conf = "; BIND scmc forward zone for IServ\n".
+  ";\n".
+  "; This file is generated automatically by iservchk.\n".
+  "; It is not possible to make any changes to this file.\n".
+  "; Custom changes will overwritten on any iservchk run.\n".
+  ";\n".
+  "; For your own settings you can use:\n".
+  ";   /etc/bind/scmc.local/db.$domain\n".
+  ";\n".
+  "; After you created this file and insert your custom config,\n".
+  "; run the following commands to apply your changes:\n".
+  ";\n".
+  ";   chkscmcbindconf\n".
+  ";   service bind9 reload\n".
+  "\n".
+  "\$TTL    600\n".
+  "@               SOA     $portal_domain. hostmaster.$portal_domain. (\n".
+  "                        1          ; serial\n".
+  "                        86400      ; refresh (1 day)\n".
+  "                        7200       ; retry (2 hours)\n".
+  "                        3600000    ; expire (5 weeks 6 days 16 hours)\n".
+  "                        172800     ; minimum (2 days)\n".
+  ")\n".
+  "                NS      $portal_domain.\n";
+
+for (@ips)
+{
+  $conf .= "                A       $_\n";
+}
+
+for (@ips)
+{ 
+  $conf .= "@               A       $_\n";
+}
+
+for (@$subdomains)
+{
+  $conf .= "$_              CNAME   $domain.\n";
+}
+
+if (-f "/etc/bind/scmc.local/db.$domain")
+{
+  $conf .= "\n\$INCLUDE /etc/bind/scmc.local/db.$domain\n";
+}
+
+return $conf;
+}
+
+my ($repair, $help);
+GetOptions("repair|r" => \$repair, "help|h" => \$help) or $help = 1;
+
+print <<USAGE and exit if @ARGV > 0 || $help;
+Usage: chkscmcbindconf [options]
+Options
+-r, --repair           repair bind config
+-h, --help             show this help
+USAGE
+
+my $repaired = 0;
+
+sub is_part_of_domain($)
+{
+my $check_domain = shift;
+return 1 if $check_domain =~ /^(.*)\.$portal_domain$/;
+for (@alias_domains)
+{
+  return 1 if $check_domain =~ /^(.*)\.$_$/;
+}
+
+return 0;
+}
+
+chdir "/etc/bind/scmc" or die "Couldn't change directory: $!\n";
+
+my %cfg_domains;
+
+for (@domains)
+{
+# subdomains of portalserver domain are covered by forward.db
+next if is_part_of_domain $_;
+
+my @domain_elements = split /\./, $_;
+my $scmc_toplevel_domain = pop @domain_elements;
+my $scmc_second_level_domain = pop @domain_elements;
+my $scmc_domain = "$scmc_second_level_domain.$scmc_toplevel_domain";
+
+my $scmc_subdomain; 
+if (@domain_elements > 0)
+{
+  $scmc_subdomain = join ".", @domain_elements;
+}
+
+if (not defined $cfg_domains{$scmc_domain}{subdomains})
+{
+  $cfg_domains{$scmc_domain}{subdomains} = ();
+}
+
+if (defined $scmc_subdomain)
+{
+  push @{ $cfg_domains{$scmc_domain}{subdomains} }, $scmc_subdomain;
+}
+}
+
+my @given_fn = glob "*";
+
+for (@given_fn)
+{
+/^db\.(.*)$/;
+if (not defined $cfg_domains{$1})
+{
+  print "delete /etc/bind/scmc/$_\n";
+  unlink $_ if $repair;
+  $repaired++;
+}
+}
+
+for (keys %cfg_domains)
+{
+  my $cfg = gen_conf $_, \@{ $cfg_domains{$_}{subdomains} };
+
+  my $content = "";
+  if (-f "db.$_")
+  {
+    $content = join "", read_file "db.$_";
+  }
+
+  unless ($content eq $cfg)
+  {
+    print "write /etc/bind/scmc/db.$_\n";
+    if ($repair)
+    {
+      open my $fh, ">db.$_";
+      print $fh $cfg;
+      close $fh;
+    }
+    $repaired++;
+  }
+}
+
+if (not $repair)
+{
+  exit $repaired;
+}
+

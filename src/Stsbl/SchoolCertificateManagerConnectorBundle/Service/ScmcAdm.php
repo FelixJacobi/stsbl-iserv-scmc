@@ -54,6 +54,7 @@ class ScmcAdm
     const SCMCADM_SETUSERPASSWD = 'setuserpasswd';
     const SCMCADM_DELETEUSERPASSWD = 'deleteuserpasswd';
     const SCMCADM_SETMASTERPASSWD = 'setmasterpasswd';
+    const SCMCADM_NEWCONFIG = 'newconfig';
     
     /**
      * @var Filesystem
@@ -397,5 +398,15 @@ class ScmcAdm
             'SCMC_NEWMASTERPW' => $newPassword,
             'SCMC_OLDMASTERPW' => $oldPassword
         ]);
+    }
+
+    /**
+     * Calls newconfig sub command
+     *
+     * @return FlashMessageBag
+     */
+    public function newConfig()
+    {
+        return $this->scmcAdm(self::SCMCADM_NEWCONFIG);
     }
 }

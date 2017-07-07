@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-06-30 20:13+0200\n"
+"POT-Creation-Date: 2017-07-07 03:11+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -34,7 +34,7 @@ msgstr "Anmelden"
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:233
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:309
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/UserPasswordAdmin.php:148
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:299
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:300
 msgid "Certificate Management"
 msgstr "Zeugnisverwaltung"
 
@@ -152,7 +152,7 @@ msgid "Set up user passwords"
 msgstr "Benutzerpasswörter einrichten"
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:878
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:144
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:145
 msgid "Servers"
 msgstr "Server"
 
@@ -247,11 +247,11 @@ msgstr "Datum"
 msgid "Action"
 msgstr "Aktion"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:254
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:255
 msgid "Something went wrong."
 msgstr "Etwas ist schiefgelaufen."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:282
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:283
 msgid "You have to upload a zip file!"
 msgstr "Sie müssen eine ZIP-Datei hochladen!"
 
@@ -283,27 +283,31 @@ msgstr "Geben Sie eine gültige Domain an."
 msgid "Enter a valid Unix account name."
 msgstr "Geben Sie einen gültigen Unix-Kontonamen an."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:42
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:40
+msgid "The same domain can not used for two servers."
+msgstr "Diesselbe Domain kann nicht für zwei Server benutzt werden."
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:43
 msgid "Reset master password"
 msgstr "Masterpasswort zurücksetzen"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:43
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:44
 msgid "Exit"
 msgstr "Beenden"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:45
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:46
 msgid "School Type"
 msgstr "Schultyp"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:46
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:47
 msgid "Module: School Certificate Manager Connector"
 msgstr "Modul: Zeugnisverwaltungsconnector"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:47
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:48
 msgid "Stadtteilschule (Class 5-10)"
 msgstr "Stadtteilschule (Klasse 5-10)"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:48
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:49
 msgid ""
 "Select the type of your school, this setting is required for the available "
 "years for up -and downloading."
@@ -311,31 +315,31 @@ msgstr ""
 "Wählen Sie den Typ Ihrer Schule, diese Einstellung wird für die verfügbaren "
 "Jahrgänge beim Up- und Download benötigt."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:51
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:52
 msgid "Are you sure that you want to reset the master password? (y/N)"
 msgstr "Möchten Sie das Masterpasswort wirklich zurücksetzen? (y/N)"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:52
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:53
 msgid "Deleting master password ..."
 msgstr "Lösche Masterpasswort ..."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:53
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:54
 msgid "Running iservchk scmc ..."
 msgstr "Führe iservchk scmc aus ..."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:54
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:55
 msgid "Success, you may now set the master password in the IDesk under "
 msgstr "Erfolg, Sie sollten das Masterpasswort jetzt im IDesk unter "
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:55
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:56
 msgid "Administration > Modules > Certifcate Management"
 msgstr "Verwaltung > Module > Zeugnisverwaltung"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:56
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:57
 msgid "again."
 msgstr "erneut setzen."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:57
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/translations/messages.php:58
 msgid "Press enter to continue ..."
 msgstr "Eingabetaste zum Fortfahren drücken ..."
 
@@ -577,54 +581,54 @@ msgstr "Nachname"
 msgid "Groups"
 msgstr "Gruppen"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:145
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:146
 msgid "Server"
 msgstr "Server"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:159
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:230
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:257
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:160
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:231
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:258
 msgid "Host"
 msgstr "Gerät"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:161
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:162
 msgid "Select the host which should be the target for up- and downloading."
 msgstr ""
 "Wählen Sie das Gerät, auf das die Daten hoch- und heruntergeladen werden "
 "soll."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:192
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:243
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:260
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:193
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:244
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:261
 msgid "Tomcat version"
 msgstr "Tomcat-Version"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:194
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:195
 msgid ""
 "The version of Tomcat server which is running on the certificate management "
 "server."
 msgstr ""
 "Die Version des Tomcat-Servers, die auf dem Zeugnisverwaltungsserver läuft."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:197
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:198
 msgid "Tomcat 6"
 msgstr "Tomcat 6"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:198
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:199
 msgid "Tomcat 7"
 msgstr "Tomcat 7"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:199
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:200
 msgid "Tomcat 8"
 msgstr "Tomcat 8"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:203
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:233
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:264
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:204
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:234
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:265
 msgid "Domain"
 msgstr "Domain"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:205
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:206
 msgid ""
 "The domain, under which the reverse proxy is reachable. Must be different "
 "from the main domain or an alias domain of the portal server."
@@ -632,13 +636,13 @@ msgstr ""
 "Die Domain, unter der der Reverse-Proxy erreichbar ist. Diese muss sich von "
 "der Haupt-Domain oder einer Alias-Domain des Portalservers unterscheiden."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:209
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:236
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:267
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:210
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:237
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:268
 msgid "Assigned group"
 msgstr "Zugewiesene Gruppe"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:211
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:212
 msgid ""
 "By default a link to the reverse proxy is shown to all users with the "
 "privilege \"Show link to certificate management\". You can limit the "
@@ -648,13 +652,13 @@ msgstr ""
 "Recht \"Link zur Zeugnisverwaltung anzeigen\" angezeigt. Sie können die "
 "Sichtbarkeit des Links auf eine Gruppe beschränken."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:215
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:239
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:270
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:216
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:240
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:271
 msgid "SSH account"
 msgstr "SSH-Konto"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:217
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:218
 msgid ""
 "The account which is used to up- and download the data. The account must be "
 "member of the tomcat6/7/8 group on the certificate management server. You "

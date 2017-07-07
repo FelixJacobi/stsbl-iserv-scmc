@@ -1,0 +1,123 @@
+#!/usr/bin/perl -CSDAL
+
+use warnings;
+use strict;
+use utf8;
+use Getopt::Long qw(:config bundling);
+use File::Slurp::Unicode;
+use IServ::DB;
+
+sub gen_conf($$$)
+{
+ my $domain = shift;
+ my $server = shift;
+ my $id = shift;
+ my $conf = "# SCMC apache vhost for IServ\n".
+   "#\n".
+   "# This file is generated automatically by iservchk.\n".
+   "# It is not possible to make any changes to this file.\n".
+   "# Custom changes will overwritten on any iservchk run.\n".
+   "#\n".
+   "# For your own settings you can use:\n".
+   "#   /etc/apache2/scmc.local/$id.conf\n".
+   "#\n".
+   "# After you created this file and insert your custom config,\n".
+   "# run the following commands to apply your changes:\n".
+   "#\n".
+   "#   chkscmcapacheconf\n".
+   "#   service apache2 reload\n".
+   "\n".
+   "  ServerName $domain\n".
+   "  CustomLog /var/log/apache2/scmc.log combined\n".
+   "  ErrorLog /var/log/apache2/scmc.error.log\n".
+   "  LogLevel info\n".
+   "  SSLProxyEngine on\n".
+   "  ProxyRequests off\n".
+   "  AddCharset utf-8 .html\n".
+   "\n".
+   "  Header set Host $domain\n".
+   "  RequestHeader set Host $server\n".
+   "  Header unset Referer\n".
+   "  RequestHeader unset Referer\n".
+   "\n".
+   "  <Location />\n".
+   "    RewriteEngine on\n".
+   "\n".   
+   "    # Redirect from HTTP to HTTPS\n".
+   "    RewriteCond %{HTTPS} off\n".
+   "    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n".
+   "\n".
+   "  </Location>\n".
+   "  <Location /WZeugnis>\n".
+   "    RewriteEngine on\n".
+   "\n".
+   "    # All Rewrite Settings have to be listed here again, otherwhile they would be overwritten by the Reverse Proxy\n".
+   "    # Redirect from HTTP to HTTPS\n".
+   "    RewriteCond %{HTTPS} off\n".
+   "    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n".
+   "\n".
+   "    # Reverse proxy\n".
+   "    RewriteRule (.*) http://$server:8080%{REQUEST_URI} [P]\n".
+   "  </Location>\n";
+ 
+ if (-f "/etc/apache2/scmc.local/$id.conf")
+ {
+   $conf .= "\n  Include \"/etc/apache2/scmc.local/$id.conf\"\n";
+ }
+ 
+ return $conf;
+}
+
+my ($repair, $help);
+GetOptions("repair|r" => \$repair, "help|h" => \$help) or $help = 1;
+
+print <<USAGE and exit if @ARGV > 0 || $help;
+Usage: chkscmcapacheconf [options]
+Options
+ -r, --repair           repair apache config
+ -h, --help             show this help
+USAGE
+
+my $repaired = 0;
+my %servers = IServ::DB::SelectAll_Hash "SELECT s.ID, s.WebDomain, h.IP FROM scmc_servers s JOIN hosts h ON (s.Host = h.Name)";
+
+chdir "/etc/apache2/scmc" or die "Couldn't change directory: $!\n";
+my @given_fn = glob "*";
+
+for (@given_fn)
+{
+  /^(.*)\.conf$/;
+  if (not defined $servers{$1})
+  {
+    print "delete etc/apache2/scmc/$_\n";
+    unlink $_ if $repair;
+    $repaired++;
+  }
+}
+
+for (keys %servers)
+{
+  my $cfg = gen_conf $servers{$_}{webdomain}, $servers{$_}{ip}, $_;
+  my $content = "";
+  if (-f "$_.conf")
+  {
+    $content = join "", read_file "$_.conf";
+  }
+  
+  unless ($content eq $cfg)
+  {
+    print "write /etc/apache2/scmc/$_.conf\n";
+    if ($repair)
+    {
+      open my $fh, ">$_.conf";
+      print $fh $cfg;
+      close $fh;
+    }
+    $repaired++;
+  }
+}
+
+if (not $repair)
+{
+  exit $repaired;
+}

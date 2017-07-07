@@ -8,6 +8,7 @@ use IServ\AdminBundle\Admin\AbstractAdmin;
 use IServ\CoreBundle\Service\Logger;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Entity\FlashMessageBag;
+use IServ\CrudBundle\Entity\FlashMessage as FlashMessageEntity;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
@@ -301,11 +302,20 @@ class ServerAdmin extends AbstractAdmin
     }
 
     /**
+     * Run scmcadm newconfig and convert output to flash message
+     */
+    private function newConfig()
+    {
+        $this->getScmcAdm()->newConfig();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function postPersist(CrudInterface $object)
     {
         $this->logger->writeForModule(sprintf('Zeugnisserver "%s" hinzugefügt', (string)$object->getHost()), 'School Certificate Manager Connector');
+        $this->newConfig();
     }
 
     /**
@@ -327,6 +337,7 @@ class ServerAdmin extends AbstractAdmin
     {
         $this->logger->writeForModule(sprintf('Zeugnisserver "%s" gelöscht', (string)$object->getHost()), 'School Certificate Manager Connector');
         $this->createFlashMessagesFromBag($this->getScmcAdm()->deleteKey($object));
+        $this->newConfig();
     }
 
     /**

@@ -39,7 +39,8 @@ if (@ARGV < 2)
   print STDERR "Command masterpasswdempty: LOGIN\n";
   print STDERR "Command setuserpasswd: LOGIN DESTACT\n";
   print STDERR "Command deleteuserpasswd: LOGIN DESTCACT\n";
-  print STDERR "Command setmasterpasswd: LOGIN\n\n";
+  print STDERR "Command setmasterpasswd: LOGIN\n";
+  print STDERR "Command newconfig: LOGIN\n\n";
   print STDERR "Environment: ARG, PASSWORD, IP, IPWD, SCMC_SESSIONPW, SCMC_OLDMASTERPW, SCMC_NEWMASTERPW\n";
   print STDERR "Return of getdata: Folder path of created zip file on STDOUT.\n";
   exit 1;
@@ -345,6 +346,17 @@ if ($cmd eq "getdata")
   my $old;
   $old = $old_masterpw if defined $old_masterpw and not $old_masterpw eq "";
   Stsbl::IServ::SCMC::SetMasterPasswd $new_masterpw, $old;
+} elsif ($cmd eq "newconfig")
+{
+  req_admin;
+  req_priv "scmc_admin";
+
+  fork and exit;
+  open STDIN, "/dev/null" or die $!;
+  open STDOUT, ">/dev/null" or die $!;
+  open STDERR, ">/dev/null" or die $!;
+
+  system "iservchk", "-a", "cert", "apache", "bind";
 } else 
 {
   error "Unknown command $cmd!";

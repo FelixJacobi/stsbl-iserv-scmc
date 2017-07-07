@@ -37,6 +37,7 @@ _('Access the connector to up- and download data');
 _('Choose a valid server type.');
 _('Enter a valid domain.');
 _('Enter a valid Unix account name.');
+_('The same domain can not used for two servers.');
 
 // iservcfg
 _('Reset master password');

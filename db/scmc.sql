@@ -23,7 +23,7 @@ CREATE TABLE scmc_servers (
     TomcatType      TEXT        NOT NULL 
                                     CHECK (TomcatType IN
         ('tomcat6', 'tomcat7', 'tomact8')),
-    WebDomain       TEXT        NOT NULL,
+    WebDomain       TEXT        NOT NULL UNIQUE,
     ActGrp           TEXT       REFERENCES groups(Act)
                                     ON UPDATE CASCADE
                                     ON DELETE SET NULL,

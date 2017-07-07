@@ -1,0 +1,5 @@
+MkDir 0755 root:root /etc/bind/scmc{,.local}
+Test "check scmc bind config"
+  "chkscmcbindconf"
+  "chkscmcbindconf -r"
+

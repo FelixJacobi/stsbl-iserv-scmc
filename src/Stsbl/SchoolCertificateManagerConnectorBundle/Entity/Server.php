@@ -7,6 +7,7 @@ use IServ\CoreBundle\Entity\Group;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\HostBundle\Entity\Host;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Validator\Constraints as StsblAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /*
@@ -38,6 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
+ * @DoctrineAssert\UniqueEntity("webDomain", message="The same domain can not used for two servers.")
  * @ORM\Entity
  * @ORM\Table(name="scmc_servers")
  */
