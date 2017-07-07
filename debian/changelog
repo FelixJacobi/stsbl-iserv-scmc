@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (17.07.07-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added basic reverse proxy support.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Fri, 07 Jul 2017 03:16:07 +0200
+
 stsbl-iserv-scmc (17.06.30-2) experimental; urgency=medium
 
   [ Felix Jacobi ]
