@@ -34,11 +34,17 @@ sub gen_conf($$$)
    "  SSLProxyEngine on\n".
    "  ProxyRequests off\n".
    "  AddCharset utf-8 .html\n".
+   "  DocumentRoot /var/lib/stsbl/scmc/webroot\n".
    "\n".
    "  Header set Host $domain\n".
    "  RequestHeader set Host $server\n".
    "  Header unset Referer\n".
    "  RequestHeader unset Referer\n".
+   "\n".
+   "  <Directory /var/lib/stsbl/scmc/webroot>\n".
+   "    Allow from all\n".
+   "    Require all granted\n".
+   "  </Directory>\n".
    "\n".
    "  <Location />\n".
    "    RewriteEngine on\n".
@@ -47,6 +53,8 @@ sub gen_conf($$$)
    "    RewriteCond %{HTTPS} off\n".
    "    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n".
    "\n".
+   "    RewriteCond %{REQUEST_URI} !^/WZeugnis.*\n".
+   "    RewriteRule (.*) /WZeugnis/WZeugnis.html [R=301,L]\n".
    "  </Location>\n".
    "  <Location /WZeugnis>\n".
    "    RewriteEngine on\n".

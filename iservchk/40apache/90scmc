@@ -1,0 +1,4 @@
+MkDir 0755 root:root /var/lib/stsbl
+MkDir 0755 root:root /var/lib/stsbl/scmc
+MkDir 0755 root:root /var/lib/stsbl/scmc/webroot
+
