@@ -1,3 +1,13 @@
+stsbl-iserv-scmc (17.07.07-2) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Renamed virtual hosts from 00* to 01* to prevent wrong user homepage handling.
+  * Adjusted apache config for Let's Encrypt.
+  * Updated build rules.
+  * Remove server config on package removal.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Fri, 07 Jul 2017 04:40:12 +0200
+
 stsbl-iserv-scmc (17.07.07-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
