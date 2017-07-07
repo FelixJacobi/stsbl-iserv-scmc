@@ -1,0 +1,17 @@
+{# src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/views/Crud/admin_scmc_rooms_index.html.twig #}
+{% extends "IServCrudBundle:Crud:index.html.twig" %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                {{ _('Select from which rooms the certificate management can accessed') }}
+            </h3>
+        </div>
+        <div class="panel-body">
+            <p>{{ _('Select if all rooms except the one in the following list or only the rooms which are in the list are available.') }}</p>
+            {{ form(room_inclusion_form, {'style': 'inline'}) }}
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
