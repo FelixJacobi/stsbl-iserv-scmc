@@ -35,6 +35,7 @@ services:
         class: Stsbl\SchoolCertificateManagerConnectorBundle\Admin\RoomWhitelistAdmin # Our CRUD class
         arguments: [Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Room]  # Sets the controlled entity class
         calls:
+            - [ setScmcAdm, ["@stsbl.scmc.service.scmcadm"] ]
             - [ setLogger, ["@iserv.logger"] ]
         tags:
             - { name: iserv.crud } # Tells IServ about our CRUD

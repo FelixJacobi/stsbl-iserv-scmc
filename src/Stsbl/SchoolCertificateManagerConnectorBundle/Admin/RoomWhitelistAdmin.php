@@ -42,6 +42,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class RoomWhitelistAdmin extends AbstractAdmin
 {
+    use ScmcAdmTrait;
+
     /**
      * @var Logger
      */
@@ -184,6 +186,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
     public function postPersist(CrudInterface $object) 
     {
         $this->logger->writeForModule(sprintf('Raum "%s" zur Raumliste hinzugefügt', (string)$object->getRoom()), 'School Certificate Manager Connector');
+        $this->newConfig();
     }
     
     /**
@@ -192,5 +195,6 @@ class RoomWhitelistAdmin extends AbstractAdmin
     public function postRemove(CrudInterface $object) 
     {
         $this->logger->writeForModule(sprintf('Raum "%s" aus der Raumliste entfernt', (string)$object->getRoom()), 'School Certificate Manager Connector');
+        $this->newConfig();
     }
 }

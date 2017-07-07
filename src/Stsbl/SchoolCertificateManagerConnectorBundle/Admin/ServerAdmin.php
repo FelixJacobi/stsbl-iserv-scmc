@@ -8,12 +8,10 @@ use IServ\AdminBundle\Admin\AbstractAdmin;
 use IServ\CoreBundle\Service\Logger;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Entity\FlashMessageBag;
-use IServ\CrudBundle\Entity\FlashMessage as FlashMessageEntity;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Crud\Batch;
-use Stsbl\SchoolCertificateManagerConnectorBundle\Service\ScmcAdm;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /*
@@ -48,10 +46,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  */
 class ServerAdmin extends AbstractAdmin
 {
-    /**
-     * @var ScmcAdm
-     */
-    private $scmcAdm;
+    use ScmcAdmTrait;
 
     /**
      * @var Logger
@@ -78,16 +73,6 @@ class ServerAdmin extends AbstractAdmin
     }
 
     /**
-     * Inject ScmcAdm
-     *
-     * @param ScmcAdm $scmcAdm
-     */
-    public function setScmcAdm(ScmcAdm $scmcAdm)
-    {
-        $this->scmcAdm = $scmcAdm;
-    }
-
-    /**
      * Inject Logger
      *
      * @param Logger $logger
@@ -106,17 +91,6 @@ class ServerAdmin extends AbstractAdmin
     {
         $this->flashMessage = $flashMessage;
     }
-
-    /**
-     * Get ScmcAdm
-     *
-     * @return ScmcAdm|null
-     */
-    public function getScmcAdm()
-    {
-        return $this->scmcAdm;
-    }
-
     /**
      * Get Logger
      *
@@ -299,14 +273,6 @@ class ServerAdmin extends AbstractAdmin
         return array(
             _('Certificate Management') => $this->router->generate('admin_scmc')
         );
-    }
-
-    /**
-     * Run scmcadm newconfig and convert output to flash message
-     */
-    private function newConfig()
-    {
-        $this->getScmcAdm()->newConfig();
     }
 
     /**
