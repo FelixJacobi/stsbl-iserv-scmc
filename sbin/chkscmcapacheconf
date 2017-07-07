@@ -45,6 +45,15 @@ sub gen_conf($$$)
    "    Require all granted\n".
    "  </Directory>\n".
    "\n".
+   "  Alias /favicon.ico /usr/share/iserv/scmc/favicon.ico\n".
+   "\n".
+   "  <Directory /usr/share/iserv/scmc>\n".
+   "    <Files favicon.ico>\n".
+   "      Allow from all\n".
+   "      Require all granted\n".
+   "    </Files>\n".
+   "  </Directory>\n".
+   "\n".
    "  <Location />\n".
    "    RewriteEngine on\n".
    "\n".   
