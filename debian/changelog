@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (17.07.07-1) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added webroot and redirection config.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Fri, 07 Jul 2017 03:44:04 +0200
+
 stsbl-iserv-scmc (17.07.07-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
