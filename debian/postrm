@@ -1,0 +1,9 @@
+#!/bin/sh
+
+case "$1" in
+  remove|purge)
+        rm -f /etc/apache2/sites-enabled/01scmc.conf
+	rm -f /etc/apache2/sites-enabled/01scmc-ssl.conf
+    ;;
+esac
+
