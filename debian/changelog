@@ -1,3 +1,24 @@
+stsbl-iserv-scmc (17.07.09-0) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Updated build rules.
+  * Added favicon to proxy.
+  * Added fugue copyright.
+  * Added basic room whitelist management.
+  * RoomWhitelistAdmin: Fixed single item title.
+  * Moved Scmc setter and getter to Trait.
+  * Added support for whitelist configuration.
+
+  iserv: Die neue Version unterhält nun Unterstützung für eine weiße Liste von
+    Räumen. Geräte, dessen Räume sich nicht auf dieser Liste befinden, wird
+    stattdessen eine "Zugriff verweigert"-Meldung angezeigt und darauf
+    hingewiesen, von wo aus der Zugriff erlaubt ist. Diese Liste kann in IServ
+    3 unter Verwaltung » Zeugnisverwaltung » Zulässige Räume bearbeitet
+    werden. Außerdem wird nun eine verständlichere Fehlermeldung angezeigt,
+    wenn der Zeugnisserver nicht erreichbar sein sollte.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sun, 09 Jul 2017 00:43:56 +0200
+
 stsbl-iserv-scmc (17.07.07-2) experimental; urgency=medium
 
   [ Felix Jacobi ]
