@@ -1,0 +1,39 @@
+{# src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/views/Public/block.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% set title = _('School certificate management server could not be reached') %}
+
+{% block head %}
+<style type="text/css">
+body { background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAxMC8yOS8xMiKqq3kAAAAcdEVYdFNvZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzVxteM2AAABHklEQVRIib2Vyw6EIAxFW5idr///Qx9sfG3pLEyJ3tAwi5EmBqRo7vHawiEEERHS6x7MTMxMVv6+z3tPMUYSkfTM/R0fEaG2bbMv+Gc4nZzn+dN4HAcREa3r+hi3bcuu68jLskhVIlW073tWaYlQ9+F9IpqmSfq+fwskhdO/AwmUTJXrOuaRQNeRkOd5lq7rXmS5InmERKoER/QMvUAPlZDHcZRhGN4CSeGY+aHMqgcks5RrHv/eeh455x5KrMq2yHQdibDO6ncG/KZWL7M8xDyS1/MIO0NJqdULLS81X6/X6aR0nqBSJcPeZnlZrzN477NKURn2Nus8sjzmEII0TfMiyxUuxphVWjpJkbx0btUnshRihVv70Bv8ItXq6Asoi/ZiCbU6YgAAAABJRU5ErkJggg==); }
+.error-message {padding: 40px 15px; text-align: center; }
+.error-message h1 {font-size: 10em; }
+.error-message h2 {margin: 1em 0; }
+.error-actions {margin: 2em 0; }
+.error-actions .btn { margin: 10px; }
+pre {
+    text-align: left;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-push-1 col-sm-12 col-xs-12">
+            <div class="error-message">
+                <h1>503</h1>
+
+                <h2 class="text-uppercase">{{ title }}</h2>
+
+                <p>
+                    {{ _('The school certificate management server could not be reached. Please contact your administrator.') }}
+                </p>
+                <div class="error-actions">
+                    <a href="https://{{ config.get('Servername') }}/iserv/" class="btn btn-primary btn-lg">{{ icon('home') }}{{ _('To the IDesk') }}</a>
+                </div>
+            </div>
+        </div>
+     </div>
+ </div>
+{% endblock %}

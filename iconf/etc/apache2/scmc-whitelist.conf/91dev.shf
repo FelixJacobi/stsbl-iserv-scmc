@@ -1,0 +1,16 @@
+#!/bin/bash
+
+. /usr/lib/iserv/cfg
+
+if [ "$DevEnvironment" ]
+then
+    sed -e 's/\/usr\/share\/iserv\/web\/app.php/\/usr\/share\/iserv\/web\/app_dev.php/g
+    \|<Directory /usr/share/iserv/web>|,\|</Directory>| {
+          s/^\(\s*\)\(php_flag\s\+opcache\.validate_timestamps\)/\1#\2/
+    }
+    \|<Directory /usr/share/iserv/www/>|,\|</Directory>| {
+            s/^\(\s*\)\(php_flag\s\+opcache\.validate_timestamps\)/\1#\2/
+    }'
+else
+    cat
+fi

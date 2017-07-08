@@ -17,7 +17,7 @@ sub gen_conf($$)
 my ($domain, $subdomains) = @_;
 
 my @ips = split /\n/, qx(netquery -p ip);
-my $conf = "; BIND scmc forward zone for IServ\n".
+my $conf = "; BIND SCMC forward zone for IServ\n".
   ";\n".
   "; This file is generated automatically by iservchk.\n".
   "; It is not possible to make any changes to this file.\n".

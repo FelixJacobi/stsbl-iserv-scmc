@@ -1,0 +1,39 @@
+# Block and error page
+  Alias /public/scmc/block /usr/share/iserv/web/app.php
+  Alias /public/scmc/unavailable /usr/share/iserv/web/app.php
+
+  # Assets
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_URI} !^/public
+  RewriteCond %{REQUEST_URI} !^/_profiler
+  RewriteCond %{REQUEST_URI} !^/_wdt
+  RewriteRule (.*) /usr/share/iserv/web/%{REQUEST_URI}
+
+  <Directory /usr/share/iserv/web>
+    Allow from all
+    Options FollowSymLinks
+
+    Header set Referrer-Policy: "no-referrer"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header always append X-Frame-Options "SAMEORIGIN"
+
+    # unsafe-eval is needed by jQuery. Proposed change in 4.0 (https://github.com/jquery/jquery/issues/1895)
+    Header setifempty Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self'; img-src 'self' data:;" env=!IS_DEV
+    Header setifempty X-Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self'; img-src 'self' data:;" env=!IS_DEV
+
+    php_admin_flag engine on
+    php_value display_errors stdout
+    php_flag short_open_tag off
+    php_flag opcache.validate_timestamps off
+    php_value date.timezone "Europe/Berlin"
+    php_admin_value session.cookie_path "/"
+    php_admin_flag session.cookie_httponly on
+    php_value session.save_path "/run/sessauthd/sess"
+    php_admin_flag session.use_cookies off
+    php_value memory_limit "512M"
+    php_value upload_max_filesize "1024M"
+    php_value post_max_size "1024M"
+    php_admin_value max_file_uploads 1000
+    php_value max_input_vars 16384
+  </Directory>

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-07 03:11+0200\n"
+"POT-Creation-Date: 2017-07-09 00:31+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -21,20 +21,21 @@ msgstr "Anmelden"
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:58
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:129
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:798
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1187
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1375
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1567
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1646
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1834
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2026
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/EventListener/MenuListener.php:49
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/EventListener/MenuListener.php:72
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:113
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:152
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:195
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php:129
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:70
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:233
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:309
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:96
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:259
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:335
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/UserPasswordAdmin.php:148
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:300
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:274
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/RoomWhitelistAdmin.php:169
 msgid "Certificate Management"
 msgstr "Zeugnisverwaltung"
 
@@ -73,24 +74,24 @@ msgid "Tomcat %s"
 msgstr "Tomcat %s"
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:632
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:187
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:236
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:213
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:262
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/UserPasswordAdmin.php:160
 msgid "Set user password"
 msgstr "Benutzerpasswort setzen"
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:636
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:858
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1032
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:234
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:310
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1061
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:260
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:336
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/UserPasswordAdmin.php:51
 msgid "User passwords"
 msgstr "Benutzerpasswörter"
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:638
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:800
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1034
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1063
 msgid "Administration"
 msgstr "Verwaltung"
 
@@ -100,7 +101,7 @@ msgid "Set a new user password for %s"
 msgstr "Ein neues Benutzerpasswort für %s setzen"
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:667
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1063
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1092
 msgid "Back to details"
 msgstr "Zurück zu Details"
 
@@ -152,7 +153,7 @@ msgid "Set up user passwords"
 msgstr "Benutzerpasswörter einrichten"
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:878
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:145
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:119
 msgid "Servers"
 msgstr "Server"
 
@@ -166,37 +167,91 @@ msgstr ""
 msgid "Set up servers"
 msgstr "Server einrichten"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1028
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:312
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:898
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/RoomWhitelistAdmin.php:59
+msgid "Allowed Rooms"
+msgstr "Zulässige Räume"
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:904
+msgid ""
+"Configure the rooms which are allowed to access the certificate management "
+"server."
+msgstr ""
+"Konfigurieren Sie, welche Räume auf die Zeugnisverwaltungsserver zugreifen "
+"dürfen."
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:910
+msgid "Set up allowed rooms"
+msgstr "Zulässige Räume einrichten"
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1057
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:338
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/UserPasswordAdmin.php:181
 msgid "Delete user password"
 msgstr "Benutzerpasswort löschen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1056
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1085
 #, php-format
 msgid "Delete user password of %s"
 msgstr "Benutzerpasswort von %s löschen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1070
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1099
 #, php-format
 msgid "Do you really want to delete the user password of %s?"
 msgstr "Möchten Sie das Benutzerpasswort von %s wirklich löschen?"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1185
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1591
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1196
+msgid "School certificate management server could not be reached"
+msgstr "Zeugnisverwaltungsserver konnte nicht erreicht werden"
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1261
+msgid ""
+"The school certificate management server could not be reached. Please "
+"contact your administrator."
+msgstr ""
+"Der Zeugnisverwaltungsserver konnte nicht erreicht werden. Bitte kontaktieren "
+"Sie Ihren Administrator."
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1270
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1496
+msgid "To the IDesk"
+msgstr "Zum IDesk"
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1387
+msgid "Access to school certificate management server not allowed"
+msgstr "Zugriff auf Zeugnisverwaltungsserver nicht gestattet"
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1453
+msgid ""
+"Your administrator set, that the server is not reachable from your host. The "
+"access is allowed from the following rooms:"
+msgstr ""
+"Ihr Administrator hat konfiguriert, dass der Server von Ihrem Gerät aus nicht "
+"erreichbar ist. Der Zugriff ist von folgenden Räumen aus erlaubt:"
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1474
+msgid "All rooms are allowed."
+msgstr "Alle Räume sind erlaubt."
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1487
+msgid "The access is also allowed from the internet connection at home."
+msgstr "Der Zugriff ist außerdem vom heimischen Internetanschluss erlaubt."
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1644
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2050
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:196
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:60
 msgid "Data Download"
 msgstr "Daten-Download"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1373
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1614
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1832
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2073
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:153
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:70
 msgid "Data Upload"
 msgstr "Daten-Upload"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1395
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1854
 msgid ""
 "Before you upload new class data, make sure that you have downloaded a "
 "security copy of the results. All existing data in the Jahrgang* folder "
@@ -208,44 +263,58 @@ msgstr ""
 "Jahrgang*-Ordnern innerhalb des /Zeugnisse/-Ordners auf dem "
 "Zeugnisverwaltungsserver werden gelöscht."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1565
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2024
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:114
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:51
 msgid "Start Page"
 msgstr "Startseite"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1597
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2056
 msgid "Download entered certificate data from the server."
 msgstr "Eingebene Zeugnisdaten vom Server herunterladen."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1605
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2064
 msgid "Download certifcate data"
 msgstr "Zeugnisdaten herunterladen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1620
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2079
 msgid "Upload new class and course lists to the server."
 msgstr "Neue Klassen- und Kurslisten auf den Server hochladen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1628
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2087
 msgid "Upload certifcate data"
 msgstr "Zeugnisdaten hochladen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1637
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2096
 msgid "Last actions"
 msgstr "Letzte Aktionen"
 
 # sprintf
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1646
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2105
 msgid "Name"
 msgstr "Name"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1650
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2109
 msgid "Date"
 msgstr "Datum"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1654
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2113
 msgid "Action"
 msgstr "Aktion"
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2501
+msgid "Select from which rooms the certificate management can accessed"
+msgstr ""
+"Wählen Sie aus, von welchen Räumen aus auf die Zeugnisverwaltung "
+"zugegriffen werden kann."
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2508
+msgid ""
+"Select if all rooms except the one in the following list or only the rooms "
+"which are in the list are allowed."
+msgstr ""
+"Wählen Sie aus ob alle, außer den Räumen in der folgende Liste order nur die "
+"in der folgenden Liste erlaubt sind."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Service/ScmcAdm.php:255
 msgid "Something went wrong."
@@ -480,57 +549,73 @@ msgstr "Bitte geben Sie das Benutzerpasswort ein und probieren Sie es erneut."
 msgid "User password"
 msgstr "Benutzerpasswort"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:96
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:122
 msgid "New password and repeat does not match."
 msgstr "Neues Passwort und Wiederholung stimmen nicht überein."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:123
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:149
 msgid "Old master password can not be empty."
 msgstr "Altes Masterpasswort darf nicht leer sein."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:125
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:151
 msgid "Old master password"
 msgstr "Altes Masterpasswort"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:136
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:162
 msgid "New master password can not be empty."
 msgstr "Neues Masspasswort darf nicht leer sein."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:138
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:164
 msgid "New master password"
 msgstr "Neues Masterpasswort"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:146
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:172
 msgid "Repeat of new master password can not be empty."
 msgstr "Wiederholung des neues Masterpasswortes darf nicht leer sein."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:148
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:174
 msgid "Repeat new master password"
 msgstr "Neues Masterpasswort wiederholen"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:154
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:180
 msgid "Update password"
 msgstr "Passwort aktualisieren"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:175
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:201
 msgid "New user password"
 msgstr "Neues Benutzerpasswort"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:177
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:203
 msgid "User password can not be empty."
 msgstr "Benutzerpasswort darf nicht leer sein."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:193
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:219
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:282
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:308
 msgid "Yes"
 msgstr "Ja"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:288
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:314
 msgid "No"
 msgstr "Nein"
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:387
+msgid "All rooms except the following"
+msgstr "Alle Räume, außer die folgenden"
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:388
+msgid "The following rooms"
+msgstr "Folgende Räume"
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:394
+msgid "Save"
+msgstr "Speichern"
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/AdminController.php:432
+msgid "Room settings updated successful."
+msgstr "Raumeinstellungen erfolgreich aktualisiert."
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:90
 msgid "Logout"
@@ -581,54 +666,54 @@ msgstr "Nachname"
 msgid "Groups"
 msgstr "Gruppen"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:146
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:120
 msgid "Server"
 msgstr "Server"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:160
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:231
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:258
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:134
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:205
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:232
 msgid "Host"
 msgstr "Gerät"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:162
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:136
 msgid "Select the host which should be the target for up- and downloading."
 msgstr ""
 "Wählen Sie das Gerät, auf das die Daten hoch- und heruntergeladen werden "
 "soll."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:193
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:244
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:261
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:167
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:218
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:235
 msgid "Tomcat version"
 msgstr "Tomcat-Version"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:195
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:169
 msgid ""
 "The version of Tomcat server which is running on the certificate management "
 "server."
 msgstr ""
 "Die Version des Tomcat-Servers, die auf dem Zeugnisverwaltungsserver läuft."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:198
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:172
 msgid "Tomcat 6"
 msgstr "Tomcat 6"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:199
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:173
 msgid "Tomcat 7"
 msgstr "Tomcat 7"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:200
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:174
 msgid "Tomcat 8"
 msgstr "Tomcat 8"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:204
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:234
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:265
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:178
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:208
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:239
 msgid "Domain"
 msgstr "Domain"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:206
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:180
 msgid ""
 "The domain, under which the reverse proxy is reachable. Must be different "
 "from the main domain or an alias domain of the portal server."
@@ -636,13 +721,13 @@ msgstr ""
 "Die Domain, unter der der Reverse-Proxy erreichbar ist. Diese muss sich von "
 "der Haupt-Domain oder einer Alias-Domain des Portalservers unterscheiden."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:210
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:237
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:268
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:184
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:211
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:242
 msgid "Assigned group"
 msgstr "Zugewiesene Gruppe"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:212
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:186
 msgid ""
 "By default a link to the reverse proxy is shown to all users with the "
 "privilege \"Show link to certificate management\". You can limit the "
@@ -652,13 +737,13 @@ msgstr ""
 "Recht \"Link zur Zeugnisverwaltung anzeigen\" angezeigt. Sie können die "
 "Sichtbarkeit des Links auf eine Gruppe beschränken."
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:216
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:240
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:271
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:190
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:214
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:245
 msgid "SSH account"
 msgstr "SSH-Konto"
 
-#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:218
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/ServerAdmin.php:192
 msgid ""
 "The account which is used to up- and download the data. The account must be "
 "member of the tomcat6/7/8 group on the certificate management server. You "
@@ -668,6 +753,11 @@ msgstr ""
 "Konto muss Mitglied der tomcat6/7/8-Gruppe auf dem Zeugnisverwaltungsserver "
 "sein. Sie müssen eine SSH-Schlüssel für diesen Benutzer in der Server-"
 "Übersicht hochladen."
+
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/RoomWhitelistAdmin.php:60
+#: src/Stsbl/SchoolCertificateManagerConnectorBundle/Admin/RoomWhitelistAdmin.php:115
+msgid "Room"
+msgstr "Raum"
 
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Crud/Batch/UploadSSHKeyAction.php:70
 msgid "SSH key"

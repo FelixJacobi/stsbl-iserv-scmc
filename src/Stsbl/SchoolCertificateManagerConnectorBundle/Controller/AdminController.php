@@ -423,6 +423,7 @@ class AdminController extends CrudController
                     $text = 'Raumrichtlinie geändert auf "Folgende"';
                 }
                 $this->get('iserv.logger')->writeForModule($text, 'School');
+                $this->get('stsbl.scmc.service.scmcadm')->newConfig();
             }
 
             $content = json_encode(['invert' => $mode]);

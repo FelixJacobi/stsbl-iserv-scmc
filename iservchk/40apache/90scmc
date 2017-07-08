@@ -4,4 +4,3 @@ MkDir 0755 root:root /var/lib/stsbl/scmc/webroot
 MkDir 0700 www-data:root /var/lib/stsbl/scmc/cfg
 Touch /var/lib/stsbl/scmc/cfg/room-mode.json
 ChPerm 0600 www-data:root /var/lib/stsbl/scmc/cfg/room-mode.json
-

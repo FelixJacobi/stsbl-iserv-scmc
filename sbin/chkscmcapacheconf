@@ -6,77 +6,88 @@ use utf8;
 use Getopt::Long qw(:config bundling);
 use File::Slurp::Unicode;
 use IServ::DB;
+use JSON;
+use Stsbl::IServ::SCMC::Apache;
 
 sub gen_conf($$$)
 {
- my $domain = shift;
- my $server = shift;
- my $id = shift;
- my $conf = "# SCMC apache vhost for IServ\n".
-   "#\n".
-   "# This file is generated automatically by iservchk.\n".
-   "# It is not possible to make any changes to this file.\n".
-   "# Custom changes will overwritten on any iservchk run.\n".
-   "#\n".
-   "# For your own settings you can use:\n".
-   "#   /etc/apache2/scmc.local/$id.conf\n".
-   "#\n".
-   "# After you created this file and insert your custom config,\n".
-   "# run the following commands to apply your changes:\n".
-   "#\n".
-   "#   chkscmcapacheconf\n".
-   "#   service apache2 reload\n".
-   "\n".
-   "  ServerName $domain\n".
-   "  CustomLog /var/log/apache2/scmc.log combined\n".
-   "  ErrorLog /var/log/apache2/scmc.error.log\n".
-   "  LogLevel info\n".
-   "  SSLProxyEngine on\n".
-   "  ProxyRequests off\n".
-   "  DocumentRoot /var/lib/stsbl/scmc/webroot\n".
-   "\n".
-   "  Header set Host $domain\n".
-   "  RequestHeader set Host $server\n".
-   "  Header unset Referer\n".
-   "  RequestHeader unset Referer\n".
-   "\n".
-   "  <Directory /var/lib/stsbl/scmc/webroot>\n".
-   "    Allow from all\n".
-   "    Require all granted\n".
-   "  </Directory>\n".
-   "\n".
-   "  Alias /favicon.ico /usr/share/iserv/scmc/favicon.ico\n".
-   "\n".
-   "  <Directory /usr/share/iserv/scmc>\n".
-   "    <Files favicon.ico>\n".
-   "      Allow from all\n".
-   "      Require all granted\n".
-   "    </Files>\n".
-   "  </Directory>\n".
-   "\n".
-   "  <Location />\n".
-   "    RewriteEngine on\n".
-   "\n".   
-   "    # Redirect from HTTP to HTTPS\n".
-   "    RewriteCond %{HTTPS} off\n".
-   "    RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/.*\$\n".
-   "    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n".
-   "\n".
-   "    # Redirect to reverse proxy\n".
-   "    RewriteCond %{REQUEST_URI} ^/\$\n".
-   "    RewriteRule (.*) /WZeugnis/WZeugnis.html [R=301,L]\n".
-   "  </Location>\n".
-   "  <Location /WZeugnis>\n".
-   "    RewriteEngine on\n".
-   "\n".
-   "    # All Rewrite Settings have to be listed here again, otherwhile they would be overwritten by the Reverse Proxy\n".
-   "    # Redirect from HTTP to HTTPS\n".
-   "    RewriteCond %{HTTPS} off\n".
-   "    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n".
-   "\n".
-   "    # Reverse proxy\n".
-   "    RewriteRule (.*) http://$server:8080%{REQUEST_URI} [P]\n".
-   "  </Location>\n";
+  my $domain = shift;
+  my $server = shift;
+  my $id = shift;
+ 
+  my $blocked_conf = gen_blocked_conf "    "; 
+
+  my $conf = "# Apache SCMC Vhost for IServ\n".
+    "#\n".
+    "# This file is generated automatically by iservchk.\n".
+    "# It is not possible to make any changes to this file.\n".
+    "# Custom changes will overwritten on any iservchk run.\n".
+    "#\n".
+    "# For your own settings you can use:\n".
+    "#   /etc/apache2/scmc.local/$id.conf\n".
+    "#\n".
+    "# After you created this file and insert your custom config,\n".
+    "# run the following commands to apply your changes:\n".
+    "#\n".
+    "#   chkscmcapacheconf\n".
+    "#   service apache2 reload\n".
+    "\n".
+    "  ServerName $domain\n".
+    "  CustomLog /var/log/apache2/scmc.log combined\n".
+    "  ErrorLog /var/log/apache2/scmc.error.log\n".
+    "  LogLevel info\n".
+    "  SSLProxyEngine on\n".
+    "  ProxyRequests off\n".
+    "  DocumentRoot /var/lib/stsbl/scmc/webroot\n".
+    "\n".
+    "  Header set Host $domain\n".
+    "  RequestHeader set Host $server\n".
+    "  Header unset Referer\n".
+    "  RequestHeader unset Referer\n".
+    "\n".
+    "  <Directory /var/lib/stsbl/scmc/webroot>\n".
+    "    Allow from all\n".
+    "    Require all granted\n".
+    "  </Directory>\n".
+    "\n".
+    "  Alias /favicon.ico /usr/share/iserv/scmc/favicon.ico\n".
+    "\n".
+    "  <Directory /usr/share/iserv/scmc>\n".
+    "    <Files favicon.ico>\n".
+    "      Allow from all\n".
+    "      Require all granted\n".
+    "    </Files>\n".
+    "  </Directory>\n".
+    "\n".
+    "  ErrorDocument 503 /scmc-error.php\n".
+    "\n".
+    "  Include scmc-whitelist.conf\n".
+    "\n".
+    "\n".
+    "  <Location />\n".
+    "    RewriteEngine on\n".
+    "\n".   
+    "    # Redirect from HTTP to HTTPS\n".
+    "    RewriteCond %{HTTPS} off\n".
+    "    RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/.*\$\n".
+    "    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n".
+    "\n".
+    "    # Redirect to reverse proxy\n".
+    "    RewriteCond %{REQUEST_URI} ^/\$\n".
+    "    RewriteRule (.*) /WZeugnis/WZeugnis.html [R=301,L]\n".
+    "  </Location>\n".
+    "  <Location /WZeugnis>\n".
+    "    RewriteEngine on\n".
+    "\n".
+    "    # All Rewrite Settings have to be listed here again, otherwhile they would be overwritten by the Reverse Proxy\n".
+    "    # Redirect from HTTP to HTTPS\n".
+    "    RewriteCond %{HTTPS} off\n".
+    "    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]\n".
+    "\n".
+    "$blocked_conf\n".
+    "    # Reverse proxy\n".
+    "    RewriteRule (.*) http://$server:8080%{REQUEST_URI} [P]\n".
+    "  </Location>\n";
  
  if (-f "/etc/apache2/scmc.local/$id.conf")
  {
