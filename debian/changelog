@@ -1,3 +1,16 @@
+stsbl-iserv-scmc (17.07.09-1) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added dependency on libjson-perl.
+  * Fixed typo.
+  * Fixed placing of header options.
+  * Disabled CSP for now.
+  * Subscribe newhosts event.
+  * Added missing x bit.
+  * Fixed typo.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sun, 09 Jul 2017 03:11:05 +0200
+
 stsbl-iserv-scmc (17.07.09-0) experimental; urgency=medium
 
   [ Felix Jacobi ]
