@@ -63,7 +63,7 @@ sub gen_blocked_conf($)
   {
     $blocked_cfg = "${line_prefix}# Only private IP sections\n".
       "${line_prefix}# TODO read from iservcfg -> LAN?\n".
-      "${line_prefix}RewriteCond %{REMOTE_ADDR} ^(10|192.168|172.(3[01]|2[0-9]|1[6-9])|169.254)(.*)\$\n";
+      "${line_prefix}RewriteCond %{REMOTE_ADDR} ^(10|192.168|172.(3[01]|2[0-9]|1[6-9])|169.254)(.*)\$\n".
       "${line_prefix}RewriteCond %{REMOTE_ADDR} $regex\n".
       "${line_prefix}RewriteCond %{REQUEST_URI} ^/WZeugnis\n".
       "${line_prefix}RewriteRule (.*) /public/scmc/block [R=307,L]\n";
