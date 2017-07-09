@@ -350,6 +350,11 @@ if ($cmd eq "getdata")
 {
   req_admin;
   req_priv "scmc_admin";
+  
+  fork and exit;
+  open STDIN, "/dev/null" or die $!;
+  open STDOUT, ">/dev/null" or die $!;
+  open STDERR, ">/dev/null" or die $!;
 
   system "/usr/lib/iserv/sleep_exec_once", "10", "scmc_newconf", "iservchk", "-a", "cert", "apache", "bind";
 } else 
