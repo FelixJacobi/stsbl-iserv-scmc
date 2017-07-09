@@ -35,7 +35,11 @@ pre {
                     {%  for room in rooms %}
                         <li>{{ room }}</li>
                     {%  else %}
-                        <li>{{ _('All rooms are allowed.') }}
+                        {%  if not invert %}
+                            <li>{{ _('No room is allowed.') }}</li>
+                        {%  else %}
+                            <li>{{ _('All rooms are allowed.') }}y</li>
+                        {%  endif %}
                     {%  endfor %}
                 </ul>
 

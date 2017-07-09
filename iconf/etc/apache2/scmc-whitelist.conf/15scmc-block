@@ -3,10 +3,14 @@
   Alias /public/scmc/unavailable /usr/share/iserv/web/app.php
 
   # Assets
+  RewriteCond %{REQUEST_URI} ^/favicon.ico
+  RewriteRule (.*) /usr/share/iserv/scmc/favicon.ico
+
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_URI} !^/public
   RewriteCond %{REQUEST_URI} !^/_profiler
   RewriteCond %{REQUEST_URI} !^/_wdt
+  RewriteCond %{REQUEST_URI} !^/favicon.ico
   RewriteRule (.*) /usr/share/iserv/web/%{REQUEST_URI}
 
   #<Location /public>

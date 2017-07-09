@@ -77,6 +77,7 @@ class PublicController extends PageController
         $parameter = [
             'config' => $this->get('iserv.config'),
             'rooms' => $qb->getQuery()->getResult(),
+            'invert' => AdminController::getRoomMode()
         ];
 
         /* @var $template Template */
