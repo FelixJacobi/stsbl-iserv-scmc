@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /*
@@ -289,7 +290,7 @@ class AdminController extends CrudController
      * 
      * @param Request $request
      * @param string $user
-     * @return array
+     * @return array|Response
      * @Route("/userpasswords/delete/{user}", name="admin_scmc_delete_user_password")
      * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:deleteuserpassword.html.twig")
      */
@@ -422,7 +423,9 @@ class AdminController extends CrudController
                 } else {
                     $text = 'Raumrichtlinie geändert auf "Folgende"';
                 }
-                $this->get('iserv.logger')->writeForModule($text, 'School');
+
+                $this->initalizeLogger();
+                $this->log($text);
                 $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->newConfig());
             }
 
