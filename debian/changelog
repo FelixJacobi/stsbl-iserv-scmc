@@ -1,3 +1,11 @@
+stsbl-iserv-scmc (17.07.09-2) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Added notice if no room is allowed.
+  * Fork in newconf before executing to prevent long hangs.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Sun, 09 Jul 2017 03:36:27 +0200
+
 stsbl-iserv-scmc (17.07.09-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
