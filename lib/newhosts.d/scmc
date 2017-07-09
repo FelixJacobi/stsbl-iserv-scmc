@@ -1,0 +1,6 @@
+#!/usr/bin/perl -CSDAL
+
+use warnings;
+use strict;
+
+system "/usr/lib/iserv/sleep_exec_once", "10", "scmc_newconf", "iservchk", "-a", "cert", "apache", "bind";
