@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-09 00:31+0200\n"
+"POT-Creation-Date: 2017-07-09 03:45+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -21,9 +21,9 @@ msgstr "Anmelden"
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:58
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:129
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:798
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1646
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1834
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2026
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1662
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1850
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2042
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/EventListener/MenuListener.php:49
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/EventListener/MenuListener.php:72
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:113
@@ -209,11 +209,11 @@ msgid ""
 "The school certificate management server could not be reached. Please "
 "contact your administrator."
 msgstr ""
-"Der Zeugnisverwaltungsserver konnte nicht erreicht werden. Bitte kontaktieren "
-"Sie Ihren Administrator."
+"Der Zeugnisverwaltungsserver konnte nicht erreicht werden. Bitte "
+"kontaktieren Sie Ihren Administrator."
 
 #: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1270
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1496
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1508
 msgid "To the IDesk"
 msgstr "Zum IDesk"
 
@@ -226,32 +226,36 @@ msgid ""
 "Your administrator set, that the server is not reachable from your host. The "
 "access is allowed from the following rooms:"
 msgstr ""
-"Ihr Administrator hat konfiguriert, dass der Server von Ihrem Gerät aus nicht "
-"erreichbar ist. Der Zugriff ist von folgenden Räumen aus erlaubt:"
+"Ihr Administrator hat konfiguriert, dass der Server von Ihrem Gerät aus "
+"nicht erreichbar ist. Der Zugriff ist von folgenden Räumen aus erlaubt:"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1474
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1477
+msgid "No room is allowed."
+msgstr "Kein Raum ist erlaubt."
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1483
 msgid "All rooms are allowed."
 msgstr "Alle Räume sind erlaubt."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1487
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1499
 msgid "The access is also allowed from the internet connection at home."
 msgstr "Der Zugriff ist außerdem vom heimischen Internetanschluss erlaubt."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1644
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2050
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1660
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2066
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:196
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:60
 msgid "Data Download"
 msgstr "Daten-Download"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1832
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2073
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1848
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2089
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:153
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:70
 msgid "Data Upload"
 msgstr "Daten-Upload"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1854
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:1870
 msgid ""
 "Before you upload new class data, make sure that you have downloaded a "
 "security copy of the results. All existing data in the Jahrgang* folder "
@@ -263,52 +267,52 @@ msgstr ""
 "Jahrgang*-Ordnern innerhalb des /Zeugnisse/-Ordners auf dem "
 "Zeugnisverwaltungsserver werden gelöscht."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2024
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2040
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/ManagementController.php:114
 #: src/Stsbl/SchoolCertificateManagerConnectorBundle/Menu/MenuBuilder.php:51
 msgid "Start Page"
 msgstr "Startseite"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2056
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2072
 msgid "Download entered certificate data from the server."
 msgstr "Eingebene Zeugnisdaten vom Server herunterladen."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2064
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2080
 msgid "Download certifcate data"
 msgstr "Zeugnisdaten herunterladen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2079
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2095
 msgid "Upload new class and course lists to the server."
 msgstr "Neue Klassen- und Kurslisten auf den Server hochladen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2087
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2103
 msgid "Upload certifcate data"
 msgstr "Zeugnisdaten hochladen"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2096
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2112
 msgid "Last actions"
 msgstr "Letzte Aktionen"
 
 # sprintf
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2105
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2121
 msgid "Name"
 msgstr "Name"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2109
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2125
 msgid "Date"
 msgstr "Datum"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2113
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2129
 msgid "Action"
 msgstr "Aktion"
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2501
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2517
 msgid "Select from which rooms the certificate management can accessed"
 msgstr ""
-"Wählen Sie aus, von welchen Räumen aus auf die Zeugnisverwaltung "
-"zugegriffen werden kann."
+"Wählen Sie aus, von welchen Räumen aus auf die Zeugnisverwaltung zugegriffen "
+"werden kann."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2508
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2524
 msgid ""
 "Select if all rooms except the one in the following list or only the rooms "
 "which are in the list are allowed."
