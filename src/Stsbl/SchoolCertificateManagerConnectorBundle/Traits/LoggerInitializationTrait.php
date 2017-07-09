@@ -3,7 +3,7 @@
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Traits;
 
 /**
- * Trait with common function to initalize the LoggerTrait from CoreBundle.
+ * Trait with common function to initialize the LoggerTrait from CoreBundle.
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>

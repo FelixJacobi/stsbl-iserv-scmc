@@ -10,3 +10,9 @@ Test "migrate master password"
 Test "convert scmcpasswd file"
   "grep ^40scmcpasswd /var/lib/iserv/config/update.log"
    "/usr/share/iserv/upgrade/scmc_convert_passwd_file && echo 40scmcpasswd >> /var/lib/iserv/config/update.log"
+
+Test "fix scmc log module context"
+  "grep ^40scmc/log$ /var/lib/iserv/config/update.log"
+  "psql -q -c \"UPDATE log SET module = 'School Certificate Manager Connector' WHERE module = 'School' \
+     AND text LIKE 'Raumrichtlinie%'\" iserv postgres && 
+     echo 40scmc/log >> /var/lib/iserv/config/update.log"
