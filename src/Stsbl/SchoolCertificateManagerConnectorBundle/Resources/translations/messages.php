@@ -32,6 +32,7 @@ _('School Certificate Manager');
 _('School Certificate Manager Connector');
 _('Manage master password and servers');
 _('Access the connector to up- and download data');
+_('Show link to certificate management');
 
 // Validator
 _('Choose a valid server type.');
