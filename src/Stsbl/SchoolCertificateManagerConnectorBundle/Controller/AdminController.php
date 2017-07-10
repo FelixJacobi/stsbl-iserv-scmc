@@ -373,7 +373,7 @@ class AdminController extends CrudController
         /* @var $builder \Symfony\Component\Form\FormBuilder */
         $builder = $this->get('form.factory')->createNamedBuilder('file_distribution_room_inclusion');
 
-        $mode = true;
+        $mode = self::getRoomMode();
 
         if ($mode === true) {
             $mode = 1;
