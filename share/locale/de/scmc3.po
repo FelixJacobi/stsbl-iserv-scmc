@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stsbl-iserv3-repo-mon\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-11 00:44+0200\n"
+"POT-Creation-Date: 2017-07-11 00:49+0200\n"
 "PO-Revision-Date: 2017-03-30 17:27+0200\n"
 "Last-Translator: root <repository@stsbl.de>\n"
 "Language-Team: German\n"
@@ -319,13 +319,17 @@ msgstr ""
 "Bitte wählen Sie den Zeugnisverwaltungsserver, auf welchen Sie zugreifen "
 "wollen."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2687
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2425
+msgid "Currently is no server available. Please contact your administrator."
+msgstr "Derzeit ist kein Server verfügbar. Bitte kontaktieren Sie Ihren Administrator."
+
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2703
 msgid "Select from which rooms the certificate management can accessed"
 msgstr ""
 "Wählen Sie aus, von welchen Räumen aus auf die Zeugnisverwaltung zugegriffen "
 "werden kann."
 
-#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2694
+#: /tmp/scmc-StsblSchoolCertificateManagerConnectorBundle.twig.php:2710
 msgid ""
 "Select if all rooms except the one in the following list or only the rooms "
 "which are in the list are allowed."
