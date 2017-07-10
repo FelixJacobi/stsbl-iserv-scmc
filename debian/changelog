@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (17.07.11-1) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Fixed wrong route name.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Tue, 11 Jul 2017 01:49:21 +0200
+
 stsbl-iserv-scmc (17.07.11-0) experimental; urgency=medium
 
   * Added missing l10n.
