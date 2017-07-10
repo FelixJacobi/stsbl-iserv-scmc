@@ -134,7 +134,8 @@ class SecurityController extends PageController
             'emptyMasterPassword' => $emptyMasterPassword,
             'hasUserPassword' => $hasUserPassword,
             'error' => $error,
-            'loginNotice' => $loginNotice
+            'loginNotice' => $loginNotice,
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
         ];
     }
     

@@ -96,7 +96,11 @@ class AdminController extends CrudController
         // track path
         $this->addBreadcrumb(_('Certificate Management'));
         
-        return ['emptyMasterPassword' => $isMasterPasswordEmtpy, 'masterpassword_form' => $view];
+        return [
+            'emptyMasterPassword' => $isMasterPasswordEmtpy,
+            'masterpassword_form' => $view,
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+        ];
     }
     
     /**
@@ -281,7 +285,13 @@ class AdminController extends CrudController
                 $permissionNotice = false;
             }
             
-            return ['password_form' => $form->createView(), 'act' => $user->getUsername(), 'fullname' => $FullName, 'permissionnotice' => $permissionNotice];
+            return [
+                'password_form' => $form->createView(),
+                'act' => $user->getUsername(),
+                'fullname' => $FullName,
+                'permissionnotice' => $permissionNotice,
+                'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+            ];
         }
     }
 
@@ -338,7 +348,12 @@ class AdminController extends CrudController
             $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user->getId()]));
             $this->addBreadcrumb(_('Delete user password'));
             
-            return ['fullname' => $FullName, 'act' => $user->getUsername(), 'delete_form' => $form->createView()];
+            return [
+                'fullname' => $FullName,
+                'act' => $user->getUsername(),
+                'delete_form' => $form->createView(),
+                'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+            ];
         }
     }
     

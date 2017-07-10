@@ -121,6 +121,8 @@ class ServerAdmin extends AbstractAdmin
         $this->id = 'scmc_server';
         $this->routesPrefix = 'admin/scmc/server';
 
+        $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc';
+
         $this->templates['crud_batch_confirm'] = 'StsblSchoolCertificateManagerConnectorBundle:Crud:admin_scmc_server_batch_confirm.html.twig';
     }
     

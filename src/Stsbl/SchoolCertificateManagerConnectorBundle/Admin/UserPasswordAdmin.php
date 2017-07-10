@@ -52,6 +52,8 @@ class UserPasswordAdmin extends AbstractAdmin
         $this->itemTitle = _('User');
         $this->id = 'scmc_userpassword';
         $this->routesPrefix = 'admin/scmc/userpassword';
+
+        $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc';
     }
     
     /**

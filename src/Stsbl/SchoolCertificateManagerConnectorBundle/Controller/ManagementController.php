@@ -136,7 +136,11 @@ class ManagementController extends PageController
             ->setParameter('pattern2', 'Zeugnisdaten auf den Server "%" hochgeladen')
         ;
         
-        return ['menu' => $menu, 'lastActions' => $qb->getQuery()->getResult()];
+        return [
+            'menu' => $menu,
+            'lastActions' => $qb->getQuery()->getResult(),
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+        ];
     }
     
     /**
@@ -157,7 +161,11 @@ class ManagementController extends PageController
         $form = $this->getUploadForm();
         $form->handleRequest($request);
         
-        return ['menu' => $menu, 'form' => $form->createView()];
+        return [
+            'menu' => $menu,
+            'form' => $form->createView(),
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+        ];
     }
     
     /**
@@ -200,7 +208,11 @@ class ManagementController extends PageController
         $form = $this->getDownloadForm();
         $form->handleRequest($request);
         
-        return ['menu' => $menu, 'form' => $form->createView()];
+        return [
+            'menu' => $menu,
+            'form' => $form->createView(),
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+        ];
     }
     
     /**

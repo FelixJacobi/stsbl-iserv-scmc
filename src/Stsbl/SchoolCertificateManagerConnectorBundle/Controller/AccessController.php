@@ -45,6 +45,9 @@ class AccessController extends PageController
             ->setParameter('groups', $this->getUser()->getGroups()->toArray())
         ;
 
-        return ['servers' => $qb->getQuery()->getResult()];
+        return [
+            'servers' => $qb->getQuery()->getResult(),
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+        ];
     }
 }
