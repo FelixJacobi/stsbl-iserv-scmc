@@ -237,7 +237,7 @@ class ManagementController extends PageController
         $this->createFlashMessagesFromBag($getData[0]);
         // assume error, if no prepared response is given
         if (!$getData[1] instanceof Response) {
-            return $this->redirectToRoute('scmc_download');
+            return $this->redirectToRoute('manage_scmc_download');
         }
 
         return $getData[1];
