@@ -1,3 +1,9 @@
+scmc_access_list:
+module      School Certificate Manager Connector
+description Show link to certificate management
+assign      admins
+assignroles admin schoolcertificatemanager teacher
+
 scmc_access_frontend:
 module      School Certificate Manager Connector
 description Access the connector to up- and download data

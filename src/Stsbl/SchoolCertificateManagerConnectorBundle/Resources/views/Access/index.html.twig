@@ -1,0 +1,24 @@
+{# src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/views/Access/index.html.twig #}
+{% extends 'IServCoreBundle::page.html.twig' %}
+
+{% block page_title %}
+    {{ _('Certificate Grade Input') }}
+{%  endblock %}
+
+{%  block content %}
+    <div class="alert alert-info">
+        {{ _('Please select the certificate management server which you want to access.') }}
+    </div>
+    <div class="list-group">
+        {% for server in servers %}
+            <a href="https://{{ server.webDomain }}/WZeugnis/Wzeugnis.html" target="_blank" class="list-group-item">
+                <div class="media-left">
+                    {{ ico('hdd', 48) }}
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{ server.webDomain }}</h4>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{%  endblock %}

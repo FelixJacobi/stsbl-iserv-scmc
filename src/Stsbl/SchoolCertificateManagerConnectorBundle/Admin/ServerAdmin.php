@@ -136,7 +136,6 @@ class ServerAdmin extends AbstractAdmin
                     'help_text' => _('Select the host which should be the target for up- and downloading.'),
                 ],
                 'query_builder' => function (EntityRepository $er) {
-                    $route = $this->getCurrentRoute();
 
                     $subQb = $er->createQueryBuilder('s');
             
@@ -150,7 +149,7 @@ class ServerAdmin extends AbstractAdmin
                     $qb = $er->createQueryBuilder('h');
 
                     // only remove already used hosts on server adding
-                    if ($route === 'admin_scmc_server_add') {
+                    if ($formMapper->getObject() === null) {
                         $qb
                             ->where($subQb->expr()->not($subQb->expr()->exists($subQb)))
                         ;
