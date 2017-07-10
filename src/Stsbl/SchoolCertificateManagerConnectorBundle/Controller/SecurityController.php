@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /*
@@ -55,14 +56,14 @@ class SecurityController extends PageController
      * 
      * @param Request $request
      * @return array|Response
-     * @Route("/login", name="scmc_login")
+     * @Route("/login", name="manage_scmc_login")
      * @Template("StsblSchoolCertificateManagerConnectorBundle:Security:login.html.twig")
      */
     public function loginAction(Request $request)
     {
         if ($this->get('stsbl.scmc.security.scmcauth')->isAuthenticated()) {
             // go to index
-            return $this->redirect($this->generateUrl('scmc_index'));
+            return $this->redirect($this->generateUrl('manage_scmc_index'));
         }
 
         $loginNotice = $this->get('session')->has('scmc_login_notice') ? $this->get('session')->get('scmc_login_notice') : null;
@@ -102,7 +103,7 @@ class SecurityController extends PageController
             $this->get('iserv.flash')->success(_('You have logged in successfully in the Certificate Management Section.'));
             
             // assume sucessful login
-            return $this->redirect($this->generateUrl('scmc_index')); 
+            return $this->redirect($this->generateUrl('manage_scmc_index'));
         }
         
         render:
@@ -126,7 +127,7 @@ class SecurityController extends PageController
         $emptyMasterPassword = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
         
         // track path
-        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));
+        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
         
         return [
             'login_form' => $view,
@@ -142,7 +143,7 @@ class SecurityController extends PageController
      * 
      * @param Request $request
      * @return RedirectResponse
-     * @Route("/logout", name="scmc_logout")
+     * @Route("/logout", name="manage_scmc_logout")
      * @Security("token.hasAttribute('scmc_authenticated') and token.getAttribute('scmc_authenticated') == true")
      */
     public function logoutAction(Request $request)
@@ -155,7 +156,7 @@ class SecurityController extends PageController
         $this->log('Zeugnisverwaltungs-Logout erfolgreich');
         $this->get('iserv.flash')->success(_('You have logged out successfully from the Certificate Management Section.'));
     
-        return $this->redirect($this->generateUrl('scmc_forward'));
+        return $this->redirect($this->generateUrl('manage_scmc_forward'));
     }
     
     /**

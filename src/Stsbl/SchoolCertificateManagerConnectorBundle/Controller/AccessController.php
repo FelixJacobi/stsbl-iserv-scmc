@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
- * @Route("scmc/access")
+ * @Route("cgi", schemes="https")
  * @Security("is_granted('PRIV_SCMC_ACCESS_LIST')")
  */
 class AccessController extends PageController
@@ -39,9 +39,10 @@ class AccessController extends PageController
         $qb
             ->select('s')
             ->where($qb->expr()->orX(
-                $qb->expr()->in('s.group', $this->getUser()->getGroups()->toArray()),
+                $qb->expr()->in('s.group', ':groups'),
                 $qb->expr()->isNull('s.group')
             ))
+            ->setParameter('groups', $this->getUser()->getGroups()->toArray())
         ;
 
         return ['servers' => $qb->getQuery()->getResult()];

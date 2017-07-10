@@ -135,8 +135,7 @@ class ServerAdmin extends AbstractAdmin
                 'attr' => [
                     'help_text' => _('Select the host which should be the target for up- and downloading.'),
                 ],
-                'query_builder' => function (EntityRepository $er) {
-
+                'query_builder' => function (EntityRepository $er) use ($formMapper) {
                     $subQb = $er->createQueryBuilder('s');
             
                     $subQb
@@ -148,10 +147,15 @@ class ServerAdmin extends AbstractAdmin
                 
                     $qb = $er->createQueryBuilder('h');
 
-                    // only remove already used hosts on server adding
-                    if ($formMapper->getObject() === null) {
+                    $qb
+                        ->where($subQb->expr()->not($subQb->expr()->exists($subQb)))
+                    ;
+
+                    // add current object on editing
+                    if ($formMapper->getObject() != null) {
                         $qb
-                            ->where($subQb->expr()->not($subQb->expr()->exists($subQb)))
+                            ->orWhere($qb->expr()->eq('h.name', ':currentHost'))
+                            ->setParameter('currentHost', $formMapper->getObject()->getHost())
                         ;
                     }
 

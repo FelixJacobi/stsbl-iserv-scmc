@@ -104,14 +104,14 @@ class ManagementController extends PageController
      * School Certificate Manager Connector Main Page
      * 
      * @return array
-     * @Route("/index", name="scmc_index")
+     * @Route("/index", name="manage_scmc_index")
      * @Template()
      */
     public function indexAction(Request $request)
     {
         // track path
-        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));
-        $this->addBreadcrumb(_('Start Page'), $this->generateUrl('scmc_forward'));
+        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
+        $this->addBreadcrumb(_('Start Page'), $this->generateUrl('manage_scmc_forward'));
         
         $this->setMenuBuilder();
         $menu = $this->menuBuilder->createSCMCMenu();
@@ -143,14 +143,14 @@ class ManagementController extends PageController
      * School Certificate Manager Connector Upload Page
      * 
      * @return array
-     * @Route("/upload", name="scmc_upload")
+     * @Route("/upload", name="manage_scmc_upload")
      * @Template()
      */
     public function uploadAction(Request $request)
     {
         // track path
-        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));
-        $this->addBreadcrumb(_('Data Upload'), $this->generateUrl('scmc_upload'));
+        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
+        $this->addBreadcrumb(_('Data Upload'), $this->generateUrl('manage_scmc_upload'));
         
         $this->setMenuBuilder();
         $menu = $this->menuBuilder->createSCMCMenu();
@@ -161,9 +161,9 @@ class ManagementController extends PageController
     }
     
     /**
-     * @return Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Method("POST")
-     * @Route("/upload/zip", name="scmc_upload_zip")
+     * @Route("/upload/zip", name="manage_scmc_upload_zip")
      */
     public function uploadZipAction(Request $request)
     {
@@ -171,7 +171,7 @@ class ManagementController extends PageController
         $form->handleRequest($request);
         if (!$form->isValid()) {
             $this->handleFormErrors($form);
-            return $this->redirectToRoute('scmc_upload');
+            return $this->redirectToRoute('manage_scmc_upload');
         }
 
         $data = $form->getData();
@@ -179,21 +179,21 @@ class ManagementController extends PageController
         $scmcAdm = $this->get('stsbl.scmc.service.scmcadm');
         $this->createFlashMessagesFromBag($scmcAdm->putData($data['server'], $data['class_data'], $data['years']));
         
-        return $this->redirectToRoute('scmc_upload');
+        return $this->redirectToRoute('manage_scmc_upload');
     }
     
     /**
-     * School Certificate Manager Connector Dwonload Page
+     * School Certificate Manager Connector Download Page
      * 
      * @return array
-     * @Route("/download", name="scmc_download")
+     * @Route("/download", name="manage_scmc_download")
      * @Template()
      */
     public function downloadAction(Request $request)
     {
         // track path
-        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('scmc_forward'));
-        $this->addBreadcrumb(_('Data Download'), $this->generateUrl('scmc_download'));
+        $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
+        $this->addBreadcrumb(_('Data Download'), $this->generateUrl('manage_scmc_download'));
         
         $this->setMenuBuilder();
         $menu = $this->menuBuilder->createSCMCMenu();
@@ -204,9 +204,9 @@ class ManagementController extends PageController
     }
     
     /**
-     * @return Symfony\Component\HttpFoundation\Response|Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
      * @Method("POST")
-     * @Route("/download/zip", name="scmc_download_zip")
+     * @Route("/download/zip", name="manage_scmc_download_zip")
      */
     public function downloadZipAction(Request $request)
     {
@@ -214,7 +214,7 @@ class ManagementController extends PageController
         $form->handleRequest($request);
         if (!$form->isValid()) {
             $this->handleFormErrors($form);
-            return $this->redirectToRoute('scmc_download');
+            return $this->redirectToRoute('manage_scmc_download');
         }
         $data = $form->getData();
 
@@ -239,7 +239,7 @@ class ManagementController extends PageController
     private function getUploadForm()
     {
         $builder = $this->createFormBuilder();
-        $builder->setAction($this->generateUrl('scmc_upload_zip'));
+        $builder->setAction($this->generateUrl('manage_scmc_upload_zip'));
         
         $builder
             ->add('server', EntityType::class, [
@@ -291,7 +291,7 @@ class ManagementController extends PageController
     private function getDownloadForm()
     {
         $builder = $this->createFormBuilder();
-        $builder->setAction($this->generateUrl('scmc_download_zip'));
+        $builder->setAction($this->generateUrl('manage_scmc_download_zip'));
         
         $builder
             ->add('server', EntityType::class, [

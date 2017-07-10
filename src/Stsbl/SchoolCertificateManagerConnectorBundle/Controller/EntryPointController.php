@@ -47,7 +47,7 @@ class EntryPointController extends PageController
      * 
      * @param Request $request
      * @return Response
-     * @Route("", name="scmc_forward")
+     * @Route("", name="manage_scmc_forward")
      */
     public function forwardAction(Request $request)
     {

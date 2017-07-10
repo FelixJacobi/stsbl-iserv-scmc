@@ -41,11 +41,25 @@ class MenuListener implements MainMenuListenerInterface, AdminMenuListenerInterf
      */
     public function onBuildMainMenu(MenuEvent $event)
     {
+        $menu = $event->getMenu(self::ORGANISATION);
+
         // check if user is privileged
-        if ($event->getAuthorizationChecker()->isGranted('PRIV_SCMC_ACCESS_FRONTEND')) {            
-            $menu = $event->getMenu(self::ORGANISATION);
-            $item = $menu->addChild('scmc', array(
-                'route' => 'scmc_forward',
+        if ($event->getAuthorizationChecker()->isGranted('PRIV_SCMC_ACCESS_LIST')) {
+            $item = $menu->addChild('access_scmc', array(
+                'route' => 'access_scmc_index',
+                'label' => _('Certificate Grade Input'),
+                'extras' => array(
+                    'icon' => 'paper-bag--pencil',
+                    'icon_style' => 'fugue',
+                ),
+            ));
+            $item->setExtra('orderNumber', 20);
+        }
+
+        // check if user is privileged
+        if ($event->getAuthorizationChecker()->isGranted('PRIV_SCMC_ACCESS_FRONTEND')) {
+            $item = $menu->addChild('manage_scmc', array(
+                'route' => 'manage_scmc_forward',
                 'label' => _('Certificate Management'),
                 'extras' => array(
                   'icon' => 'paper-bag--pencil',

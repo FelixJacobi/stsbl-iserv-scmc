@@ -43,11 +43,11 @@ class MenuBuilder extends AbstractMenuBuilder
      */
     public function createSCMCMenu()
     {
-        $menu = $this->factory->createItem('scmc_menu');
+        $menu = $this->factory->createItem('manage_scmc_menu');
         
         $menu
-            ->addChild('scmc_menu_index', [
-                'route' => 'scmc_forward',
+            ->addChild('manage_scmc_menu_index', [
+                'route' => 'manage_scmc_forward',
                 'label' => _('Start Page')
             ])
                 ->setExtra('order', 10)
@@ -55,8 +55,8 @@ class MenuBuilder extends AbstractMenuBuilder
         ;
 
         $menu
-            ->addChild('scmc_menu_download', [
-                'route' => 'scmc_download',
+            ->addChild('manage_scmc_menu_download', [
+                'route' => 'manage_scmc_download',
                 'label' => _('Data Download')
             ])
                 ->setExtra('order', 20)
@@ -65,8 +65,8 @@ class MenuBuilder extends AbstractMenuBuilder
         ;
 
         $menu
-            ->addChild('scmc_menu_upload', [
-                'route' => 'scmc_upload',
+            ->addChild('manage_scmc_menu_upload', [
+                'route' => 'manage_scmc_upload',
                 'label' => _('Data Upload')
             ])
                 ->setExtra('order', 30)
@@ -75,8 +75,8 @@ class MenuBuilder extends AbstractMenuBuilder
         ;
         
         /*$menu
-            ->addChild('scmc_menu_status', [
-                'route' => 'scmc_status',
+            ->addChild('manage_scmc_menu_status', [
+                'route' => 'manage_scmc_status',
                 'label' => _('Server Status')
             ])
                 ->setExtra('order', 40)
@@ -85,8 +85,8 @@ class MenuBuilder extends AbstractMenuBuilder
         ;*/
         
         $menu
-            ->addChild('scmc_menu_logout', [
-                'route' => 'scmc_logout',
+            ->addChild('manage_scmc_menu_logout', [
+                'route' => 'manage_scmc_logout',
                 'label' => _('Logout')
             ])
                 ->setExtra('order', 101)
