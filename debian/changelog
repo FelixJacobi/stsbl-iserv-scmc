@@ -1,3 +1,28 @@
+stsbl-iserv-scmc (17.07.11-0) experimental; urgency=medium
+
+  * Added missing l10n.
+  * Fixed log module context.
+  * Added missing bug fix.
+  * Removed legacy db user map.
+  * Fixed hardcoded usage of true in form. Thanks to Stephan Seidel for the bug report!
+  * Added basic access frontend.
+  * Fixed menu highlighting.; Improved ServerAdmin.
+  * Updated l10n.
+  * Added notice if no server is available.
+  * Added help links.
+
+  iserv: Das Modul enthält nun eine erste Version der Verlinkung zur
+    Weboberfläche Zeugnisverwaltungsservers, der Link ist im Hauptmenü unter
+    Organisation > Zeugnisnoteneingabe für die Benutzer mit dem Recht "Link
+    zur Zeugnisverwaltung anzeigen" sichtbar. Dies sind stanardmäßig die
+    Benutzer mit den Rollen Zeugnisverwalter, Administrator und Lehrer.
+    Sollten Sie das Rollensystem von IServ 3 nicht verwenden, muss das Recht
+    manuell der Gruppe/den Gruppen zugewiesen werden, in der sich die
+    Lehrkräfte befinden. Der Link ist eine Beta-Funktion des Moduls, sollten
+    Sie Verbesserungsvorschläge haben, melden Sie diese gerne dem Autor.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Tue, 11 Jul 2017 00:59:26 +0200
+
 stsbl-iserv-scmc (17.07.09-2) experimental; urgency=medium
 
   [ Felix Jacobi ]
