@@ -212,7 +212,7 @@ if ($cmd eq "getdata")
 
   my ($server_user, $server_type, $server_name, $server_ip) = get_server_data $server_id;
   my $server_key = "/var/lib/stsbl/scmc/keys/$server_id";
-  Stsbl::IServ::IO::error "SSH-Schlüssel fehlt für Server $server_name." if not -f $server_key;
+  error encode "UTF-8", "SSH-Schlüssel fehlt für Server $server_name." if not -f $server_key;
 
   my $dest_dir = "/tmp/stsbl-iserv-scmc-".$random->string_from('0123456789', 10)."/";
 
