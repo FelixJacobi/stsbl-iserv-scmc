@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (17.07.12-2) experimental; urgency=medium
+
+  [ Felix Jacobi ]
+  * Fixed changelog.
+
+ -- Stadtteilschule Blankenese <repository@stsbl.de>  Wed, 12 Jul 2017 22:33:59 +0200
+
 stsbl-iserv-scmc (17.07.12-1) experimental; urgency=medium
 
   [ Felix Jacobi ]
