@@ -13,9 +13,9 @@ stsbl-iserv-scmc (17.07.12-0) experimental; urgency=medium
   * Fixed required on years choice. Thanks to Philip Reuter for testing!
 
   iserv: Mit dem aktuellen Update wurde der Fehler behoben, der dafür sorgte,
-    dass man zwingend Jahrgänge vom dem Herunterladen auswählen musste, ist
-    nun behoben. Der Download funktioniert nun auch, wenn keine Jahrgänge
-    gewählt sind, in diesem Fall werden alle Jahrgänge heruntergeladen.
+    dass man zwingend Jahrgänge vom dem Herunterladen auswählen musste. Der 
+    Download funktioniert nun auch, wenn keine Jahrgänge gewählt sind, in 
+    diesem Fall werden alle Jahrgänge heruntergeladen.
 
  -- Stadtteilschule Blankenese <repository@stsbl.de>  Wed, 12 Jul 2017 22:14:50 +0200
 
