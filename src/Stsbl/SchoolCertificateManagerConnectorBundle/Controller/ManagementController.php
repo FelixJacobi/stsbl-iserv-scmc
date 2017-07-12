@@ -272,6 +272,7 @@ class ManagementController extends PageController
                 'label' => _('Limit upload to these years'),
                 'multiple' => true,
                 'choices' => $this->getYearChoices(),
+                'required' => false,
                 'attr' => [
                     'class' => 'select2',
                     'help_text' => _('You can limit the upload to particular years. Only the course lists of the selected years will deleted and replaced on the server.'),
@@ -317,6 +318,7 @@ class ManagementController extends PageController
                 'label' => _('Limit download to these years'),
                 'multiple' => true,
                 'choices' => $this->getYearChoices(),
+                'required' => false,
                 'attr' => [
                     'class' => 'select2',
                     'help_text' => _('You can limit the download to particular years. Only the selected years will be included in the Zip file.'),
