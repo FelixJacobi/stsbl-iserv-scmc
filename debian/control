@@ -10,12 +10,17 @@ Package: stsbl-iserv-scmc
 Architecture: all
 Depends: iserv-portal, stsbl-iserv3-maintenance, stsbl-iserv-perl-lib, zip, unzip, libswitch-perl, scmcauthd, libjson-perl, php5-cli | php7.0-cli
 Description: Zeugnisverwaltungsconnector für IServ (EXPERIMENTELL)
- Dieses Modul ermöglicht eine für den Endanwender nahtlos erscheinene Integration eines Zeugnisverwaltungservers in den IDesk.
- Zeugnisverwalter können Schülerdaten auf den Server hochladen und die Eingaben wieder herunterladen.
+ Dieses Modul ermöglicht eine für den Endanwender nahtlos erscheinene
+ Integration eines Zeugnisverwaltungservers in den IDesk.
+ Zeugnisverwalter können Schülerdaten auf den Server hochladen und die
+ Eingaben wieder herunterladen.
  .
- Der Verwaltungszugriff auf den Zeugnisserver ist mittels Zwei-Faktor-Authentifizierung geschützt.
+ Der Verwaltungszugriff auf den Zeugnisserver ist mittels
+ Zwei-Faktor-Authentifizierung geschützt.
  .
- Momentan wird der in Hamburg verbreitete Zeugnisverwaltungsserver WZeugnis (http://www.weisserwolf.de/WZeugnis/WZeugnis.html) unterstützt.
+ Momentan wird der in Hamburg verbreitete Zeugnisverwaltungsserver
+ WZeugnis (http://www.weisserwolf.de/WZeugnis/WZeugnis.html) unterstützt.
  .
- Das Modul ist noch nicht fertiggestellt und befindet sich noch in Entwicklung. Daher sind noch nicht alle beschriebenen Funktionen sichtbar.
+ Das Modul ist noch nicht fertiggestellt und befindet sich noch in
+ Entwicklung. Daher sind noch nicht alle beschriebenen Funktionen sichtbar.
 Tag: suite::iserv:portal, role::plugin, status::experimental, implemented-in::php
