@@ -1,3 +1,12 @@
+stsbl-iserv-scmc (17.10.05-0) experimental; urgency=medium
+
+  * apache: Fixed Let's Encrypt http-01 acme challenge for scmc vhost.
+  * chkscmcapacheconf: Fixed custom config explaination in iconf template header.
+  * chkscmcbindconf: Fixed CS
+  * chkscmcbindconf: Fixed custom config explaination in iconf template header.
+
+ -- Felix Jacobi <felix.jacobi@iserv.eu>  Thu, 05 Oct 2017 00:23:08 +0200
+
 stsbl-iserv-scmc (17.07.12-2) experimental; urgency=medium
 
   [ Felix Jacobi ]
