@@ -1,3 +1,11 @@
+stsbl-iserv-scmc (17.10.05-1) experimental; urgency=medium
+
+  * copyright: Removed todo boilerplate.
+  * Added php-cli dependency.
+  * Fixed too long extended description.
+
+ -- Felix Jacobi <felix.jacobi@iserv.eu>  Thu, 05 Oct 2017 00:28:15 +0200
+
 stsbl-iserv-scmc (17.10.05-0) experimental; urgency=medium
 
   * apache: Fixed Let's Encrypt http-01 acme challenge for scmc vhost.
