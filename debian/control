@@ -8,7 +8,7 @@ Homepage: https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc
 
 Package: stsbl-iserv-scmc
 Architecture: all
-Depends: iserv-portal, stsbl-iserv3-maintenance, stsbl-iserv-perl-lib, zip, unzip, libswitch-perl, scmcauthd, libjson-perl, php5-cli | php7.0-cli
+Depends: iserv-portal, stsbl-iserv3-maintenance, stsbl-iserv-perl-lib, zip, unzip, libswitch-perl, scmcauthd, libjson-perl, php-cli, php5-cli | php7.0-cli
 Description: Zeugnisverwaltungsconnector für IServ (EXPERIMENTELL)
  Dieses Modul ermöglicht eine für den Endanwender nahtlos erscheinene
  Integration eines Zeugnisverwaltungservers in den IDesk.
