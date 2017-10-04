@@ -29,7 +29,7 @@ sub gen_conf($$$)
     "# After you created this file and insert your custom config,\n".
     "# run the following commands to apply your changes:\n".
     "#\n".
-    "#   chkscmcapacheconf\n".
+    "#   chkscmcapacheconf -r\n".
     "#   service apache2 reload\n".
     "\n".
     "  ServerName $domain\n".
