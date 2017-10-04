@@ -87,7 +87,16 @@ sub gen_conf($$$)
     "$blocked_conf\n".
     "    # Reverse proxy\n".
     "    RewriteRule (.*) http://$server:8080%{REQUEST_URI} [P]\n".
-    "  </Location>\n";
+    "  </Location>\n".
+    "\n".
+    "  # Let's Encrypt\n".
+    "  Alias /.well-known/acme-challenge/ /var/lib/certbot/webroot/.well-known/acme-challenge/\n".
+    "  <Directory /var/lib/certbot/webroot>\n".
+    "    Allow from all\n".
+    "    Require all granted\n".
+    "    Options +Indexes\n".
+    "  </Directory>\n"
+ ;
  
  if (-f "/etc/apache2/scmc.local/$id.conf")
  {

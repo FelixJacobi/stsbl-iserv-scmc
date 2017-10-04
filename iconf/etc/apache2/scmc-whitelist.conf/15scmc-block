@@ -11,6 +11,7 @@
   RewriteCond %{REQUEST_URI} !^/_profiler
   RewriteCond %{REQUEST_URI} !^/_wdt
   RewriteCond %{REQUEST_URI} !^/favicon.ico
+  RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge
   RewriteRule (.*) /usr/share/iserv/web/%{REQUEST_URI}
 
   #<Location /public>
