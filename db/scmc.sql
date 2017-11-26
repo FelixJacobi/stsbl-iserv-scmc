@@ -35,8 +35,10 @@ CREATE UNIQUE INDEX scmc_servers_host_key ON scmc_servers (lower(Host));
 -- table for scmc rooms
 CREATE TABLE scmc_rooms (
   ID                 SERIAL PRIMARY KEY,
-  Room		           TEXT		NOT NULL
-                          REFERENCES rooms(Name)
+  Room               TEXT REFERENCES rooms(Name)
+                          ON DELETE CASCADE
+                          ON UPDATE CASCADE,
+  Room_ID            INT  REFERENCES rooms(ID)
                           ON DELETE CASCADE
                           ON UPDATE CASCADE
 );

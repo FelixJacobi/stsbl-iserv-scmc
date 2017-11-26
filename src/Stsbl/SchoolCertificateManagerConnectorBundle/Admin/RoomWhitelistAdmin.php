@@ -123,7 +123,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
                     ->resetDqlParts()
                     ->select('sr')
                     ->from('StsblSchoolCertificateManagerConnectorBundle:Room', 'sr')
-                    ->where($subQb->expr()->eq('sr.room', 'r.name'))
+                    ->where($subQb->expr()->eq('sr.room', 'r.id'))
                 ;
                 
                 return $er->createQueryBuilder('r')
