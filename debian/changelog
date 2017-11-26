@@ -1,3 +1,9 @@
+stsbl-iserv-scmc (17.11.26-1) experimental; urgency=medium
+
+  * Updated for new room id
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 26 Nov 2017 16:53:12 +0100
+
 stsbl-iserv-scmc (17.10.24-2) experimental; urgency=medium
 
   * Moved database use to scmcauthd.
