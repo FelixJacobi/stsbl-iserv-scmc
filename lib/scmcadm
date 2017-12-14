@@ -79,7 +79,7 @@ sub ssh($$$$)
     "-o", "LogLevel=ERROR",
     "-o", "PreferredAuthentications=publickey",
     "$server_user\@$server_ip",
-    $cmd) == 0
+    "$cmd") == 0
       or die "ssh failed: $!";
 }
 
@@ -240,7 +240,7 @@ if ($cmd eq "getdata")
     foreach my $year (@years)
     {
       $year =~ /^(.*)$/;
-      ssh $server_key, $server_user, $server_ip, "sh -c \"rm -rfv /Zeugnisse/Jahrgang$1/ > /Zeugnisse/delete.log\"";
+      ssh $server_key, $server_user, $server_ip, "sh -c \"[ -d \\\"/Zeugnisse/Jahrgang$1/\\\" ] && rm -rfv /Zeugnisse/Jahrgang$1/ > /Zeugnisse/delete.log\"";
     }
   } else
   {
@@ -266,9 +266,9 @@ if ($cmd eq "getdata")
   chdir "/"; 
   system("rm", "-rf", $dest_dir)  == 0 or warn "Failed to remove destination directory: $!";;
 
-  ssh $server_key, $server_user, $server_ip, "sh -c \"find /Zeugnisse/ -type f -exec chmod -v 664 {} \\; > /Zeugnisse/chmod-files.log\"";
-  ssh $server_key, $server_user, $server_ip, "sh -c \"find /Zeugnisse/ -type d -exec chmod -v 2775 {} \\; > /Zeugnisse/chmod-dirs.log\"";
-  ssh $server_key, $server_user, $server_ip, "sh -c \"chgrp -Rv $server_type /Zeugnisse/ > /Zeugnisse/chgrp.log\"";
+  #ssh $server_key, $server_user, $server_ip, "sh -c \"find /Zeugnisse/ -type f -exec chmod -v 664 {} \\; > /Zeugnisse/chmod-files.log\"";
+  #ssh $server_key, $server_user, $server_ip, "sh -c \"find /Zeugnisse/ -type d -exec chmod -v 2775 {} \\; > /Zeugnisse/chmod-dirs.log\"";
+  #ssh $server_key, $server_user, $server_ip, "sh -c \"chgrp -Rv $server_type /Zeugnisse/ > /Zeugnisse/chgrp.log\"";
 
   Stsbl::IServ::Log::write_for_module "Zeugnisdaten auf den Server \"$server_name\" hochgeladen", "School Certificate Manager Connector";
 } elsif ($cmd eq "storekey")
