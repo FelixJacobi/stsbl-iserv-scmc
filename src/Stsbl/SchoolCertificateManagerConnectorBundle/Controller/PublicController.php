@@ -57,11 +57,12 @@ class PublicController extends PageController
 
         $qb
             ->select('r')
+            ->orderBy('r.name', 'ASC')
         ;
 
         $subQb
             ->select('sr')
-            ->where($qb->expr()->eq('sr.room', 'r.name'))
+            ->where($qb->expr()->eq('sr.room', 'r.id'))
         ;
 
         if (AdminController::getRoomMode() === true) {
