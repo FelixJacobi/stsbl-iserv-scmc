@@ -1,3 +1,12 @@
+stsbl-iserv-scmc (17.12.19-1) experimental; urgency=medium
+
+  * Added license
+  * scmcadm: Fixed ssh handling; Disabled not working chmod execution
+  * Fixed missing room id change in PublicController
+  * Added explicit sorting for room name in PublicController
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Tue, 19 Dec 2017 08:36:24 +0100
+
 stsbl-iserv-scmc (17.12.03-1) experimental; urgency=medium
 
   * Fixed wrong file permissions
