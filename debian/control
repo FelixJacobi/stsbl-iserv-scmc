@@ -11,6 +11,8 @@ Architecture: all
 Depends:
   iserv-portal,
   iserv3-core,
+  iserv3-file,
+  iserv3-filesystem,
   iserv3-host,
   iserv3-room (>= 17.11.23-1),
   libfile-copy-recursive-perl,

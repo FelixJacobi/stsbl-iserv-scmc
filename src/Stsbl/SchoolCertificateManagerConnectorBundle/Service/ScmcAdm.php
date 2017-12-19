@@ -272,24 +272,31 @@ class ScmcAdm
      * Calls putdata sub command
      * 
      * @param Server $server
-     * @param UploadedFile $file
+     * @param array $files
      * @param array $years
      * @return FlashMessageBag
      */
-    public function putData(Server $server, UploadedFile $file, array $years = null)
+    public function putData(Server $server, array $files, array $years = null)
     {
-        if ($file->getMimeType() != 'application/zip') {
+        /* @var $file \IServ\FilesystemBundle\Model\File */
+        $file = $files[0];
+
+        if ($file->getMimetype() != 'application/zip') {
             $bag = new FlashMessageBag();
             $bag->addMessage('error', _('You have to upload a zip file!'));
             return $bag;
         }
-        
+
         $dir = $this->getTemporaryDirectory();
-        $filePath = $dir.$file->getClientOriginalName();
-        $file->move($dir, $file->getClientOriginalName());
-        
+        $filePath = $dir.'upload.zip';
+        $content = $file->read($filePath);
+
+        $handle = fopen($filePath, 'w');
+        fwrite($handle, $content);
+        fclose($handle);
+
         $args = [$server->getId(), $filePath];
-        // add years on demand
+        // add years on demand1
         if (count($years) > 0) {
             $args[] = join(',', $years);
         }

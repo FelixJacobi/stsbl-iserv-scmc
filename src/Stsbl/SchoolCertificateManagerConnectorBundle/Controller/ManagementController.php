@@ -6,6 +6,7 @@ use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Entity\FlashMessageBag;
+use IServ\FileBundle\Form\Type\UniversalFileType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -56,7 +57,7 @@ class ManagementController extends PageController
 {
     use FlashMessageBagTrait, FormTrait, LoggerInitializationTrait, LoggerTrait;
     
-    /*
+    /**
      * @var \Stsbl\SchoolCertificateManagerConnectorBundle\Menu\MenuBuilder
      */
     private $menuBuilder;
@@ -158,7 +159,7 @@ class ManagementController extends PageController
         
         $this->setMenuBuilder();
         $menu = $this->menuBuilder->createSCMCMenu();
-        $form = $this->getUploadForm();
+        $form = $this->createUploadForm();
         $form->handleRequest($request);
         
         return [
@@ -175,7 +176,7 @@ class ManagementController extends PageController
      */
     public function uploadZipAction(Request $request)
     {
-        $form = $this->getUploadForm();
+        $form = $this->createUploadForm();
         $form->handleRequest($request);
         if (!$form->isValid()) {
             $this->handleFormErrors($form);
@@ -205,7 +206,7 @@ class ManagementController extends PageController
         
         $this->setMenuBuilder();
         $menu = $this->menuBuilder->createSCMCMenu();
-        $form = $this->getDownloadForm();
+        $form = $this->createDownloadForm();
         $form->handleRequest($request);
         
         return [
@@ -222,7 +223,7 @@ class ManagementController extends PageController
      */
     public function downloadZipAction(Request $request)
     {
-        $form = $this->getDownloadForm();
+        $form = $this->createDownloadForm();
         $form->handleRequest($request);
         if (!$form->isValid()) {
             $this->handleFormErrors($form);
@@ -244,11 +245,11 @@ class ManagementController extends PageController
     }
     
     /**
-     * Gets the scmc upload formular
+     * Gets the scmc upload form
      * 
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function getUploadForm()
+    private function createUploadForm()
     {
         $builder = $this->createFormBuilder();
         $builder->setAction($this->generateUrl('manage_scmc_upload_zip'));
@@ -261,9 +262,9 @@ class ManagementController extends PageController
                     'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
                     ]
             ])
-            ->add('class_data', FileType::class, [
+            ->add('class_data', UniversalFileType::class, [
                 'label' => _('Zip file with class data'),
-                'constraints' => [new NotBlank(['message' => _('Please select a file to upload.')])],
+                //'constraints' => [new NotBlank(['message' => _('Please select a file to upload.')])],
                 'attr' => [
                     'help_text' => _('The zip file with the class data. It must contain sub folders with the class lists sorted by age group (Jahrgang5, Jahrgang6, ...). For more information please refer the WZeugnis Documentation.')
                     ]
@@ -301,7 +302,7 @@ class ManagementController extends PageController
      * 
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function getDownloadForm()
+    private function createDownloadForm()
     {
         $builder = $this->createFormBuilder();
         $builder->setAction($this->generateUrl('manage_scmc_download_zip'));
