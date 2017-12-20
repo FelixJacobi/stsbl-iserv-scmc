@@ -4,9 +4,13 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Service;
 
 use IServ\CoreBundle\Security\Core\SecurityHandler;
 use IServ\CoreBundle\Service\Shell;
+use IServ\CoreBundle\Util\Sudo;
 use IServ\CrudBundle\Entity\FlashMessageBag;
+use IServ\FileBundle\Entity\File;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Server;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Security\ScmcAuth;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -43,8 +47,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class ScmcAdm 
+class ScmcAdm implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     const SCMCADM = '/usr/lib/iserv/scmcadm';
     const SCMCADM_PUTDATA = 'putdata';
     const SCMCADM_GETDATA = 'getdata';
@@ -80,10 +86,15 @@ class ScmcAdm
      * @var ScmcAuth
      */
     private $scmcAuth;
-    
+
+    /**
+     * @var Sudo
+     */
+    private $sudo;
+
     /**
      * The constructor.
-     * 
+     *
      * @param Shell $shell
      * @param RequestStack $stack
      * @param SecurityHandler $securityHandler
@@ -135,6 +146,7 @@ class ScmcAdm
      * @param array $env
      * @param  callable $filterOutputCallBack
      * @return FlashMessageBag STDOUT and STDERR contents as FlashMessageBag
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     private function shellMsg($cmd, $args = null, $stdin = null, $env = null, callable $filterOutputCallBack = null)
     {
@@ -165,16 +177,17 @@ class ScmcAdm
     {
         return $this->request->server->has('HTTP_X_FORWARDED_FOR') ? $this->request->server->get('HTTP_X_FORWARDED_FOR') : null;
     }
-    
+
     /**
      * Calls scmcadm command
-     * 
+     *
      * @param string $command
      * @param array $args
      * @param string $arg
      * @param callable $filterOutputCallBack
      * @param array $envAppend
      * @return FlashMessageBag
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function scmcAdm($command, array $args = [], $arg = null, callable $filterOutputCallBack = null, array $envAppend = [])
     {
@@ -202,6 +215,7 @@ class ScmcAdm
      * @param $command
      * @param array $args
      * @return Shell
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function scmcAdmRaw($command, array $args = [])
     {
@@ -230,6 +244,7 @@ class ScmcAdm
      * @param Server $server
      * @param array $years
      * @return array First index: FlashMessageBag, Second index: Prepared Response or null
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function getData(Server $server, array $years)
     {
@@ -267,21 +282,39 @@ class ScmcAdm
 
         return [$ret, $response];
     }
-    
+
     /**
      * Calls putdata sub command
-     * 
+     *
      * @param Server $server
      * @param array $files
      * @param array $years
      * @return FlashMessageBag
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function putData(Server $server, array $files, array $years = null)
     {
         /* @var $file \IServ\FilesystemBundle\Model\File */
         $file = $files[0];
 
-        if ($file->getMimetype() != 'application/zip') {
+        if ($file instanceof File) {
+            /**
+             * PHP7 does have the fileinfo module in core
+             * (sudo_php runs with minimized configuration)
+             */
+            if (PHP_MAJOR_VERSION >= 7) {
+                Sudo::dl('fileinfo.so');
+            }
+
+            /* @var $file File */
+            /* @var $fileInfo \finfo */
+            $fileInfo = Sudo::_new('finfo');
+            $mimeType = $fileInfo->file(sprintf('%s/%s', $this->securityHandler->getUser()->getHome(), $file->getFilename()), FILEINFO_MIME_TYPE);
+        } else {
+            $mimeType = $file->getMimetype();
+        }
+
+        if ($mimeType != 'application/zip') {
             $bag = new FlashMessageBag();
             $bag->addMessage('error', _('You have to upload a zip file!'));
             return $bag;
@@ -289,7 +322,14 @@ class ScmcAdm
 
         $dir = $this->getTemporaryDirectory();
         $filePath = $dir.'upload.zip';
-        $content = $file->read($filePath);
+
+        if ($file instanceof File) {
+            $this->container->get('iserv.sudo');
+            /* @var $file File */
+            $content = Sudo::file_get_contents(sprintf('%s/%s', $this->securityHandler->getUser()->getHome(), $file->getFilename()));
+        } else {
+            $content = $file->read($filePath);
+        }
 
         $handle = fopen($filePath, 'w');
         fwrite($handle, $content);
@@ -316,6 +356,7 @@ class ScmcAdm
      * @param Server $server
      * @param UploadedFile $file
      * @return FlashMessageBag
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function storeKey(Server $server, UploadedFile $file)
     {
@@ -339,6 +380,7 @@ class ScmcAdm
      *
      * @param Server $server
      * @return FlashMessageBag
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function deleteKey(Server $server)
     {
@@ -350,6 +392,7 @@ class ScmcAdm
      * Calls masterpasswdempty sub command
      *
      * @return boolean
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function masterPasswdEmpty()
     {
@@ -375,6 +418,7 @@ class ScmcAdm
      * @param string $user
      * @param string $password
      * @return FlashMessageBag
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function setUserPasswd($user, $password)
     {
@@ -386,6 +430,7 @@ class ScmcAdm
      *
      * @param string $user
      * @return FlashMessageBag
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function deleteUserPasswd($user)
     {
@@ -398,6 +443,7 @@ class ScmcAdm
      * @param string $newPassword
      * @param string $oldPassword
      * @return FlashMessageBag
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function setMasterPasswd($newPassword, $oldPassword = null)
     {
@@ -411,6 +457,7 @@ class ScmcAdm
      * Calls newconfig sub command
      *
      * @return FlashMessageBag
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function newConfig()
     {

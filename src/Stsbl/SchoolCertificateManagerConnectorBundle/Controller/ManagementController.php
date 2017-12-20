@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Count;
 
 /*
  * The MIT License
@@ -103,7 +103,8 @@ class ManagementController extends PageController
 
     /**
      * School Certificate Manager Connector Main Page
-     * 
+     *
+     * @param Request $request
      * @return array
      * @Route("/index", name="manage_scmc_index")
      * @Template()
@@ -143,10 +144,11 @@ class ManagementController extends PageController
             'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
         ];
     }
-    
+
     /**
      * School Certificate Manager Connector Upload Page
-     * 
+     *
+     * @param Request $request
      * @return array
      * @Route("/upload", name="manage_scmc_upload")
      * @Template()
@@ -168,9 +170,11 @@ class ManagementController extends PageController
             'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
         ];
     }
-    
+
     /**
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      * @Method("POST")
      * @Route("/upload/zip", name="manage_scmc_upload_zip")
      */
@@ -184,6 +188,14 @@ class ManagementController extends PageController
         }
 
         $data = $form->getData();
+        $data['class_data'] = array_merge($data['class_data'], [$form->get('class_data')->get('picker')->getData()]);
+
+        // replacement for count constraint
+        if (null === $data['class_data'][0]) {
+            $this->get('iserv.flash')->error(_('Please select a file to upload.'));
+            return $this->redirectToRoute('manage_scmc_upload');
+        }
+
         /* @var $scmcAdm \Stsbl\SchoolCertificateManagerConnectorBundle\Service\ScmcAdm */
         $scmcAdm = $this->get('stsbl.scmc.service.scmcadm');
         $this->createFlashMessagesFromBag($scmcAdm->putData($data['server'], $data['class_data'], $data['years']));
@@ -215,11 +227,12 @@ class ManagementController extends PageController
             'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
         ];
     }
-    
+
     /**
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
      * @Method("POST")
      * @Route("/download/zip", name="manage_scmc_download_zip")
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function downloadZipAction(Request $request)
     {
@@ -264,7 +277,8 @@ class ManagementController extends PageController
             ])
             ->add('class_data', UniversalFileType::class, [
                 'label' => _('Zip file with class data'),
-                //'constraints' => [new NotBlank(['message' => _('Please select a file to upload.')])],
+                // FIXME UninversalFileType breaks constraint
+                //'constraints' => [new Count(['min' => 1, 'minMessage' => _('Please select a file to upload.')])],
                 'attr' => [
                     'help_text' => _('The zip file with the class data. It must contain sub folders with the class lists sorted by age group (Jahrgang5, Jahrgang6, ...). For more information please refer the WZeugnis Documentation.')
                     ]
@@ -298,7 +312,7 @@ class ManagementController extends PageController
     }
     
     /**
-     * Gets the scmc download formular
+     * Gets the scmc download form
      * 
      * @return \Symfony\Component\Form\FormInterface
      */
