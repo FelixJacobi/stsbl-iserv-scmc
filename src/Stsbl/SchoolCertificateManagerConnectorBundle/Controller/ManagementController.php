@@ -191,7 +191,7 @@ class ManagementController extends PageController
         $data['class_data'] = array_merge($data['class_data'], [$form->get('class_data')->get('picker')->getData()]);
 
         // replacement for count constraint
-        if (null === $data['class_data'][0]) {
+        if (!is_array($data['class_data']) || !isset($data['class_data'][0]) || null === $data['class_data'][0]) {
             $this->get('iserv.flash')->error(_('Please select a file to upload.'));
             return $this->redirectToRoute('manage_scmc_upload');
         }

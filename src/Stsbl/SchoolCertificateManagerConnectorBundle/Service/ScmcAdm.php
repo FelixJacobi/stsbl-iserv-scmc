@@ -294,6 +294,11 @@ class ScmcAdm implements ContainerAwareInterface
      */
     public function putData(Server $server, array $files, array $years = null)
     {
+        if (!isset($files[0]) || null === $files[0]) {
+            throw new \InvalidArgumentException('File not supplied as first array argument.');
+        }
+        
+
         /* @var $file \IServ\FilesystemBundle\Model\File */
         $file = $files[0];
 
