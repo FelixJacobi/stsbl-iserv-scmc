@@ -297,7 +297,7 @@ class ScmcAdm implements ContainerAwareInterface
         if (!isset($files[0]) || null === $files[0]) {
             throw new \InvalidArgumentException('File not supplied as first array argument.');
         }
-        
+
 
         /* @var $file \IServ\FilesystemBundle\Model\File */
         $file = $files[0];
@@ -334,6 +334,8 @@ class ScmcAdm implements ContainerAwareInterface
             $content = Sudo::file_get_contents(sprintf('%s/%s', $this->securityHandler->getUser()->getHome(), $file->getFilename()));
         } else {
             $content = $file->read($filePath);
+            // remove temp file
+            $file->delete();
         }
 
         $handle = fopen($filePath, 'w');
