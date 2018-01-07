@@ -83,7 +83,7 @@ class ScmcAuth
      * @param string|array $password
      * @param string $service
      * @param boolean $sessionPassword
-     * @return string
+     * @return boolean
      */
     public function authenticate($account, $password, $service = 'scmcweb', $sessionPassword = true)
     {
@@ -113,7 +113,12 @@ class ScmcAuth
             $secondArgs[] = $password;
         }
 
-        return preg_match("/^OK\b/", $this->execute($args, $secondArgs));
+        preg_match("/^OK/", $this->execute($args, $secondArgs), $m);
+        if (count($m) > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

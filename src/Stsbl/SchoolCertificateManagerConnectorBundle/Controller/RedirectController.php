@@ -1,11 +1,9 @@
 <?php
-// src/Stsbl/SchoolCertificateManagerConnectorBunlde/Controller/FormTrait.php
+// RedirectController.php
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormErrorIterator;
-use Symfony\Component\Form\FormInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /*
  * The MIT License
@@ -32,30 +30,21 @@ use Symfony\Component\Form\FormInterface;
  */
 
 /**
- * Common functions for form handling
- *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-trait FormTrait 
+class RedirectController extends Controller
 {
     /**
-     * Handles form errors and displays them via flash
-     * 
-     * @param Form|FormInterface $form
+     * Handling action if session is expired
+     *
+     * @return RedirectResponse
      */
-    protected function handleFormErrors(FormInterface $form)
+    public function redirectAction()
     {
-        /* @var $errors FormErrorIterator */
-        $errors = $form->getErrors(true);
-        
-        if($errors->count() < 1) {
-            return;
-        }
-       
-        foreach ($errors as $error) {
-            /* @var $error FormError */
-            $this->get('iserv.flash')->error($error->getMessage());
-        }
+        $response = new RedirectResponse($this->generateUrl('manage_scmc_login'));
+        $response->headers->set('Referrer-Policy', 'same-origin');
+
+        return $response;
     }
 }

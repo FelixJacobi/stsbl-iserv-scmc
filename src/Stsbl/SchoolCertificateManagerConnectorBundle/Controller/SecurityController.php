@@ -2,12 +2,14 @@
 // src/Stsbl/SchoolCertificateManagerConnectorBundle/Controller/SecurityController.php
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\Controller;
 
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use IServ\CoreBundle\Controller\PageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitializationTrait;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -50,12 +52,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class SecurityController extends PageController 
 {
     use FormTrait, LoggerTrait, LoggerInitializationTrait;
-    
+
     /**
      * Displays login form
-     * 
+     *
      * @param Request $request
      * @return array|Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
+     *
      * @Route("/login", name="manage_scmc_login")
      * @Template("StsblSchoolCertificateManagerConnectorBundle:Security:login.html.twig")
      */
@@ -74,17 +81,21 @@ class SecurityController extends PageController
         $form->handleRequest($request);
         
         if ($form->isSubmitted()) {
-            if(!$form->isValid()) {
+            if (!$form->isValid()) {
                 $this->handleFormErrors($form);
                 goto render;
             }
-        
+
             $data = $form->getData();
             $this->initalizeLogger();
-            
+
             $ret = $this->get('stsbl.scmc.security.scmcauth')->login($data['masterpassword'], $data['userpassword']);
 
-            if ($ret === true || empty($ret)) {
+            if ($ret === 'code required') {
+                // session requires 2fa code
+                return $this->redirectToRoute('manage_scmc_code');
+            } else if ($ret === true || empty($ret)) {
+                // nop
             } else if ($ret === 'master password wrong') {
                 $this->log('Zeugnisverwaltungs-Login: Falsches Masterpasswort');
                 $error = _('The master password is wrong.');
@@ -95,15 +106,24 @@ class SecurityController extends PageController
                 goto render;
             } else {
                 $this->log('Zeugnisverwaltungs-Login: Allgemeiner Fehler');
-                $error = _('Something went wrong:').' '.$ret;
+                $error = __('Something went wrong: %s', $ret);
                 goto render;
             }
             
             $this->log('Zeugnisverwaltungs-Login erfolgreich');
             $this->get('iserv.flash')->success(_('You have logged in successfully in the Certificate Management Section.'));
             
-            // assume sucessful login
-            return $this->redirect($this->generateUrl('manage_scmc_index'));
+            // assume successful login
+            // check if previous url was provided
+            $session = $this->get('session');
+            if ($session->has('scmc_login_redirect') && $session->get('scmc_login_redirect') !== null) {
+                $url = $session->get('scmc_login_redirect');
+                $session->set('scmc_login_redirect', null);
+            } else {
+                $url = $this->generateUrl('manage_scmc_index');
+            }
+
+            return $this->redirect($url);
         }
         
         render:
@@ -113,7 +133,7 @@ class SecurityController extends PageController
         $doctrine = $this->getDoctrine();
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $doctrine->getManager();
-        /* @var $object \Stsbl\SchoolCertificateManagerConnectorBundle\Entity\User */
+        /* @var $object \Stsbl\SchoolCertificateManagerConnectorBundle\Entity\UserPassword */
         $object = $em->find('StsblSchoolCertificateManagerConnectorBundle:UserPassword', $act);
         
         if ($object != null) {
@@ -144,6 +164,7 @@ class SecurityController extends PageController
      * 
      * @param Request $request
      * @return RedirectResponse
+     *
      * @Route("/logout", name="manage_scmc_logout")
      * @Security("token.hasAttribute('scmc_authenticated') and token.getAttribute('scmc_authenticated') == true")
      */
@@ -159,11 +180,67 @@ class SecurityController extends PageController
     
         return $this->redirect($this->generateUrl('manage_scmc_forward'));
     }
+
+    /**
+     * Ask user for his OATH code
+     *
+     * @param Request $request
+     * @return array
+     *
+     * @Route("/code", name="manage_scmc_code")
+     * @Template()
+     */
+    public function codeAction(Request $request)
+    {
+        $form = $this->createCodeForm();
+        $form->handleRequest($request);
+
+        return [
+            'form' => $form->createView(),
+            'error' => null
+        ];
+    }
+
+    /**
+     * Creates form to enter 2fa code
+     */
+    private function createCodeForm()
+    {
+        $builder = $this->get('form.factory')->createNamedBuilder('code');
+
+        $builder
+            ->add('code', NumberType::class, [
+                'label' => false,
+                'constraints' => [new NotBlank(['message' => _('Please enter authorization code.')])],
+                'attr' => [
+                    'placeholder' => _('Authorization code'),
+                    'autofocuse' => 'autofocus'
+                ]
+            ])
+            ->add('actions', FormActionsType::class)
+        ;
+
+        $builder->get('actions')
+            ->add('continue', SubmitType::class, array(
+                    'label' => _('Finish login'),
+                    'buttonClass' => 'btn-success',
+                    'icon' => 'ok'
+                )
+            )
+            ->add('cancel', SubmitType::class, array(
+                'label' => _('Logout'),
+                'buttonClass' => 'btn-danger',
+                'icon' => 'log-out'
+            ))
+        ;
+
+        return $builder->getForm();
+    }
     
     /**
      * Creates form to login with masterpassword
      * 
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     private function getLoginForm()
     {
