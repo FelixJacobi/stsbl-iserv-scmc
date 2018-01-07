@@ -9,11 +9,14 @@ use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Security\Privilege;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Traits\LoggerInitializationTrait;
 use Stsbl\SendMailAsGroupBundle\Controller\CrudController;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -81,11 +84,12 @@ class AdminController extends CrudController
 
     /**
      * Overview page
-     * 
+     *
      * @param Request $request
      * @return array
      * @Route("", name="admin_scmc")
      * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:index.html.twig")
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function indexAction(Request $request)
     {
@@ -102,11 +106,12 @@ class AdminController extends CrudController
             'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
         ];
     }
-    
+
     /**
      * Try to update the master password
-     * 
+     *
      * @param Request $request
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     private function handleMasterPasswordForm(Request $request)
     {
@@ -136,11 +141,12 @@ class AdminController extends CrudController
             $this->handleFormErrors($form);
         }
     }
-    
+
     /**
      * Creates form to update master password
-     * 
-     * @return Form
+     *
+     * @return Form|FormInterface
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     private function getMasterPasswordUpdateForm()
     {
@@ -195,7 +201,7 @@ class AdminController extends CrudController
     /**
      * Creates form for a new user password
      * 
-     * @return Form
+     * @return Form|FormInterface
      */
     private function getNewUserPasswordForm()
     {
@@ -229,15 +235,16 @@ class AdminController extends CrudController
         
         return $builder->getForm();
     }
-    
+
     /**
      * Displays form to set a password for a user
-     * 
+     *
      * @param Request $request
      * @param string $user
-     * @return array
+     * @return array|RedirectResponse
      * @Route("/userpassword/set/{user}", name="admin_scmc_set_user_password")
      * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:setuserpassword.html.twig")
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function setUserPasswordAction(Request $request, $user)
     {
@@ -272,7 +279,7 @@ class AdminController extends CrudController
             
             foreach ($userPrivileges as $privilege) {
                 /* @var $privilege \IServ\CoreBundle\Entity\Privilege */
-                if ($privilege->getPriv() === 'PRIV_SCMC_ACCESS_FRONTEND') {
+                if ($privilege->getPriv() === Privilege::ACCESS_FRONTEND) {
                     $hasPrivilege = true;
                     break;
                 }
@@ -297,12 +304,13 @@ class AdminController extends CrudController
 
     /**
      * Displays form to delete a password for a user
-     * 
+     *
      * @param Request $request
      * @param string $user
      * @return array|Response
      * @Route("/userpasswords/delete/{user}", name="admin_scmc_delete_user_password")
      * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:deleteuserpassword.html.twig")
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function deleteUserPasswordAction(Request $request, $user)
     {

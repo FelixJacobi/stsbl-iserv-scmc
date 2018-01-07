@@ -12,6 +12,8 @@ use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Crud\Batch;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Server;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Security\Privilege;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /*
@@ -294,6 +296,7 @@ class ServerAdmin extends AbstractAdmin
      */
     public function postUpdate(CrudInterface $object, array $previousData = null)
     {
+        /* @var $object Server */
         if ((string)$object->getHost() != $previousData['host']) {
             $this->logger->writeForModule(sprintf('Zeugnisserver "%s" verändert und umbenannt nach "%s"', $previousData['host'], (string)$object->getHost()), 'School Certificate Manager Connector');
         } else {
@@ -306,6 +309,7 @@ class ServerAdmin extends AbstractAdmin
      */
     public function postRemove(CrudInterface $object)
     {
+        /* @var $object Server */
         $this->logger->writeForModule(sprintf('Zeugnisserver "%s" gelöscht', (string)$object->getHost()), 'School Certificate Manager Connector');
         $this->createFlashMessagesFromBag($this->getScmcAdm()->deleteKey($object));
         $this->newConfig();
@@ -328,6 +332,6 @@ class ServerAdmin extends AbstractAdmin
      */
     public function isAuthorized()
     {
-        return $this->isGranted('PRIV_SCMC_ADMIN');
+        return $this->isGranted(Privilege::ADMIN);
     }
 }

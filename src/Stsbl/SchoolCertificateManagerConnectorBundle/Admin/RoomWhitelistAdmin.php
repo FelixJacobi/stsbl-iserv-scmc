@@ -8,6 +8,8 @@ use IServ\CoreBundle\Service\Logger;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\AbstractBaseMapper;
 use IServ\CrudBundle\Mapper\FormMapper;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Room;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Security\Privilege;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /*
@@ -175,7 +177,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
      */
     public function isAuthorized() 
     {
-        return $this->isGranted('PRIV_SCMC_ADMIN');
+        return $this->isGranted(Privilege::ADMIN);
     }
     
     /* LOGGING */
@@ -185,6 +187,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
      */
     public function postPersist(CrudInterface $object) 
     {
+        /* @var $object Room */
         $this->logger->writeForModule(sprintf('Raum "%s" zur Raumliste hinzugefügt', (string)$object->getRoom()), 'School Certificate Manager Connector');
         $this->newConfig();
     }
@@ -194,6 +197,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
      */
     public function postRemove(CrudInterface $object) 
     {
+        /* @var $object Room */
         $this->logger->writeForModule(sprintf('Raum "%s" aus der Raumliste entfernt', (string)$object->getRoom()), 'School Certificate Manager Connector');
         $this->newConfig();
     }

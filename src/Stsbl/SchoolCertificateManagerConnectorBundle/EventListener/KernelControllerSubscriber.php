@@ -3,12 +3,13 @@
 namespace Stsbl\SchoolCertificateManagerConnectorBundle\EventListener;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use IServ\CoreBundle\Security\Authorization\AuthorizationChecker;
 use IServ\CoreBundle\Security\Core\SecurityHandler;
 use IServ\CoreBundle\Security\Exception\ClientSecurityException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Security\Privilege;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Security\ScmcAuth;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
@@ -17,6 +18,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /*
  * The MIT License
@@ -49,6 +51,11 @@ use Symfony\Component\Routing\Router;
 class KernelControllerSubscriber implements EventSubscriberInterface
 {
     /**
+     * @var AuthorizationChecker
+     */
+    private $authorizationChecker;
+
+    /**
      * @var ControllerResolverInterface
      */
     private $resolver;
@@ -74,19 +81,23 @@ class KernelControllerSubscriber implements EventSubscriberInterface
     private $scmcAuth;
 
     /**
+     * The constructor.
+     * 
      * @param ControllerResolverInterface $resolver
      * @param SecurityHandler $securityHandler
      * @param Session $session
      * @param Router $router
      * @param ScmcAuth $scmcAuth
+     * @param AuthorizationChecker $authorizationChecker
      */
-    public function __construct(ControllerResolverInterface $resolver, SecurityHandler $securityHandler, Session $session, Router $router, ScmcAuth $scmcAuth)
+    public function __construct(ControllerResolverInterface $resolver, SecurityHandler $securityHandler, Session $session, Router $router, ScmcAuth $scmcAuth, AuthorizationChecker $authorizationChecker)
     {
         $this->resolver = $resolver;
         $this->securityHandler = $securityHandler;
         $this->session = $session;
         $this->router = $router;
         $this->scmcAuth = $scmcAuth;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -104,6 +115,16 @@ class KernelControllerSubscriber implements EventSubscriberInterface
      */
     public function onKernelController(FilterControllerEvent $event)
     {
+        try {
+            // this handler handles only requests of users with the privilege
+            if (!$this->authorizationChecker->isGranted(Privilege::ACCESS_FRONTEND)) {
+                return;
+            }
+        } catch (AuthenticationCredentialsNotFoundException $e) {
+            // catch web profiler
+            return;
+        }
+
         $originalRequest = $event->getRequest();
         $pathInfo = $originalRequest->getPathInfo();
         $requestUri = $originalRequest->getUri();

@@ -6,6 +6,7 @@ use IServ\CoreBundle\Controller\PageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stsbl\SchoolCertificateManagerConnectorBundle\Entity\Server;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,6 +28,7 @@ class AccessController extends PageController
      * @param Request $request
      * @return array
      * @Route("", name="access_scmc_index")
+     * @Security("is_granted('PRIV_SCMC_ACCESS_LIST')")
      * @Template()
      */
     public function indexAction(Request $request)
@@ -34,7 +36,7 @@ class AccessController extends PageController
         $this->addBreadcrumb(_('Certificate Grade Input'));
 
         /* @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $this->getDoctrine()->getRepository('StsblSchoolCertificateManagerConnectorBundle:Server')->createQueryBuilder('s');
+        $qb = $this->getDoctrine()->getRepository(Server::class)->createQueryBuilder('s');
 
         $qb
             ->select('s')
