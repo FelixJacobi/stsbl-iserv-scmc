@@ -1,3 +1,17 @@
+stsbl-iserv-scmc (18.01.21-1) experimental; urgency=medium
+
+  * Added universal file picker for upload
+  * Fixed ScmcAdm and controller for uploaded files from file section
+  * Improved file validation
+  * Delete temp file in filesystem before upload
+  * Updated copyright
+  * Added lintian overrides
+  * Improved hnadling of expired sessions and added skeleton for OATH support
+  * Skip redirect handling for users without privilege
+  * Fixed wrong use statement
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 21 Jan 2018 23:20:14 +0100
+
 stsbl-iserv-scmc (17.12.19-1) experimental; urgency=medium
 
   * Added license
