@@ -13,7 +13,7 @@ use Stsbl::IServ::Log;
 use Stsbl::IServ::SCMC;
 use Stsbl::IServ::Security;
 
-my $m_ip = qr/[\d.:]{1,64}/;
+my $m_ip = qr/[0-9a-f.:]{1,64}/;
 
 my $fn_master_passwd = "/etc/stsbl/scmcmasterpasswd";
 
