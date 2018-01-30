@@ -25,13 +25,12 @@ class AccessController extends PageController
     /**
      * List available server
      *
-     * @param Request $request
      * @return array
      * @Route("", name="access_scmc_index")
      * @Security("is_granted('PRIV_SCMC_ACCESS_LIST')")
      * @Template()
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         $this->addBreadcrumb(_('Certificate Grade Input'));
 

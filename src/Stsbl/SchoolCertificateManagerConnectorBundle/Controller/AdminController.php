@@ -429,6 +429,7 @@ class AdminController extends CrudController
      *
      * @param Request $request
      * @return array
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function roomIndexAction(Request $request)
     {

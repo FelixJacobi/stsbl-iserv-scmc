@@ -44,12 +44,11 @@ class EntryPointController extends PageController
 {
     /**
      * Check if user is already authentificated and redirect to index or login
-     * 
-     * @param Request $request
+     *
      * @return Response
      * @Route("", name="manage_scmc_forward")
      */
-    public function forwardAction(Request $request)
+    public function forwardAction()
     {
         if ($this->get('stsbl.scmc.security.scmcauth')->isAuthenticated()) {
             return $this->forward('StsblSchoolCertificateManagerConnectorBundle:Management:index');

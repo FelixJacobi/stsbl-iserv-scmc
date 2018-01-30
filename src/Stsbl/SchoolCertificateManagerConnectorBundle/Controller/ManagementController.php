@@ -104,12 +104,11 @@ class ManagementController extends PageController
     /**
      * School Certificate Manager Connector Main Page
      *
-     * @param Request $request
      * @return array
      * @Route("/index", name="manage_scmc_index")
      * @Template()
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
@@ -202,10 +201,11 @@ class ManagementController extends PageController
         
         return $this->redirectToRoute('manage_scmc_upload');
     }
-    
+
     /**
      * School Certificate Manager Connector Download Page
-     * 
+     *
+     * @param Request $request
      * @return array
      * @Route("/download", name="manage_scmc_download")
      * @Template()
@@ -229,10 +229,11 @@ class ManagementController extends PageController
     }
 
     /**
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \IServ\CoreBundle\Exception\ShellExecException
      * @Method("POST")
      * @Route("/download/zip", name="manage_scmc_download_zip")
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function downloadZipAction(Request $request)
     {

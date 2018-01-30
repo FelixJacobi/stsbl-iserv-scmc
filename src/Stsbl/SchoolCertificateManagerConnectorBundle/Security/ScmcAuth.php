@@ -105,9 +105,6 @@ class ScmcAuth
             $args[] = json_encode(['unused', 'unused']);
         }
 
-        // only used on session opening
-        $args[] = json_encode(['_dummy' => '']);
-
         $secondArgs = [];
         if ($sessionPassword) {
             $secondArgs[] = $password;
@@ -236,7 +233,8 @@ class ScmcAuth
 
         $secondArgs = [$this->getScmcSessionPassword()];
 
-        $res = $this->execute($args, $secondArgs) === 'OK';
+        $ret = $this->execute($args, $secondArgs);
+        $res = $ret === 'OK';
 
         if ($res) {
             $this->securityHandler->getToken()->setAttribute('scmc_authenticated', false);
