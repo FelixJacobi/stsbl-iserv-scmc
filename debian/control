@@ -26,7 +26,7 @@ Depends: ${misc:Depends},
   unzip,
   zip,
 Xb-Private-IServ-Revision: ${iserv:Revision}
- Description: Zeugnisverwaltungsconnector für IServ (EXPERIMENTELL)
+Description: Zeugnisverwaltungsconnector für IServ (EXPERIMENTELL)
  Dieses Modul ermöglicht eine für den Endanwender nahtlos erscheinene
  Integration eines Zeugnisverwaltungservers in den IDesk.
  Zeugnisverwalter können Schülerdaten auf den Server hochladen und die
