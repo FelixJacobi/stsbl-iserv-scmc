@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (18.02.16-1) experimental; urgency=medium
+
+  * Moved socket path to /run and limit Kernel controller subscriber to own url prefix
+  * Updated packaging
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Fri, 16 Feb 2018 21:19:22 +0100
+
 stsbl-iserv-scmc (18.02.04-2) experimental; urgency=medium
 
   * Added workaround for lintian bug
