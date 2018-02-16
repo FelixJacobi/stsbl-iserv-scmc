@@ -1,3 +1,9 @@
+stsbl-iserv-scmc (18.02.16-3) experimental; urgency=medium
+
+  * Fixed missing description
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Fri, 16 Feb 2018 21:21:37 +0100
+
 stsbl-iserv-scmc (18.02.16-2) experimental; urgency=medium
 
   * Fixed install
