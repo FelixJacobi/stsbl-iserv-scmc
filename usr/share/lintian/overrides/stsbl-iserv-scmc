@@ -1,2 +1,4 @@
 # by design
 stsbl-iserv-scmc: extra-license-file usr/share/doc/stsbl-iserv-scmc/LICENSE
+# lintian bug
+stsbl-iserv-scmc: php-script-but-no-php-cli-dep usr/lib/iserv/scmc_php_hash

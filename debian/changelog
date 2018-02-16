@@ -1,3 +1,16 @@
+stsbl-iserv-scmc (18.02.04-2) experimental; urgency=medium
+
+  * Added workaround for lintian bug
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 04 Feb 2018 16:48:40 +0100
+
+stsbl-iserv-scmc (18.02.04-1) experimental; urgency=medium
+
+  * scmcadm: Fixed logging of ipv6 addresses
+  * Removed old dummy parameter in service
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 04 Feb 2018 16:46:36 +0100
+
 stsbl-iserv-scmc (18.01.21-1) experimental; urgency=medium
 
   * Added universal file picker for upload
