@@ -112,6 +112,8 @@ class KernelControllerSubscriber implements EventSubscriberInterface
      * Redirects user to scmc login form if he tries to access a page directly without auth.
      *
      * @param FilterControllerEvent $event
+     * @throws \Doctrine\Common\Annotations\AnnotationException
+     * @throws \ReflectionException
      */
     public function onKernelController(FilterControllerEvent $event)
     {
@@ -127,6 +129,13 @@ class KernelControllerSubscriber implements EventSubscriberInterface
 
         $originalRequest = $event->getRequest();
         $pathInfo = $originalRequest->getPathInfo();
+
+        // prefilter requests by pathinfo to improve speed:
+        // 1100ms => 616ms
+        if (!preg_match('#^/scmc#', $pathInfo)) {
+            return;
+        }
+
         $requestUri = $originalRequest->getUri();
         $context = new RequestContext();
         $context->fromRequest($originalRequest);
@@ -143,16 +152,20 @@ class KernelControllerSubscriber implements EventSubscriberInterface
 
         $route = null;
 
-        if (null !== $controller && null !== $action) {
+        if (null !== $controller || null !== $action) {
             $reflectionMethod = new \ReflectionMethod($controller, $action);
             $annotationReader = new AnnotationReader();
             $annotations = $annotationReader->getMethodAnnotations($reflectionMethod);
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof Route) {
-                    $route = $annotation->getName();
-                    break;
-                }
+            /* @var $annotation Route */
+            list($annotation) = array_filter($annotations, function ($annotation) {
+                return $annotation instanceof Route;
+            });
+            if (!isset($annotation)) {
+                // do not handle actions without annotation
+                return;
             }
+
+            $route = $annotation->getName();
         } else {
             // skip unresolvable
             return;

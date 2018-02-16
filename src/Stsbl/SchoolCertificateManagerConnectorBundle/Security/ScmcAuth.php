@@ -145,7 +145,7 @@ class ScmcAuth
         // required to indicate end of input
         $args[] = '';
 
-        if (!$fp = fsockopen('unix:///var/run/scmcauthd/socket')) {
+        if (!$fp = fsockopen('unix:///run/scmcauthd/socket')) {
             throw new ScmcAuthException('Cannot connect to scmcauthd!');
         }
 
