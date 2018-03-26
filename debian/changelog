@@ -1,6 +1,7 @@
 stsbl-iserv-scmc (18.03.26-1) experimental; urgency=medium
 
-  * Fixed broken perl dependency and fixed PHP notice in KernelControllerSubscriber
+  * Fixed broken perl dependency and fixed PHP notice in
+    KernelControllerSubscriber
 
  -- Felix Jacobi <felix.jacobi@stsbl.de>  Mon, 26 Mar 2018 21:56:31 +0200
 
