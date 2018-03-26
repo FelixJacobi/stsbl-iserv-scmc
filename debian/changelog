@@ -1,3 +1,9 @@
+stsbl-iserv-scmc (18.03.26-2) experimental; urgency=medium
+
+  * Fixed changelog
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Mon, 26 Mar 2018 21:57:30 +0200
+
 stsbl-iserv-scmc (18.03.26-1) experimental; urgency=medium
 
   * Fixed broken perl dependency and fixed PHP notice in
