@@ -157,13 +157,14 @@ class KernelControllerSubscriber implements EventSubscriberInterface
             $annotationReader = new AnnotationReader();
             $annotations = $annotationReader->getMethodAnnotations($reflectionMethod);
             /* @var $annotation Route */
-            list($annotation) = array_filter($annotations, function ($annotation) {
+            $routes = array_filter($annotations, function ($annotation) {
                 return $annotation instanceof Route;
             });
-            if (!isset($annotation)) {
+            if (count($routes) < 1) {
                 // do not handle actions without annotation
                 return;
             }
+	    $annotation = array_shift($routes);
 
             $route = $annotation->getName();
         } else {

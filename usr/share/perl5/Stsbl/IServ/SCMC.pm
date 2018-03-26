@@ -197,8 +197,8 @@ sub SetUserPasswd($$)
   my ($act, $pw) = @_;
   eval
   {
-    Stsbl::IServ::Security::valid_user $act;
-    IServ::Valid::Passwd $pw;
+    $act = IServ::Valid::User $act;
+    $pw = IServ::Valid::Passwd $pw;
     UserPasswd $act, $pw;
   };
   error "Setzen des Benutzerpasswortes fehlgeschlagen: $@" if $@;
@@ -225,7 +225,7 @@ sub DeleteUserPasswd($)
   my $act = shift;
   eval
   {
-    Stsbl::IServ::Security::valid_user $act;
+    $act = IServ::Valid::User $act;
     UserPasswd $act;
   };
   error "Löschen des Benutzerpasswortes fehlgeschlagen: $@" if $@;
