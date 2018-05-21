@@ -5,6 +5,7 @@ namespace Stsbl\SchoolCertificateManagerConnectorBundle\Validator\Constraints;
 use IServ\CoreBundle\Service\Config;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /*
  * The MIT License
@@ -56,6 +57,10 @@ class NotPortalServerDomainValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof NotPortalServerDomain) {
+            throw new UnexpectedTypeException($value, NotPortalServerDomain::class);
+        }
+
         /* @var $constraint NotPortalServerDomain */
         if ((string)$value == $this->config->get('Domain')) {
             $this->context->buildViolation($constraint->getIsPortalServerDomainMessage())->atPath('webDomain')->addViolation();
