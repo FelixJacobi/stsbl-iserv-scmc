@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (18.05.21-1) experimental; urgency=medium
+
+  * Updated packaging
+  * Improved validator
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Mon, 21 May 2018 18:51:37 +0200
+
 stsbl-iserv-scmc (18.03.26-2) experimental; urgency=medium
 
   * Fixed changelog
