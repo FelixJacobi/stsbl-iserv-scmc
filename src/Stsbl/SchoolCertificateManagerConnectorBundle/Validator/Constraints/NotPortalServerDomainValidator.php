@@ -62,15 +62,15 @@ class NotPortalServerDomainValidator extends ConstraintValidator
         }
 
         /* @var $constraint NotPortalServerDomain */
-        if ((string)$value == $this->config->get('Domain')) {
+        if ((string)$value === $this->config->get('Domain')) {
             $this->context->buildViolation($constraint->getIsPortalServerDomainMessage())->atPath('webDomain')->addViolation();
         }
 
-        if((string)$value == 'www.'.$this->config->get('Domain')) {
+        if((string)$value === 'www.'.$this->config->get('Domain')) {
             $this->context->buildViolation($constraint->getIsWWWHomepageMessage())->atPath('webDomain')->addViolation();
         }
 
-        if ((string)$value == $this->config->get('Hostname')) {
+        if ((string)$value === $this->config->get('Hostname')) {
             $this->context->buildViolation($constraint->getIsPortalServerHostNameMessage())->atPath('webDomain')->addViolation();
         }
 
