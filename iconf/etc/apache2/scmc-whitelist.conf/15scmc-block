@@ -12,18 +12,8 @@
   RewriteCond %{REQUEST_URI} !^/_wdt
   RewriteCond %{REQUEST_URI} !^/favicon.ico
   RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge
+  RewriteCond %{REQUEST_URI} !^/iserv/assets
   RewriteRule (.*) /usr/share/iserv/web/%{REQUEST_URI}
-
-  #<Location /public>
-  #  Header set Referrer-Policy: "no-referrer"
-  #  Header set X-Content-Type-Options "nosniff"
-  #  Header set X-XSS-Protection "1; mode=block"
-  #  Header always append X-Frame-Options "SAMEORIGIN"
-  # 
-  #  # unsafe-eval is needed by jQuery. Proposed change in 4.0 (https://github.com/jquery/jquery/issues/1895)
-  #  Header setifempty Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self'; img-src 'self' data:;" env=!IS_DEV
-  #  Header setifempty X-Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self'; img-src 'self' data:;" env=!IS_DEV
-  #</Location>
 
   <Directory /usr/share/iserv/web>
     Allow from all

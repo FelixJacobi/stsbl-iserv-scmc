@@ -46,17 +46,20 @@ sub gen_conf($$$)
     "  RequestHeader unset Referer\n".
     "\n".
     "  <Directory /var/lib/stsbl/scmc/webroot>\n".
-    "    Allow from all\n".
     "    Require all granted\n".
     "  </Directory>\n".
     "\n".
     "  Alias /favicon.ico /usr/share/iserv/scmc/favicon.ico\n".
+    "  Alias /iserv/assets /usr/share/iserv/web/public/assets\n".
     "\n".
     "  <Directory /usr/share/iserv/scmc>\n".
     "    <Files favicon.ico>\n".
-    "      Allow from all\n".
     "      Require all granted\n".
     "    </Files>\n".
+    "  </Directory>\n".
+    "\n".
+    "  <Directory /usr/share/iserv/web/public/assets>\n".
+    "    Require all granted\n".
     "  </Directory>\n".
     "\n".
     "  ErrorDocument 503 /scmc-error.php\n".
@@ -92,7 +95,6 @@ sub gen_conf($$$)
     "  # Let's Encrypt\n".
     "  Alias /.well-known/acme-challenge/ /var/lib/certbot/webroot/.well-known/acme-challenge/\n".
     "  <Directory /var/lib/certbot/webroot>\n".
-    "    Allow from all\n".
     "    Require all granted\n".
     "    Options +Indexes\n".
     "  </Directory>\n"
