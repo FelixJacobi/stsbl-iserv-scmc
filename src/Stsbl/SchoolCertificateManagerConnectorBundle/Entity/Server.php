@@ -56,8 +56,8 @@ class Server implements CrudInterface
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="\IServ\HostBundle\Entity\Host", fetch="EAGER")
-     * @ORM\JoinColumn(name="host_id", referencedColumnName="host")
+     * @ORM\OneToOne(targetEntity="\IServ\HostBundle\Entity\Host", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="host_id", referencedColumnName="id")
      * 
      * @var Host
      */
