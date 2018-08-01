@@ -20,6 +20,10 @@ CREATE TABLE scmc_servers (
                                     ON UPDATE CASCADE
                                     ON DELETE CASCADE
                                     NOT NULL,
+    Host_ID         INTEGER     REFERENCES hosts(ID)
+                                    ON UPDATE CASCADE
+                                    ON DELETE CASCADE
+                                    NOT NULL,
     TomcatType      TEXT        NOT NULL 
                                     CHECK (TomcatType IN
         ('tomcat6', 'tomcat7', 'tomact8')),

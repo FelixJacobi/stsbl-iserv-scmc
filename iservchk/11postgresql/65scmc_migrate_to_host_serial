@@ -1,0 +1,12 @@
+Test "scmc: migrate host references to serial"
+    grep -q ^65scmc_migrate_host_id_to_serial$ /var/lib/iserv/config/update.log
+    ---
+    # No action required if scmc_servers table is not created yet
+    ! (psql -Atc '\dt scmc_servers' iserv postgres | grep -q "^public") &&
+        echo 65scmc_migrate_host_id_to_serial >> /var/lib/iserv/config/update.log &&
+        exit 0
+    psql -v ON_ERROR_STOP=1 -f \
+        /usr/share/iserv/upgrade/scmc_migrate_to_host_id.sql \
+        iserv postgres &&
+        echo 65scmc_migrate_host_id_to_serial >> /var/lib/iserv/config/update.log
+

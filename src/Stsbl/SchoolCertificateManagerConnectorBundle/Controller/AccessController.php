@@ -48,7 +48,7 @@ class AccessController extends PageController
 
         return [
             'servers' => $qb->getQuery()->getResult(),
-            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc',
         ];
     }
 }

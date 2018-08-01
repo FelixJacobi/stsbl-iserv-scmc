@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use IServ\CoreBundle\Entity\Group;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\HostBundle\Entity\Host;
+use IServ\HostBundle\Entity\LegacyHostnameTrait;
 use Stsbl\SchoolCertificateManagerConnectorBundle\Validator\Constraints as StsblAssert;
 use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -45,6 +46,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Server implements CrudInterface
 {
+    use LegacyHostnameTrait;
+
     /**
      * @ORM\Column(type="integer", nullable=false)
      * @ORM\Id
@@ -54,7 +57,7 @@ class Server implements CrudInterface
 
     /**
      * @ORM\OneToOne(targetEntity="\IServ\HostBundle\Entity\Host", fetch="EAGER")
-     * @ORM\JoinColumn(name="host", referencedColumnName="name")
+     * @ORM\JoinColumn(name="host_id", referencedColumnName="host")
      * 
      * @var Host
      */
