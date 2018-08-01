@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (18.08.02-2) experimental; urgency=medium
+
+  * Fixed mapping
+  * Fixed error pages for new asset management
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Thu, 02 Aug 2018 00:54:27 +0200
+
 stsbl-iserv-scmc (18.08.02-1) experimental; urgency=medium
 
   * Fixed database for new host serial id
