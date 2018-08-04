@@ -146,7 +146,7 @@ class ServerAdmin extends AbstractAdmin
                         ->resetDqlParts()
                         ->select('h')
                         ->from('StsblSchoolCertificateManagerConnectorBundle:Server', 's')
-                        ->where('s.host = h.name')
+                        ->where('s.host = h.id')
                     ;
                 
                     $qb = $er->createQueryBuilder('h');
@@ -158,7 +158,7 @@ class ServerAdmin extends AbstractAdmin
                     // add current object on editing
                     if ($formMapper->getObject() != null) {
                         $qb
-                            ->orWhere($qb->expr()->eq('h.name', ':currentHost'))
+                            ->orWhere($qb->expr()->eq('h.id', ':currentHost'))
                             ->setParameter('currentHost', $formMapper->getObject()->getHost())
                         ;
                     }

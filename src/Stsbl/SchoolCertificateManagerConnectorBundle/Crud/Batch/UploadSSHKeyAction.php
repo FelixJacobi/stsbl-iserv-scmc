@@ -69,6 +69,7 @@ class UploadSSHKeyAction extends AbstractBatchAction implements FormExtendingBat
             ->add('key', FileType::class, [
                 'label' => _('SSH key'),
                 'constraints' => [new NotBlank(['message' => _('Please select a SSH key file.')])],
+                'required' => false,
             ])
         ;
     }
@@ -114,6 +115,7 @@ class UploadSSHKeyAction extends AbstractBatchAction implements FormExtendingBat
 
         if (!$data['key'] instanceof UploadedFile) {
             $bag->addMessage('error', _('You must select a SSH key for uploading.'));
+
             return $bag;
         }
         /* @var $servers Server */

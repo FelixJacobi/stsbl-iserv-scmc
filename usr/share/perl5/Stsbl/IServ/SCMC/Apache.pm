@@ -4,6 +4,7 @@ package Stsbl::IServ::SCMC::Apache;
 use warnings;
 use strict;
 use File::Slurp::Unicode;
+use IServ::Conf;
 use IServ::DB;
 use JSON;
 
@@ -50,10 +51,10 @@ sub gen_blocked_conf($)
 
   if (not $invert)
   {
-    $sql = "SELECT h.IP FROM hosts h WHERE NOT EXISTS (SELECT 1 FROM scmc_rooms r WHERE r.room = h.room)";
+    $sql = "SELECT h.IP FROM hosts h WHERE NOT EXISTS (SELECT 1 FROM scmc_rooms r WHERE r.room_id = h.room_id) ORDER BY h.IP";
   } else
   {
-    $sql = "SELECT h.IP FROM hosts h WHERE EXISTS (SELECT 1 FROM scmc_rooms r WHERE r.room = h.room)";
+    $sql = "SELECT h.IP FROM hosts h WHERE EXISTS (SELECT 1 FROM scmc_rooms r WHERE r.room:id = h.room_id) ORDER BY h.IP";
   }
 
   my $regex = "^(" . join("|", IServ::DB::SelectCol $sql) . ")\$";
@@ -61,12 +62,18 @@ sub gen_blocked_conf($)
   
   if (not $regex eq "^()\$")
   {
-    $blocked_cfg = "${line_prefix}# Only private IP sections\n".
-      "${line_prefix}# TODO read from iservcfg -> LAN?\n".
-      "${line_prefix}RewriteCond %{REMOTE_ADDR} ^(10|192.168|172.(3[01]|2[0-9]|1[6-9])|169.254)(.*)\$\n".
-      "${line_prefix}RewriteCond %{REMOTE_ADDR} $regex\n".
-      "${line_prefix}RewriteCond %{REQUEST_URI} ^/WZeugnis\n".
-      "${line_prefix}RewriteRule (.*) /public/scmc/block [R=307,L]\n";
+    $blocked_cfg = "${line_prefix}# Only private IP sections\n";
+
+    my @lan = @{ $conf->{LAN} };
+ 
+    for my $range (@lan)
+    {
+      $blocked_cfg .= "${line_prefix}RewriteCond expr \"-R '$range'\"\n";
+      $blocked_cfg .= "${line_prefix}RewriteCond %{REMOTE_ADDR} $regex\n".
+          "${line_prefix}RewriteCond %{REQUEST_URI} ^/WZeugnis\n".
+	  "${line_prefix}RewriteRule (.*) /public/scmc/block [R=307,L]\n\n"
+      ;
+    }
   }
 
   return $blocked_cfg;
