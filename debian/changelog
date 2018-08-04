@@ -1,3 +1,9 @@
+stsbl-iserv-scmc (18.08.04-1) experimental; urgency=medium
+
+  * Fixed server management and improved apache config generation
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sat, 04 Aug 2018 16:13:54 +0200
+
 stsbl-iserv-scmc (18.08.02-2) experimental; urgency=medium
 
   * Fixed mapping
