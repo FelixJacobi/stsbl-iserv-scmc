@@ -162,8 +162,8 @@ sub UserPasswdEnc($;$)
       }
     } else
     {
-      print STDERR "user $line[0] seems to does not exists!\n".
-        "password of user $line[0] will not transferred to new passwd file!\n";
+      #print STDERR "user $line[0] seems to does not exists!\n".
+      #  "password of user $line[0] will not transferred to new passwd file!\n";
     }
   }
   close $fh;
@@ -202,11 +202,11 @@ sub SetUserPasswd($$)
     UserPasswd $act, $pw;
   };
   error "Setzen des Benutzerpasswortes fehlgeschlagen: $@" if $@;
-  my $fullname = IServ::DB::SelectVal "SELECT firstname || ' ' || lastname ".
-    "FROM users_name WHERE act = ?", $act;
-  # trim
-  $fullname =~ s/^\s+|\s+$//g;
-  
+ 
+  my $fullname = decode "UTF-8", encode "UTF-8",
+      IServ::DB::SelectVal "SELECT user_join_name(firstname, lastname) ".
+      "FROM users_name WHERE act = ?", $act;
+
   # update state
   if (IServ::DB::Do "SELECT 1 FROM scmc_userpasswords WHERE act = ?", $act)
   {
@@ -216,8 +216,12 @@ sub SetUserPasswd($$)
     IServ::DB::Do "INSERT INTO scmc_userpasswords (act, password) VALUES (?, true)", $act;
   }
 
-  Stsbl::IServ::Log::write_for_module "Benutzerpasswort von $fullname gesetzt", 
-    "School Certificate Manager Connector";
+  my $text = "Benutzerpasswort von $fullname gesetzt";
+  my $out = encode "UTF-8", $text;
+  print "$out.\n";
+  my %row;
+  $row{module} = "School Certificate Manager Connector";
+  Stsbl::IServ::Log::log_store $out, %row;
 }
 
 sub DeleteUserPasswd($)
@@ -229,11 +233,11 @@ sub DeleteUserPasswd($)
     UserPasswd $act;
   };
   error "Löschen des Benutzerpasswortes fehlgeschlagen: $@" if $@;
-  my $fullname = IServ::DB::SelectVal "SELECT firstname || ' ' || lastname ".
-    "FROM users_name WHERE act = ?", $act;
-  # trim
-  $fullname =~ s/^\s+|\s+$//g;
-  
+ 
+  my $fullname = decode "UTF-8", encode "UTF-8",
+      IServ::DB::SelectVal "SELECT user_join_name(firstname, lastname) ".
+      "FROM users_name WHERE act = ?", $act;
+
   # update state
   if (IServ::DB::Do "SELECT 1 FROM scmc_userpasswords WHERE act = ?", $act)
   {
@@ -246,10 +250,10 @@ sub DeleteUserPasswd($)
   # workaround for umlaut issues
   my $text = "Benutzerpasswort von $fullname gelöscht";
   my $out = encode "UTF-8", $text;
-  print "$out\n";
+  print "$out.\n";
   my %row;
   $row{module} = "School Certificate Manager Connector";
-  Stsbl::IServ::Log::log_store $text, %row;
+  Stsbl::IServ::Log::log_store $out, %row;
 }
 
 1;
