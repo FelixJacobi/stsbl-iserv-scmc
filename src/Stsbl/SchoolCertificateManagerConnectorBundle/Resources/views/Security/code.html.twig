@@ -7,9 +7,10 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets output='css/compiled/scmc.css' '@StsblSchoolCertificateManagerConnectorBundle/Resources/public/css/scmc.less' filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self }} => scmc.css -->
+    {% endif %}
+    <link rel="stylesheet" href="{{ asset('css/scmc.css', 'stsbl-school-certificate-manager-connector') }}" />
 {% endblock %}
 
 {% block page_content %}
