@@ -5,7 +5,7 @@ let baseConfig = require(path.join(process.env.WEBPACK_BASE_PATH, 'webpack.confi
 
 let webpackConfig = {
     entry: {
-        'css/scmc.css': './assets/less/scmc.less',
+        'css/scmc': './assets/less/scmc.less',
     },
 };
 
