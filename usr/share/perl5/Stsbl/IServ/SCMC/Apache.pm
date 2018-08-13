@@ -54,7 +54,7 @@ sub gen_blocked_conf($)
     $sql = "SELECT h.IP FROM hosts h WHERE NOT EXISTS (SELECT 1 FROM scmc_rooms r WHERE r.room_id = h.room_id) ORDER BY h.IP";
   } else
   {
-    $sql = "SELECT h.IP FROM hosts h WHERE EXISTS (SELECT 1 FROM scmc_rooms r WHERE r.room:id = h.room_id) ORDER BY h.IP";
+    $sql = "SELECT h.IP FROM hosts h WHERE EXISTS (SELECT 1 FROM scmc_rooms r WHERE r.room_id = h.room_id) ORDER BY h.IP";
   }
 
   my $regex = "^(" . join("|", IServ::DB::SelectCol $sql) . ")\$";
