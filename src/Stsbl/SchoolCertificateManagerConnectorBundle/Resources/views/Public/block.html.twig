@@ -46,8 +46,5 @@
     {% if app.environment != 'prod' %}
         <!-- {{ _self }} => error.css -->
     {% endif %}
-    {% stylesheets output='css/compiled/error.css' filter='cssrewrite' filter='?uglifycss'
-        '@IServCoreBundle/Resources/public/css/pages/error.css' %}
-        <link rel="stylesheet" href="{{ asset_url }}"/>
-    {% endstylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/error.css', 'core') }}"/>
 {% endblock %}

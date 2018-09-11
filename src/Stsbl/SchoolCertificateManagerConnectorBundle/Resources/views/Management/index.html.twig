@@ -55,10 +55,9 @@
 
 {% block javascripts %}
     {{ parent() }}
+
     {% if app.environment != 'prod' %}
-        <!-- {{ _self }} => scmc-select2.js -->
+        <!-- {{ _self }} => crud.js -->
     {% endif %}
-    {% javascripts output='js/compiled/scmc-select2.js' filter='?uglifyjs2' '@IServCrudBundle/Resources/public/js/select2.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script type="text/javascript" src="{{ asset('js/crud.js', 'crud') }}"></script>
 {% endblock %}
