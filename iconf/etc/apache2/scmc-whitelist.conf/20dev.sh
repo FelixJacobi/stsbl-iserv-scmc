@@ -7,6 +7,6 @@ then
   echo
   echo "  RewriteCond %{REQUEST_URI} ^/_profiler [OR]"
   echo "  RewriteCond %{REQUEST_URI} ^/_wdt"
-  echo "  RewriteRule (.*) /usr/share/iserv/web/app_dev.php [L]"
+  echo "  RewriteRule (.*) /usr/share/iserv/web/public/app_dev.php [L]"
   echo
 fi

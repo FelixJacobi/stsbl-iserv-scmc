@@ -1,6 +1,6 @@
 # Block and error page
-  Alias /public/scmc/block /usr/share/iserv/web/app.php
-  Alias /public/scmc/unavailable /usr/share/iserv/web/app.php
+  Alias /public/scmc/block /usr/share/iserv/web/public/app.php
+  Alias /public/scmc/unavailable /usr/share/iserv/web/public/app.php
 
   # Assets
   RewriteCond %{REQUEST_URI} ^/favicon.ico
@@ -13,10 +13,10 @@
   RewriteCond %{REQUEST_URI} !^/favicon.ico
   RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge
   RewriteCond %{REQUEST_URI} !^/iserv/assets
-  RewriteRule (.*) /usr/share/iserv/web/%{REQUEST_URI}
+  RewriteRule (.*) /usr/share/iserv/web/public/%{REQUEST_URI}
 
-  <Directory /usr/share/iserv/web>
-    Allow from all
+  <Directory /usr/share/iserv/web/public>
+    Require all granted
     Options FollowSymLinks
 
     php_admin_flag engine on

@@ -43,6 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @DoctrineAssert\UniqueEntity("webDomain", message="The same domain can not used for two servers.")
  * @ORM\Entity
  * @ORM\Table(name="scmc_servers")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Server implements CrudInterface
 {
