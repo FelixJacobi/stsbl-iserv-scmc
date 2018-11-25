@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (18.11.25-1) experimental; urgency=medium
+
+  * Adapted module structure to web application move
+  * Fixed apache config for web application move
+
+ -- Felix Jacobi <felix.jacobi@stsbl.de>  Sun, 25 Nov 2018 23:00:45 +0100
+
 stsbl-iserv-scmc (18.09.30-1) experimental; urgency=medium
 
   * Rebuilt with 'webpack -p'
