@@ -1,3 +1,9 @@
+stsbl-iserv-scmc (19.01.04-1) experimental; urgency=medium
+
+  * Renamed bundle and fixed extension for webpack
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Fri, 04 Jan 2019 22:16:28 +0100
+
 stsbl-iserv-scmc (18.11.25-1) experimental; urgency=medium
 
   * Adapted module structure to web application move
