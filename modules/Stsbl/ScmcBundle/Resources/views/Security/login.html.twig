@@ -1,0 +1,67 @@
+{# src/Stsbl/SchoolCertificateManagerConnectorBundle/Reousrces/views/Login/login.html.twig #}
+{% extends "IServCoreBundle::page.html.twig" %}
+
+{% block page_title %}
+    {{ _('Login') }} - {{ _('Certificate Management') }} 
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% if app.environment != 'prod' %}
+        <!-- {{ _self }} => scmc.css -->
+    {% endif %}
+    <link rel="stylesheet" href="{{ asset('css/scmc.css', 'stsbl_scmc') }}" />
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-4 col-md-offset-3">
+            <div id="scmc-login" class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="text-warning">
+                            {{ icon('lock') }} {{ _('Certificate Management') }}
+                        </span>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    {% if emptyMasterPassword %}
+                        <div class="alert alert-warning">
+                            {{ _('Currently there is no master password set. Please contact your administrator.') }}
+                        </div>
+                    {% elseif not hasUserPassword %}
+                        <div class="alert alert-warning">
+                            {{ _('Currently for your account is not a user password set. Please contact your administrator.') }}
+                        </div>
+                    {% else %}
+                        {% if not error is empty %}
+                            <div class="alert alert-danger">
+                                {{ error }}
+                            </div>
+                        {% endif %}
+                        {%  if not loginNotice is empty %}
+                            <div class="alert alert-warning">
+                                {{  loginNotice }}
+                            </div>
+                        {%  endif %}
+                        <div class="alert alert-info">
+                            {{ _('Please enter both passwords, the master password and your personal user password. If you do not know them, please conact your administrator.') }}
+                        </div>
+                        <form name="form" class="form ng-pristine ng-valid" role="form" action="{{ path('manage_scmc_login') }}" method="post">
+                            {{ form_row(login_form._token) }}
+                            <div class="form-group">
+                                {{ form_widget(login_form.masterpassword) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(login_form.userpassword) }}
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-warning" type="submit">{{ icon('pro-log-in') }} {{ _('Login') }}</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,56 @@
+services:
+    stsbl.scmc.menu_listener:
+        class: Stsbl\ScmcBundle\EventListener\MenuListener # Out MenuListener Class
+        tags:
+          - { name: kernel.event_listener, event: iserv_portal.menu_main, method: onBuildMainMenu } # Tells IServ about the main menu method
+          - { name: kernel.event_listener, event: iserv_portal.menu_admin, method: onBuildAdminMenu } # Tells IServ about the admin menu method
+
+    stsbl.scmc.kernel_controller_subscriber:
+        class: Stsbl\ScmcBundle\EventListener\KernelControllerSubscriber
+        arguments: ["@controller_resolver", "@iserv.security_handler", "@session", "@router", "@stsbl.scmc.security.scmcauth", "@iserv.authorization_checker"]
+        tags:
+          - { name: kernel.event_subscriber }
+
+    stsbl.scmc.security.scmcauth:
+        class: Stsbl\ScmcBundle\Security\ScmcAuth
+        arguments: ["@request_stack", "@iserv.security_handler", "@session"]
+
+    stsbl.scmc.admin.userpassword:
+        class: Stsbl\ScmcBundle\Admin\UserPasswordAdmin # Our CRUD class
+        arguments: [IServ\CoreBundle\Entity\User]  # Sets the controlled entity class
+        tags:
+            - { name: iserv.crud } # Tells IServ about our CRUD
+            
+    stsbl.scmc.admin.server:
+        class: Stsbl\ScmcBundle\Admin\ServerAdmin # Our CRUD class
+        arguments: [Stsbl\ScmcBundle\Entity\Server]  # Sets the controlled entity class
+        calls:
+            - [ setScmcAdm, ["@stsbl.scmc.service.scmcadm"] ]
+            - [ setLogger, ["@iserv.logger"] ]
+        tags:
+            - { name: iserv.crud } # Tells IServ about our CRUD
+
+    stsbl.scmc.admin.room_whilstelist:
+        class: Stsbl\ScmcBundle\Admin\RoomWhitelistAdmin # Our CRUD class
+        arguments: [Stsbl\ScmcBundle\Entity\Room]  # Sets the controlled entity class
+        calls:
+            - [ setScmcAdm, ["@stsbl.scmc.service.scmcadm"] ]
+            - [ setLogger, ["@iserv.logger"] ]
+        tags:
+            - { name: iserv.crud } # Tells IServ about our CRUD
+
+    stsbl.scmc.menu_builder:
+        class: Stsbl\ScmcBundle\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory", "@security.token_storage", "@security.authorization_checker", "@event_dispatcher"]
+        
+    stsbl.scmc.service.scmcadm:
+        class: Stsbl\ScmcBundle\Service\ScmcAdm
+        arguments: ["@iserv.shell", "@request_stack", "@iserv.security_handler", "@stsbl.scmc.security.scmcauth"]
+        calls:
+            - [ setContainer, ["@service_container"] ]
+
+    stsbl.scmc.validator.not_portalserver_domain:
+        class: Stsbl\ScmcBundle\Validator\Constraints\NotPortalServerDomainValidator
+        arguments: ["@iserv.config"]
+        tags:
+            - { name: validator.constraint_validator, alias: stsbl_scmc_not_portalserver_domain_validator }
