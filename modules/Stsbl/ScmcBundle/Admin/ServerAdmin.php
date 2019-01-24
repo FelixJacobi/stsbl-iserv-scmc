@@ -2,12 +2,12 @@
 
 namespace Stsbl\ScmcBundle\Admin;
 
-use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
 use Doctrine\ORM\EntityRepository;
 use IServ\AdminBundle\Admin\AbstractAdmin;
+use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Service\Logger;
+use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Entity\CrudInterface;
-use IServ\CrudBundle\Entity\FlashMessageBag;
 use IServ\CrudBundle\Mapper\FormMapper;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
@@ -48,69 +48,32 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  */
 class ServerAdmin extends AbstractAdmin
 {
-    use ScmcAdmTrait;
+    use ScmcAdmTrait, LoggerTrait;
 
     /**
-     * @var Logger
+     * @var Flash
      */
-    private $logger;
+    private $flash;
 
-    /**
-     * @var FlashMessage
-     */
-    private $flashMessage;
-
-    /**
-     * Feeds iserv.flash with messages from FlashMessageBag entity
-     *
-     * @param FlashMessageBag $bag
-     */
-    private function createFlashMessagesFromBag(FlashMessageBag $bag)
+    public function __construct()
     {
-        foreach ($bag->getMessages() as $types) {
-            foreach ($types as $message) {
-                call_user_func_array([$this->flashMessage, $message->getType()], [$message->getMessage()]);
-            }
-        }
+        parent::__construct(Server::class);
     }
 
     /**
-     * Inject Logger
-     *
-     * @param Logger $logger
+     * @required
      */
-    public function setLogger(Logger $logger)
+    public function setLogger(Logger $logger): void
     {
         $this->logger = $logger;
     }
 
     /**
-     * Inject FlashMessage
-     *
-     * @param FlashMessage $flashMessage
+     * @required
      */
-    public function setFlashMessage(FlashMessage $flashMessage)
+    public function setFlash(Flash $flash): void
     {
-        $this->flashMessage = $flashMessage;
-    }
-    /**
-     * Get Logger
-     *
-     * @return Logger|null
-     */
-    public function getLogger()
-    {
-        return $this->logger;
-    }
-
-    /**
-     * Get FlashMessage
-     *
-     * @return FlashMessage|null
-     */
-    public function getFlashMessage()
-    {
-        return $this->flashMessage;
+        $this->flash = $flash;
     }
 
     /**
@@ -311,14 +274,14 @@ class ServerAdmin extends AbstractAdmin
     {
         /* @var $object Server */
         $this->logger->writeForModule(sprintf('Zeugnisserver "%s" gelöscht', (string)$object->getHost()), 'School Certificate Manager Connector');
-        $this->createFlashMessagesFromBag($this->getScmcAdm()->deleteKey($object));
+        $this->flash->addBag($this->scmcAdm->deleteKey($object));
         $this->newConfig();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function loadBatchActions() 
+    public function loadBatchActions()
     {
         $res = parent::loadBatchActions();
         $res->add(new Batch\UploadSSHKeyAction($this));

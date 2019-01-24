@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Stsbl\ScmcBundle\Admin;
 
@@ -40,31 +40,23 @@ trait ScmcAdmTrait
     protected $scmcAdm;
 
     /**
-     * Inject ScmcAdm
-     *
-     * @param ScmcAdm $scmcAdm
+     * @required
      */
     public function setScmcAdm(ScmcAdm $scmcAdm)
     {
         $this->scmcAdm = $scmcAdm;
     }
 
-    /**
-     * Get ScmcAdm
-     *
-     * @return ScmcAdm|null
-     */
-    public function getScmcAdm()
+    public function getScmcAdm(): ScmcAdm
     {
         return $this->scmcAdm;
     }
 
-
     /**
      * Run 'scmcadm newconfig'
      */
-    protected function newConfig()
+    protected function newConfig(): void
     {
-        $this->getScmcAdm()->newConfig();
+        $this->scmcAdm->newConfig();
     }
 }

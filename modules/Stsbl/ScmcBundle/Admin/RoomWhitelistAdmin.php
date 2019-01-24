@@ -50,11 +50,16 @@ class RoomWhitelistAdmin extends AbstractAdmin
      * @var Logger
      */
     private $logger;
-    
+
+    public function __construct()
+    {
+        parent::__construct(Room::class);
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function configure() 
+    protected function configure()
     {
         parent::configure();
         
@@ -66,11 +71,9 @@ class RoomWhitelistAdmin extends AbstractAdmin
     }
     
     /**
-     * Set logger
-     * 
-     * @param Logger $logger
+     * @required
      */
-    public function setLogger(Logger $logger)
+    public function setLogger(Logger $logger): void
     {
         $this->logger = $logger;
     }
@@ -78,7 +81,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToView(CrudInterface $object = null, UserInterface $user = null) 
+    public function isAllowedToView(CrudInterface $object = null, UserInterface $user = null)
     {
         // disable show action, it is useless here
         return false;
@@ -87,7 +90,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToAdd(UserInterface $user = null) 
+    public function isAllowedToAdd(UserInterface $user = null)
     {
         return true;
     }
@@ -103,7 +106,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null) 
+    public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null)
     {
         return true;
     }

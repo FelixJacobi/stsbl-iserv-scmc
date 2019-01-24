@@ -1,23 +1,25 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Stsbl\ScmcBundle\EventListener;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use IServ\CoreBundle\Security\Authorization\AuthorizationChecker;
+use Doctrine\Common\Annotations\Reader;
 use IServ\CoreBundle\Security\Core\SecurityHandler;
 use IServ\CoreBundle\Security\Exception\ClientSecurityException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Stsbl\ScmcBundle\Controller\RedirectController;
 use Stsbl\ScmcBundle\Security\Privilege;
 use Stsbl\ScmcBundle\Security\ScmcAuth;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /*
@@ -51,7 +53,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 class KernelControllerSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var AuthorizationChecker
+     * @var AuthorizationCheckerInterface
      */
     private $authorizationChecker;
 
@@ -61,7 +63,7 @@ class KernelControllerSubscriber implements EventSubscriberInterface
     private $resolver;
 
     /**
-     * @var Router;
+     * @var RouterInterface
      */
     private $router;
 
@@ -71,7 +73,7 @@ class KernelControllerSubscriber implements EventSubscriberInterface
     private $securityHandler;
 
     /**
-     * @var Session
+     * @var SessionInterface
      */
     private $session;
 
@@ -81,23 +83,26 @@ class KernelControllerSubscriber implements EventSubscriberInterface
     private $scmcAuth;
 
     /**
-     * The constructor.
-     * 
-     * @param ControllerResolverInterface $resolver
-     * @param SecurityHandler $securityHandler
-     * @param Session $session
-     * @param Router $router
-     * @param ScmcAuth $scmcAuth
-     * @param AuthorizationChecker $authorizationChecker
+     * @var Reader
      */
-    public function __construct(ControllerResolverInterface $resolver, SecurityHandler $securityHandler, Session $session, Router $router, ScmcAuth $scmcAuth, AuthorizationChecker $authorizationChecker)
-    {
+    private $reader;
+
+    public function __construct(
+        ControllerResolverInterface $resolver,
+        SecurityHandler $securityHandler,
+        SessionInterface $session,
+        RouterInterface $router,
+        ScmcAuth $scmcAuth,
+        AuthorizationCheckerInterface $authorizationChecker,
+        Reader $reader
+    ) {
         $this->resolver = $resolver;
         $this->securityHandler = $securityHandler;
         $this->session = $session;
         $this->router = $router;
         $this->scmcAuth = $scmcAuth;
         $this->authorizationChecker = $authorizationChecker;
+        $this->reader = $reader;
     }
 
     /**
@@ -110,12 +115,8 @@ class KernelControllerSubscriber implements EventSubscriberInterface
 
     /**
      * Redirects user to scmc login form if he tries to access a page directly without auth.
-     *
-     * @param FilterControllerEvent $event
-     * @throws \Doctrine\Common\Annotations\AnnotationException
-     * @throws \ReflectionException
      */
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController(FilterControllerEvent $event): void
     {
         try {
             // this handler handles only requests of users with the privilege
@@ -153,9 +154,13 @@ class KernelControllerSubscriber implements EventSubscriberInterface
         $route = null;
 
         if (null !== $controller || null !== $action) {
-            $reflectionMethod = new \ReflectionMethod($controller, $action);
-            $annotationReader = new AnnotationReader();
-            $annotations = $annotationReader->getMethodAnnotations($reflectionMethod);
+            try {
+                $reflectionMethod = new \ReflectionMethod($controller, $action);
+            } catch (\ReflectionException $e) {
+                throw new \RuntimeException('Failed to reflect controller action!', 0, $e);
+            }
+
+            $annotations = $this->reader->getMethodAnnotations($reflectionMethod);
             /* @var $annotation Route */
             $routes = array_filter($annotations, function ($annotation) {
                 return $annotation instanceof Route;
@@ -164,7 +169,8 @@ class KernelControllerSubscriber implements EventSubscriberInterface
                 // do not handle actions without annotation
                 return;
             }
-	    $annotation = array_shift($routes);
+
+            $annotation = array_shift($routes);
 
             $route = $annotation->getName();
         } else {
@@ -178,7 +184,11 @@ class KernelControllerSubscriber implements EventSubscriberInterface
         }
 
         // duplicate original request
-        $request = $originalRequest->duplicate(null, null, ['_controller' => 'StsblSchoolCertificateManagerConnectorBundle:Redirect:redirect']);
+        $request = $originalRequest->duplicate(
+            null,
+            null,
+            ['_controller' => RedirectController::class . '::redirectToLogin']
+        );
         $controller = $this->resolver->getController($request);
 
         // skip unresolvable controller
@@ -186,20 +196,17 @@ class KernelControllerSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $self = $this;
-        $setPreviousUrl = function() use ($requestUri, $self) {
-            $self->session->set('scmc_login_redirect', $requestUri);
-        };
-
         try {
             // redirect request without authorization
-            if (strpos($route, 'manage_scmc') === 0 && (!$this->securityHandler->getToken()->hasAttribute('scmc_authenticated') ||
+            if (strpos($route, 'manage_scmc') === 0 &&
+                (!$this->securityHandler->getToken()->hasAttribute('scmc_authenticated') ||
                     $this->securityHandler->getToken()->getAttribute('scmc_authenticated') != true)
             ) {
                 $this->securityHandler->getToken()->setAttribute('scmc_authenticated', false);
                 $this->session->set('scmc_login_notice', _('Please login to access the certificate management area.'));
                 $event->setController($controller);
-                call_user_func($setPreviousUrl);
+                $this->session->set('scmc_login_redirect', $requestUri);
+
                 return;
             }
 
@@ -207,14 +214,19 @@ class KernelControllerSubscriber implements EventSubscriberInterface
             // do not check if previous url was login
             if ($this->securityHandler->getToken() != null &&
                 $this->securityHandler->getToken()->hasAttribute('scmc_sessionpassword') &&
-                strpos($route, 'manage_scmc') === 0 && false === $this->scmcAuth->authenticate($this->securityHandler->getUser()->getUsername(), $this->scmcAuth->getScmcSessionPassword())
+                strpos($route, 'manage_scmc') === 0 &&
+                false === $this->scmcAuth->authenticate(
+                    $this->securityHandler->getUser()->getUsername(),
+                    $this->scmcAuth->getScmcSessionPassword()
+                )
             ) {
                 $this->session->set('scmc_login_notice', _('Your session is expired. Please login again.'));
                 $this->securityHandler->getToken()->setAttribute('scmc_authenticated', false);
                 $this->securityHandler->getToken()->setAttribute('scmc_sessionpassword', null);
                 $this->securityHandler->getToken()->setAttribute('scmc_token', null);
                 $event->setController($controller);
-                call_user_func($setPreviousUrl);
+                $this->session->set('scmc_login_redirect', $requestUri);
+
                 return;
             }
         } catch (ClientSecurityException $e) {
@@ -224,7 +236,8 @@ class KernelControllerSubscriber implements EventSubscriberInterface
             $this->securityHandler->getToken()->setAttribute('scmc_sessionpassword', null);
             $this->securityHandler->getToken()->setAttribute('scmc_token', null);
             $event->setController($controller);
-            call_user_func($setPreviousUrl);
+            $this->session->set('scmc_login_redirect', $requestUri);
+
             return;
         }
     }

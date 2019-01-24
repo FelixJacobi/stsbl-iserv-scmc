@@ -1,8 +1,8 @@
-<?php
-// RedirectController.php
+<?php declare(strict_types = 1);
+
 namespace Stsbl\ScmcBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /*
@@ -33,16 +33,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class RedirectController extends Controller
+class RedirectController extends AbstractController
 {
     /**
      * Handling action if session is expired
-     *
-     * @return RedirectResponse
      */
-    public function redirectAction()
+    public function redirectToLogin(): RedirectResponse
     {
-        $response = new RedirectResponse($this->generateUrl('manage_scmc_login'));
+        $response = $this->redirectToRoute('manage_scmc_login');
         $response->headers->set('Referrer-Policy', 'same-origin');
 
         return $response;

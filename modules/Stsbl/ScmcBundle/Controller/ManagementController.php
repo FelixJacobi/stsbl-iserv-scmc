@@ -108,7 +108,7 @@ class ManagementController extends PageController
      * @Route("/index", name="manage_scmc_index")
      * @Template()
      */
-    public function indexAction()
+    public function index()
     {
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Stsbl\ScmcBundle\Security;
 
@@ -8,6 +8,7 @@ use Stsbl\ScmcBundle\Security\Exception\ScmcAuthException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /*
  * The MIT License
@@ -57,18 +58,11 @@ class ScmcAuth
     private $securityHandler;
 
     /**
-     * @var Session
+     * @var SessionInterface
      */
     private $session;
 
-    /**
-     * The constructor.
-     *
-     * @param RequestStack $stack
-     * @param SecurityHandler $securityHandler
-     * @param Session $session
-     */
-    public function __construct(RequestStack $stack, SecurityHandler $securityHandler, Session $session)
+    public function __construct(RequestStack $stack, SecurityHandler $securityHandler, SessionInterface $session)
     {
         $this->request = $stack->getCurrentRequest();
         $this->securityHandler = $securityHandler;
@@ -169,7 +163,7 @@ class ScmcAuth
      * @param string $masterPassword
      * @param string $userPassword
      * @param callable $onSuccessCallback
-     * @return string
+     * @return string|bool
      */
     public function login($masterPassword, $userPassword, $onSuccessCallback = null)
     {
@@ -186,7 +180,7 @@ class ScmcAuth
      * @param string $userPassword
      * @param string $service
      * @param callable $onSuccessCallback
-     * @return boolean|string
+     * @return bool|string
      */
     private function open($act, $pwd, $masterPassword, $userPassword, $service, $onSuccessCallback = null)
     {

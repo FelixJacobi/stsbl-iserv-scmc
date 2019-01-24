@@ -1,12 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Stsbl\ScmcBundle\Controller;
 
-use IServ\CoreBundle\Controller\PageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Stsbl\ScmcBundle\Security\ScmcAuth;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 
 /*
  * The MIT License
@@ -40,20 +40,19 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("scmc", schemes="https")
  * @Security("is_granted('PRIV_SCMC_ACCESS_FRONTEND')")
  */
-class EntryPointController extends PageController
+class EntryPointController extends AbstractController
 {
     /**
      * Check if user is already authentificated and redirect to index or login
      *
-     * @return Response
      * @Route("", name="manage_scmc_forward")
      */
-    public function forwardAction()
+    public function entryPoint(ScmcAuth $auth): Response
     {
-        if ($this->get('stsbl.scmc.security.scmcauth')->isAuthenticated()) {
-            return $this->forward('StsblSchoolCertificateManagerConnectorBundle:Management:index');
+        if ($auth->isAuthenticated()) {
+            return $this->forward(ManagementController::class . '::index');
         } else {
-            return $this->forward('StsblSchoolCertificateManagerConnectorBundle:Security:login');
+            return $this->forward(SecurityController::class . '::login');
         }
     }
 }

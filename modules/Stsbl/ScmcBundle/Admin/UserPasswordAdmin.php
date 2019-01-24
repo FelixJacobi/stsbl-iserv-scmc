@@ -9,6 +9,7 @@ use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use IServ\CrudBundle\Table\Filter;
 use IServ\CrudBundle\Table\ListHandler;
+use Stsbl\ScmcBundle\Entity\UserPassword;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /*
@@ -43,10 +44,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserPasswordAdmin extends AbstractAdmin
 {
+    public function __construct()
+    {
+        parent::__construct(UserPassword::class);
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function configure() 
+    protected function configure()
     {
         $this->title = _('User passwords');
         $this->itemTitle = _('User');
@@ -59,7 +65,7 @@ class UserPasswordAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function configureListFields(ListMapper $listMapper) 
+    public function configureListFields(ListMapper $listMapper)
     {
         $listMapper
             ->addIdentifier('username', null, ['label' => _('Account')])
@@ -70,7 +76,7 @@ class UserPasswordAdmin extends AbstractAdmin
 
     /**
      * {@inheritdoc}
-     */    
+     */
     public function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
@@ -93,7 +99,7 @@ class UserPasswordAdmin extends AbstractAdmin
     
     /**
      * {@inheritdoc}
-     */    
+     */
     public function isAllowedToAdd(UserInterface $user = null)
     {
         return false;
@@ -101,7 +107,7 @@ class UserPasswordAdmin extends AbstractAdmin
     
     /**
      * {@inheritdoc}
-     */    
+     */
     public function isAllowedToEdit(CrudInterface $object = null, UserInterface $user = null)
     {
         return false;
@@ -109,7 +115,7 @@ class UserPasswordAdmin extends AbstractAdmin
 
     /**
      * {@inheritdoc}
-     */    
+     */
     public function isAllowedToDelete(CrudInterface $object = null, UserInterface $user = null)
     {
         return false;

@@ -3,11 +3,13 @@
 namespace Stsbl\ScmcBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stsbl\ScmcBundle\Security\ScmcAuth;
+use Stsbl\ScmcBundle\Service\ScmcAdm;
 use Stsbl\ScmcBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -49,84 +51,67 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @Route("scmc", schemes="https")
  * @Security("is_granted('PRIV_SCMC_ACCESS_FRONTEND')")
  */
-class SecurityController extends PageController 
+class SecurityController extends AbstractPageController
 {
     use FormTrait, LoggerTrait, LoggerInitializationTrait;
 
     /**
      * Displays login form
      *
-     * @param Request $request
-     * @return array|Response
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
-     *
      * @Route("/login", name="manage_scmc_login")
-     * @Template("StsblSchoolCertificateManagerConnectorBundle:Security:login.html.twig")
+     * @Template("@StsblScmc/Security/login.html.twig")
+     *
+     * @return array|Response
      */
-    public function loginAction(Request $request)
+    public function login(Request $request, ScmcAuth $auth, ScmcAdm $scmcAdm)
     {
-        if ($this->get('stsbl.scmc.security.scmcauth')->isAuthenticated()) {
+        if ($auth->isAuthenticated()) {
             // go to index
             return $this->redirect($this->generateUrl('manage_scmc_index'));
         }
 
-        $loginNotice = $this->get('session')->has('scmc_login_notice') ? $this->get('session')->get('scmc_login_notice') : null;
+        $loginNotice = $this->get('session')->get('scmc_login_notice');
         $this->get('session')->remove('scmc_login_notice');
         
         $error = '';
         $form = $this->getLoginForm();
         $form->handleRequest($request);
         
-        if ($form->isSubmitted()) {
-            if (!$form->isValid()) {
-                $this->handleFormErrors($form);
-                goto render;
-            }
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $this->initalizeLogger();
 
-            $ret = $this->get('stsbl.scmc.security.scmcauth')->login($data['masterpassword'], $data['userpassword']);
+            $ret = $auth->login($data['masterpassword'], $data['userpassword']);
 
             if ($ret === 'code required') {
                 // session requires 2fa code
                 return $this->redirectToRoute('manage_scmc_code');
-            } else if ($ret === true || empty($ret)) {
-                // nop
-            } else if ($ret === 'master password wrong') {
+            } elseif (true === $ret || strlen($ret) > 0) {
+                $this->log('Zeugnisverwaltungs-Login erfolgreich');
+                $this->addFlash('success', _('You have logged in successfully in the Certificate Management Section.'));
+
+                // assume successful login
+                // check if previous url was provided
+                $session = $this->get('session');
+                if ($session->has('scmc_login_redirect') && $session->get('scmc_login_redirect') !== null) {
+                    $url = $session->get('scmc_login_redirect');
+                    $session->set('scmc_login_redirect', null);
+                } else {
+                    $url = $this->generateUrl('manage_scmc_index');
+                }
+
+                return $this->redirect($url);
+            } elseif ($ret === 'master password wrong') {
                 $this->log('Zeugnisverwaltungs-Login: Falsches Masterpasswort');
                 $error = _('The master password is wrong.');
-                goto render;
-            } else if ($ret === sprintf('user password for %s wrong', $this->getUser()->getUsername())) {
+            } elseif ($ret === sprintf('user password for %s wrong', $this->getUser()->getUsername())) {
                 $this->log('Zeugnisverwaltungs-Login: Falsches Benuterpasswort');
                 $error = _('The user password is wrong.');
-                goto render;
             } else {
                 $this->log('Zeugnisverwaltungs-Login: Allgemeiner Fehler');
                 $error = __('Something went wrong: %s', $ret);
-                goto render;
             }
-            
-            $this->log('Zeugnisverwaltungs-Login erfolgreich');
-            $this->get('iserv.flash')->success(_('You have logged in successfully in the Certificate Management Section.'));
-            
-            // assume successful login
-            // check if previous url was provided
-            $session = $this->get('session');
-            if ($session->has('scmc_login_redirect') && $session->get('scmc_login_redirect') !== null) {
-                $url = $session->get('scmc_login_redirect');
-                $session->set('scmc_login_redirect', null);
-            } else {
-                $url = $this->generateUrl('manage_scmc_index');
-            }
-
-            return $this->redirect($url);
         }
-        
-        render:
 
         $act = $this->get('iserv.security_handler')->getToken()->getUser()->getUsername();
         /* @var $qb \Doctrine\ORM\QueryBuilder */
@@ -144,7 +129,7 @@ class SecurityController extends PageController
             
         // parameters
         $view = $form->createView();
-        $emptyMasterPassword = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
+        $emptyMasterPassword = $scmcAdm->masterPasswdEmpty();
         
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
@@ -161,22 +146,22 @@ class SecurityController extends PageController
     
     /**
      * Logouts user from current session
-     * 
+     *
      * @param Request $request
      * @return RedirectResponse
      *
      * @Route("/logout", name="manage_scmc_logout")
      * @Security("token.hasAttribute('scmc_authenticated') and token.getAttribute('scmc_authenticated') == true")
      */
-    public function logoutAction(Request $request)
+    public function logout(ScmcAuth $auth)
     {
-        if (!$this->get('stsbl.scmc.security.scmcauth')->close($this->getUser()->getUsername())) {
+        if (!$auth->close($this->getUser()->getUsername())) {
             throw new \RuntimeException('scmc_sess_close failed!');
         }
             
         $this->initalizeLogger();
         $this->log('Zeugnisverwaltungs-Logout erfolgreich');
-        $this->get('iserv.flash')->success(_('You have logged out successfully from the Certificate Management Section.'));
+        $this->addFlash('success', _('You have logged out successfully from the Certificate Management Section.'));
     
         return $this->redirect($this->generateUrl('manage_scmc_forward'));
     }
