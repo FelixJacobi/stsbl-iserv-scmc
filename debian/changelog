@@ -1,3 +1,9 @@
+stsbl-iserv-scmc (19.01.25-2) experimental; urgency=medium
+
+  * Fixed more deprecations
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Fri, 25 Jan 2019 02:45:39 +0100
+
 stsbl-iserv-scmc (19.01.25-1) experimental; urgency=medium
 
   * Resolved issues with Symfony 4
