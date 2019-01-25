@@ -1,4 +1,3 @@
-{# src/Stsbl/SchoolCertificateManagerConnectorBundle/Resources/views/Public/block.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% set title = _('School certificate management server could not be reached') %}
@@ -16,7 +15,7 @@
                     {{ _('The school certificate management server could not be reached. Please contact your administrator.') }}
                 </p>
                 <div class="error-actions">
-                    <a href="https://{{ config.get('Servername') }}/iserv/" class="btn btn-primary btn-lg">{{ icon('home') }}{{ _('To the IDesk') }}</a>
+                    <a href="https://{{ cfg.get('Servername') }}/iserv/" class="btn btn-primary btn-lg">{{ icon('home') }}{{ _('To the IDesk') }}</a>
                 </div>
             </div>
         </div>

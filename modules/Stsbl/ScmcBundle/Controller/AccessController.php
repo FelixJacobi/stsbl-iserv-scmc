@@ -1,12 +1,12 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Stsbl\ScmcBundle\Controller;
 
 use IServ\CoreBundle\Controller\AbstractPageController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\ScmcBundle\Entity\Server;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Access list for the school certificate manager connector
@@ -24,12 +24,11 @@ class AccessController extends AbstractPageController
     /**
      * List available server
      *
-     * @return array
      * @Route("", name="access_scmc_index")
      * @Security("is_granted('PRIV_SCMC_ACCESS_LIST')")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(): array
     {
         $this->addBreadcrumb(_('Certificate Grade Input'));
 

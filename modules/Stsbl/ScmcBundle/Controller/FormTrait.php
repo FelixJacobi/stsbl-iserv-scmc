@@ -2,6 +2,7 @@
 
 namespace Stsbl\ScmcBundle\Controller;
 
+use IServ\CoreBundle\Service\Flash;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
@@ -55,7 +56,7 @@ trait FormTrait
        
         foreach ($errors as $error) {
             /* @var $error FormError */
-            $this->get('iserv.flash')->error($error->getMessage());
+            $this->get(Flash::class)->error($error->getMessage());
         }
     }
 }

@@ -9,8 +9,6 @@ use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\FileBundle\Form\Type\UniversalFileType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\ScmcBundle\Menu\MenuBuilder;
@@ -19,8 +17,11 @@ use Stsbl\ScmcBundle\Traits\LoggerInitializationTrait;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\IsTrue;
 
 /*
@@ -62,9 +63,9 @@ class ManagementController extends AbstractPageController
     /**
      * Get year choices for up- and download form
      *
-     * @return array
+     * @return int[] Option label as key
      */
-    private function getYearChoices()
+    private function getYearChoices(): array
     {
         $config = $this->get(Config::class);
 
@@ -95,11 +96,10 @@ class ManagementController extends AbstractPageController
     /**
      * School Certificate Manager Connector Main Page
      *
-     * @return array
      * @Route("/index", name="manage_scmc_index")
      * @Template()
      */
-    public function index()
+    public function index(): array
     {
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
@@ -118,8 +118,8 @@ class ManagementController extends AbstractPageController
             ->where($qb->expr()->eq('l.module', ':module'))
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->like('l.text', ':pattern1'),
-                $qb->expr()->like('l.text', ':pattern2'))
-            )
+                $qb->expr()->like('l.text', ':pattern2')
+            ))
             ->orderBy('l.date', 'DESC')
             ->setMaxResults(10)
             ->setParameter('module', 'School Certificate Manager Connector')
@@ -130,19 +130,17 @@ class ManagementController extends AbstractPageController
         return [
             'menu' => $menu,
             'lastActions' => $qb->getQuery()->getResult(),
-            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc',
         ];
     }
 
     /**
      * School Certificate Manager Connector Upload Page
      *
-     * @param Request $request
-     * @return array
      * @Route("/upload", name="manage_scmc_upload")
      * @Template()
      */
-    public function uploadAction(Request $request)
+    public function uploadAction(Request $request): array
     {
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
@@ -160,12 +158,9 @@ class ManagementController extends AbstractPageController
     }
 
     /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @Method("POST")
-     * @Route("/upload/zip", name="manage_scmc_upload_zip")
+     * @Route("/upload/zip", name="manage_scmc_upload_zip", methods={"POST"})
      */
-    public function uploadZipAction(Request $request)
+    public function uploadZipAction(Request $request): RedirectResponse
     {
         $form = $this->createUploadForm();
         $form->handleRequest($request);
@@ -192,12 +187,10 @@ class ManagementController extends AbstractPageController
     /**
      * School Certificate Manager Connector Download Page
      *
-     * @param Request $request
-     * @return array
      * @Route("/download", name="manage_scmc_download")
      * @Template()
      */
-    public function downloadAction(Request $request)
+    public function downloadAction(Request $request): array
     {
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
@@ -215,13 +208,9 @@ class ManagementController extends AbstractPageController
     }
 
     /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
-     * @Method("POST")
-     * @Route("/download/zip", name="manage_scmc_download_zip")
+     * @Route("/download/zip", name="manage_scmc_download_zip", methods={"POST"})
      */
-    public function downloadZipAction(Request $request)
+    public function downloadZipAction(Request $request): RedirectResponse
     {
         $form = $this->createDownloadForm();
         $form->handleRequest($request);
@@ -246,10 +235,8 @@ class ManagementController extends AbstractPageController
     
     /**
      * Gets the scmc upload form
-     *
-     * @return \Symfony\Component\Form\FormInterface
      */
-    private function createUploadForm()
+    private function createUploadForm(): FormInterface
     {
         $builder = $this->createFormBuilder();
         $builder->setAction($this->generateUrl('manage_scmc_upload_zip'));
@@ -300,10 +287,8 @@ class ManagementController extends AbstractPageController
     
     /**
      * Gets the scmc download form
-     *
-     * @return \Symfony\Component\Form\FormInterface
      */
-    private function createDownloadForm()
+    private function createDownloadForm(): FormInterface
     {
         $builder = $this->createFormBuilder();
         $builder->setAction($this->generateUrl('manage_scmc_download_zip'));
@@ -313,7 +298,8 @@ class ManagementController extends AbstractPageController
                 'class' => 'StsblScmcBundle:Server',
                 'label' => _('Select destination server'),
                 'attr' => [
-                    'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
+                    'help_text' => _('If your administrator has configured multiple servers (for example a primary '.
+                        'and backup server), you can select the destination server.')
                     ]
             ])
             ->add('years', ChoiceType::class, [
@@ -323,7 +309,8 @@ class ManagementController extends AbstractPageController
                 'required' => false,
                 'attr' => [
                     'class' => 'select2',
-                    'help_text' => _('You can limit the download to particular years. Only the selected years will be included in the Zip file.'),
+                    'help_text' => _('You can limit the download to particular years. Only the selected years will be '.
+                        'included in the Zip file.'),
                 ]
             ])
             ->add('submit', SubmitType::class, [

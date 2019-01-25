@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Stsbl\ScmcBundle\Controller;
 
@@ -61,7 +61,7 @@ class SecurityController extends AbstractPageController
      * Displays login form
      *
      * @Route("/login", name="manage_scmc_login")
-     * @Template("@StsblScmc/Security/login.html.twig")
+     * @Template()
      *
      * @return array|Response
      */
@@ -119,10 +119,9 @@ class SecurityController extends AbstractPageController
         }
 
         $act = $this->getUser()->getUsername();
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
         $doctrine = $this->getDoctrine();
-        /* @var $em \Doctrine\ORM\EntityManager */
         $em = $doctrine->getManager();
+
         /* @var $object \Stsbl\ScmcBundle\Entity\UserPassword */
         $object = $em->find(UserPassword::class, $act);
         

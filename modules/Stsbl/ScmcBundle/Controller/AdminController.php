@@ -4,13 +4,11 @@ namespace Stsbl\ScmcBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use IServ\CoreBundle\Entity\User;
-use IServ\CoreBundle\Entity\UserRepository;
 use IServ\CoreBundle\Form\Type\BooleanType;
 use IServ\CoreBundle\Service\Flash;
 use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use IServ\CrudBundle\Controller\StrictCrudController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\ScmcBundle\Security\Privilege;
@@ -18,11 +16,11 @@ use Stsbl\ScmcBundle\Service\ScmcAdm;
 use Stsbl\ScmcBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /*
@@ -73,10 +71,8 @@ class AdminController extends StrictCrudController
 
     /**
      * Get current room filter mode
-     *
-     * @return bool
      */
-    public static function getRoomMode()
+    public static function getRoomMode(): bool
     {
         if (!is_bool(self::$roomMode)) {
             $content = file_get_contents(self::ROOM_CONFIG_FILE);
@@ -89,13 +85,9 @@ class AdminController extends StrictCrudController
     /**
      * Overview page
      *
-     * @param Request $request
-     * @return array
      * @Route("", name="admin_scmc")
-     * @Template("StsblScmcBundle:Admin:index.html.twig")
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): array
     {
         $this->handleMasterPasswordForm($request);
         $view = $this->getMasterPasswordUpdateForm()->createView();
@@ -107,17 +99,14 @@ class AdminController extends StrictCrudController
         return [
             'emptyMasterPassword' => $isMasterPasswordEmtpy,
             'masterpassword_form' => $view,
-            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
+            'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc',
         ];
     }
 
     /**
      * Try to update the master password
-     *
-     * @param Request $request
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
-    private function handleMasterPasswordForm(Request $request)
+    private function handleMasterPasswordForm(Request $request): void
     {
         $form = $this->getMasterPasswordUpdateForm();
         $form->handleRequest($request);
@@ -152,44 +141,42 @@ class AdminController extends StrictCrudController
 
     /**
      * Creates form to update master password
-     *
-     * @return Form|FormInterface
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
-    private function getMasterPasswordUpdateForm()
+    private function getMasterPasswordUpdateForm(): FormInterface
     {
         $isMasterPasswordEmpty = $this->get(ScmcAdm::class)->masterPasswdEmpty();
         $builder = $this->createFormBuilder();
         
         if (!$isMasterPasswordEmpty) {
-            $builder->add('oldmasterpassword', PasswordType::class, array(
+            $builder->add('oldmasterpassword', PasswordType::class, [
                 'label' => false,
                 'required' => true,
                 'constraints' => new NotBlank(['message' => _('Old master password can not be empty.')]),
-                'attr' => array(
+                'attr' => [
                     'placeholder' => _('Old master password'),
                     'autocomplete' => 'off',
-                    )
-                )
-            );
+                ]
+            ]);
         }
         
         $builder
             ->add(
                 'newmasterpassword',
-                PasswordType::class, [
-                'label' => false,
-                'required' => true,
-                'constraints' => new NotBlank(['message' => _('New master password can not be empty.')]),
-                'attr' => [
-                    'placeholder' => _('New master password'),
-                    'autocomplete' => 'off',
+                PasswordType::class,
+                [
+                    'label' => false,
+                    'required' => true,
+                    'constraints' => new NotBlank(['message' => _('New master password can not be empty.')]),
+                    'attr' => [
+                        'placeholder' => _('New master password'),
+                        'autocomplete' => 'off',
                     ]
                 ]
             )
             ->add(
                 'repeatmasterpassword',
-                PasswordType::class, [
+                PasswordType::class,
+                [
                     'label' => false,
                     'required' => true,
                     'constraints' => new NotBlank(['message' => _('Repeat of new master password can not be empty.')]),
@@ -199,13 +186,14 @@ class AdminController extends StrictCrudController
                     ]
                 ]
             )
-            ->add('submit',
+            ->add(
+                'submit',
                 SubmitType::class,
-                array(
+                [
                     'label' => _('Update password'),
                     'buttonClass' => 'btn-success',
                     'icon' => 'ok'
-                )
+                ]
             )
         ;
         
@@ -214,37 +202,33 @@ class AdminController extends StrictCrudController
     
     /**
      * Creates form for a new user password
-     * 
-     * @return Form|FormInterface
      */
-    private function getNewUserPasswordForm()
+    private function getNewUserPasswordForm(): FormInterface
     {
         $builder = $this->createFormBuilder();
         
         $builder
-            ->add('userpassword', PasswordType::class, array(
+            ->add('userpassword', PasswordType::class, [
                 'label' => _('New user password'),
                 'required' => true,
                 'constraints' => new NotBlank(['message' => _('User password can not be empty.')]),
-                'attr' => array(
+                'attr' => [
                     'autocomplete' => 'off',
-                    )
-                )
-            )
+                ]
+            ])
             ->add('actions', FormActionsType::class);
         
         $builder->get('actions')
-            ->add('approve', SubmitType::class, array(
+            ->add('approve', SubmitType::class, [
                 'label' => _('Set user password'),
                 'buttonClass' => 'btn-success',
                 'icon' => 'ok'
-                )
-            )
-            ->add('cancel', SubmitType::class, array(
+            ])
+            ->add('cancel', SubmitType::class, [
                 'label' => _('Cancel'),
                 'buttonClass' => 'btn-default',
                 'icon' => 'remove'
-                ))
+            ])
         ;
         
         return $builder->getForm();
@@ -253,28 +237,27 @@ class AdminController extends StrictCrudController
     /**
      * Displays form to set a password for a user
      *
-     * @param Request $request
-     * @param string $user
-     * @return array|RedirectResponse
      * @Route("/userpassword/set/{user}", name="admin_scmc_set_user_password")
      * @Template("StsblScmcBundle:Admin:setuserpassword.html.twig")
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
+     *
+     * @return array|RedirectResponse
      */
-    public function setUserPasswordAction(Request $request, $user)
+    public function setUserPasswordAction(Request $request, User $user)
     {
-        $user = $this->getUserEntity($user);
-        $FullName = $user->getName();
+        $fullName = $user->getName();
         
         $form = $this->getNewUserPasswordForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->getClickedButton()->getName() === 'cancel') {
             // go back, if user pressed cancel
             return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user->getId()]);
-        } else if ($form->isSubmitted() && $form->isValid()) {
+        } elseif ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $password = $data['userpassword'];
             
-            $this->get(Flash::class)->addBag($this->get(ScmcAdm::class)->setUserPasswd($user->getUsername(), $password));
+            $this->get(Flash::class)->addBag(
+                $this->get(ScmcAdm::class)->setUserPasswd($user->getUsername(), $password)
+            );
 
             return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user->getId()]);
         } else {
@@ -283,7 +266,7 @@ class AdminController extends StrictCrudController
             
             $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('admin_scmc'));
             $this->addBreadcrumb(_('User passwords'), $this->generateUrl('admin_scmc_userpassword_index'));
-            $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user]));
+            $this->addBreadcrumb($fullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user]));
             $this->addBreadcrumb(_('Set user password'));
             
             /* @var $userPrivileges \Doctrine\Common\Collections\ArrayCollection */
@@ -308,7 +291,7 @@ class AdminController extends StrictCrudController
             return [
                 'password_form' => $form->createView(),
                 'act' => $user->getUsername(),
-                'fullname' => $FullName,
+                'fullname' => $fullName,
                 'permissionnotice' => $permissionNotice,
                 'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
             ];
@@ -318,17 +301,15 @@ class AdminController extends StrictCrudController
     /**
      * Displays form to delete a password for a user
      *
-     * @param Request $request
-     * @param string $user
-     * @return array|Response
      * @Route("/userpasswords/delete/{user}", name="admin_scmc_delete_user_password")
      * @Template("StsblScmcBundle:Admin:deleteuserpassword.html.twig")
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
+     *
+     * @return array|Response
      */
-    public function deleteUserPasswordAction(Request $request, $user)
+    public function deleteUserPasswordAction(Request $request, User $user)
     {
         $user = $this->getUserEntity($user);
-        $FullName = $user->getName();
+        $fullName = $user->getName();
         
         $builder = $this->createFormBuilder();
         $builder->add('actions', FormActionsType::class);
@@ -370,33 +351,16 @@ class AdminController extends StrictCrudController
         } else {
             $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('admin_scmc'));
             $this->addBreadcrumb(_('User passwords'), $this->generateUrl('admin_scmc_userpassword_index'));
-            $this->addBreadcrumb($FullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user->getId()]));
+            $this->addBreadcrumb($fullName, $this->generateUrl('admin_scmc_userpassword_show', ['id' => $user->getId()]));
             $this->addBreadcrumb(_('Delete user password'));
             
             return [
-                'fullname' => $FullName,
+                'fullname' => $fullName,
                 'act' => $user->getUsername(),
                 'delete_form' => $form->createView(),
                 'help' => 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc'
             ];
         }
-    }
-    
-    /**
-     * Gets the Entity of an IServ User
-     *
-     * @param string $act
-     * @return User
-     */
-    private function getUserEntity($act)
-    {
-        /* @var $repository UserRepository */
-        $repository = $this->getDoctrine()->getRepository('IServCoreBundle:User');
-        
-        /* @var $userObject \IServ\CoreBundle\Entity\User */
-        $userEntity = $repository->findOneBy(['username' => $act]);
-
-        return $userEntity;
     }
 
     /**

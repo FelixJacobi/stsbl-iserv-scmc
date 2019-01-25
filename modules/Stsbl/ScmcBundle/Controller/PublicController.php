@@ -1,13 +1,13 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Stsbl\ScmcBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
 use IServ\CoreBundle\Controller\PageController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /*
  * The MIT License
@@ -43,12 +43,10 @@ class PublicController extends PageController
     /**
      * Shows block information
      *
-     * @param Request $request
-     * @return Response
      * @Route("/block", name="public_scmc_block")
      * @Template()
      */
-    public function blockAction(Request $request)
+    public function blockAction(Request $request): Response
     {
         /* @var $qb QueryBuilder */
         $qb = $this->getDoctrine()->getRepository('IServRoomBundle:Room')->createQueryBuilder('r');
@@ -76,7 +74,6 @@ class PublicController extends PageController
         }
 
         $parameter = [
-            'config' => $this->get('iserv.config'),
             'rooms' => $qb->getQuery()->getResult(),
             'invert' => AdminController::getRoomMode()
         ];
@@ -86,36 +83,28 @@ class PublicController extends PageController
 
         $response = new Response();
         $response
-            ->setStatusCode(403)
-            ->setContent($this->renderView($template->getTemplate(), $parameter))
+            ->setStatusCode(Response::HTTP_FORBIDDEN)
         ;
 
-        return $response;
+        return $this->render($template->getTemplate(), $parameter, $response);
     }
 
     /**
      * Shows unavailable information
      *
-     * @param Request $request
-     * @return Response
      * @Route("/unavailable", name="public_scmc_unavailable")
      * @Template()
      */
-    public function unavailableAction(Request $request)
+    public function unavailableAction(Request $request): Response
     {
-        $parameter = [
-            'config' => $this->get('iserv.config'),
-        ];
-
         /* @var $template Template */
         $template = $request->get('_template');
 
         $response = new Response();
         $response
-            ->setStatusCode(503)
-            ->setContent($this->renderView($template->getTemplate(), $parameter))
+            ->setStatusCode(Response::HTTP_SERVICE_UNAVAILABLE)
         ;
 
-        return $response;
+        return $this->render($template->getTemplate(), [], $response);
     }
 }
