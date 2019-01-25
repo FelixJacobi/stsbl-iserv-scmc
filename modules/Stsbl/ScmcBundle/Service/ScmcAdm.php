@@ -2,11 +2,14 @@
 
 namespace Stsbl\ScmcBundle\Service;
 
+use IServ\CoreBundle\Exception\ShellExecException;
 use IServ\CoreBundle\Security\Core\SecurityHandler;
 use IServ\CoreBundle\Service\Shell;
+use IServ\CoreBundle\Service\Sudo as SudoService;
 use IServ\CoreBundle\Util\Sudo;
 use IServ\CrudBundle\Entity\FlashMessageBag;
 use IServ\FileBundle\Entity\File;
+use Psr\Container\ContainerInterface;
 use Stsbl\ScmcBundle\Entity\Server;
 use Stsbl\ScmcBundle\Security\ScmcAuth;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -16,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 /*
  * The MIT License
@@ -47,10 +51,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  */
-class ScmcAdm implements ContainerAwareInterface
+class ScmcAdm implements ServiceSubscriberInterface
 {
-    use ContainerAwareTrait;
-
     const SCMCADM = '/usr/lib/iserv/scmcadm';
     const SCMCADM_PUTDATA = 'putdata';
     const SCMCADM_GETDATA = 'getdata';
@@ -61,7 +63,12 @@ class ScmcAdm implements ContainerAwareInterface
     const SCMCADM_DELETEUSERPASSWD = 'deleteuserpasswd';
     const SCMCADM_SETMASTERPASSWD = 'setmasterpasswd';
     const SCMCADM_NEWCONFIG = 'newconfig';
-    
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
     /**
      * @var Filesystem
      */
@@ -88,11 +95,6 @@ class ScmcAdm implements ContainerAwareInterface
     private $scmcAuth;
 
     /**
-     * @var Sudo
-     */
-    private $sudo;
-
-    /**
      * The constructor.
      *
      * @param Shell $shell
@@ -111,7 +113,7 @@ class ScmcAdm implements ContainerAwareInterface
     
     /**
      * Creates and returns temporary directory with random path
-     * 
+     *
      * @return string
      */
     private function getTemporaryDirectory()
@@ -146,11 +148,14 @@ class ScmcAdm implements ContainerAwareInterface
      * @param array $env
      * @param  callable $filterOutputCallBack
      * @return FlashMessageBag STDOUT and STDERR contents as FlashMessageBag
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     private function shellMsg($cmd, $args = null, $stdin = null, $env = null, callable $filterOutputCallBack = null)
     {
-        $this->shell->exec($cmd, $args, $stdin, $env);
+        try {
+            $this->shell->exec($cmd, $args, $stdin, $env);
+        } catch (ShellExecException $e) {
+            throw new \RuntimeException('Failed to run scmcadm!', 0, $e);
+        }
 
         $messages = new FlashMessageBag();
         foreach ($this->shell->getOutput() as $o) {
@@ -187,7 +192,6 @@ class ScmcAdm implements ContainerAwareInterface
      * @param callable $filterOutputCallBack
      * @param array $envAppend
      * @return FlashMessageBag
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function scmcAdm($command, array $args = [], $arg = null, callable $filterOutputCallBack = null, array $envAppend = [])
     {
@@ -205,8 +209,7 @@ class ScmcAdm implements ContainerAwareInterface
                 'IPFWD' => $this->getIpFwd(),
                 'SCMC_SESSIONPW' => $sessionPassword,
                 'ARG' => $arg,
-            ], $envAppend),
-            $filterOutputCallBack);
+            ], $envAppend), $filterOutputCallBack);
     }
 
     /**
@@ -215,7 +218,6 @@ class ScmcAdm implements ContainerAwareInterface
      * @param $command
      * @param array $args
      * @return Shell
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function scmcAdmRaw($command, array $args = [])
     {
@@ -228,12 +230,16 @@ class ScmcAdm implements ContainerAwareInterface
             $sessionPassword = null;
         }
 
-        $shell->exec('sudo', $args, null, [
-            'SESSPW' => $this->securityHandler->getSessionPassword(),
-            'IP' => $this->request->getClientIp(),
-            'IPFWD' => $this->getIpFwd(),
-            'SCMC_SESSIONPW' => $sessionPassword
-        ]);
+        try {
+            $shell->exec('sudo', $args, null, [
+                'SESSPW' => $this->securityHandler->getSessionPassword(),
+                'IP' => $this->request->getClientIp(),
+                'IPFWD' => $this->getIpFwd(),
+                'SCMC_SESSIONPW' => $sessionPassword
+            ]);
+        } catch (ShellExecException $e) {
+            throw new \RuntimeException('Failed to run scmcadm!', 0, $e);
+        }
 
         return $shell;
     }
@@ -244,7 +250,6 @@ class ScmcAdm implements ContainerAwareInterface
      * @param Server $server
      * @param array $years
      * @return array First index: FlashMessageBag, Second index: Prepared Response or null
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function getData(Server $server, array $years)
     {
@@ -254,7 +259,7 @@ class ScmcAdm implements ContainerAwareInterface
             $args[] = join(',', $years);
         }
 
-        $ret = $this->scmcAdm(self::SCMCADM_GETDATA, $args, null, function($o) {
+        $ret = $this->scmcAdm(self::SCMCADM_GETDATA, $args, null, function ($o) {
             return strpos($o, 'path=') != 0;
         });
         $zipPath = null;
@@ -290,7 +295,6 @@ class ScmcAdm implements ContainerAwareInterface
      * @param array $files
      * @param array $years
      * @return FlashMessageBag
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function putData(Server $server, array $files, array $years = null)
     {
@@ -329,7 +333,7 @@ class ScmcAdm implements ContainerAwareInterface
         $filePath = $dir.'upload.zip';
 
         if ($file instanceof File) {
-            $this->container->get('iserv.sudo');
+            $this->container->get(SudoService::class);
             /* @var $file File */
             $content = Sudo::file_get_contents(sprintf('%s/%s', $this->securityHandler->getUser()->getHome(), $file->getFilename()));
         } else {
@@ -363,7 +367,6 @@ class ScmcAdm implements ContainerAwareInterface
      * @param Server $server
      * @param UploadedFile $file
      * @return FlashMessageBag
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function storeKey(Server $server, UploadedFile $file)
     {
@@ -387,7 +390,6 @@ class ScmcAdm implements ContainerAwareInterface
      *
      * @param Server $server
      * @return FlashMessageBag
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function deleteKey(Server $server)
     {
@@ -398,19 +400,17 @@ class ScmcAdm implements ContainerAwareInterface
     /**
      * Calls masterpasswdempty sub command
      *
-     * @return boolean
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
+     * @return bool
      */
     public function masterPasswdEmpty()
     {
         $res = $this->scmcAdmRaw(self::SCMCADM_MASTERPASSWDEMPTY);
 
-        foreach ($res->getOutput() as $o)
-        {
+        foreach ($res->getOutput() as $o) {
             if (preg_match('/^res=(.*)$/', $o, $m)) {
                 if ($m[1] === "true") {
                     return true;
-                } else if ($m[1] === "false") {
+                } elseif ($m[1] === "false") {
                     return false;
                 }
             }
@@ -425,7 +425,6 @@ class ScmcAdm implements ContainerAwareInterface
      * @param string $user
      * @param string $password
      * @return FlashMessageBag
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function setUserPasswd($user, $password)
     {
@@ -437,7 +436,6 @@ class ScmcAdm implements ContainerAwareInterface
      *
      * @param string $user
      * @return FlashMessageBag
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function deleteUserPasswd($user)
     {
@@ -450,7 +448,6 @@ class ScmcAdm implements ContainerAwareInterface
      * @param string $newPassword
      * @param string $oldPassword
      * @return FlashMessageBag
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function setMasterPasswd($newPassword, $oldPassword = null)
     {
@@ -464,10 +461,25 @@ class ScmcAdm implements ContainerAwareInterface
      * Calls newconfig sub command
      *
      * @return FlashMessageBag
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function newConfig()
     {
         return $this->scmcAdm(self::SCMCADM_NEWCONFIG);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        return [SudoService::class];
+    }
+
+    /**
+     * @required
+     */
+    public function setContainer(ContainerInterface $container): void
+    {
+        $this->container = $container;
     }
 }

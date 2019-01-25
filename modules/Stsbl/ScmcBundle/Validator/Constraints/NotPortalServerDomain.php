@@ -83,12 +83,4 @@ class NotPortalServerDomain extends Constraint
     {
         return self::PROPERTY_CONSTRAINT;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validatedBy()
-    {
-        return 'stsbl_scmc_not_portalserver_domain_validator';
-    }
 }

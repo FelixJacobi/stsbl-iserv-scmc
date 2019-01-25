@@ -2,24 +2,26 @@
 
 namespace Stsbl\ScmcBundle\Controller;
 
-use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Controller\AbstractPageController;
 use IServ\CoreBundle\Form\Type\BooleanType;
+use IServ\CoreBundle\Service\Config;
+use IServ\CoreBundle\Service\Flash;
+use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
-use IServ\CrudBundle\Entity\FlashMessageBag;
 use IServ\FileBundle\Form\Type\UniversalFileType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stsbl\ScmcBundle\Menu\MenuBuilder;
+use Stsbl\ScmcBundle\Service\ScmcAdm;
 use Stsbl\ScmcBundle\Traits\LoggerInitializationTrait;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Count;
 
 /*
  * The MIT License
@@ -53,22 +55,19 @@ use Symfony\Component\Validator\Constraints\Count;
  * @Route("scmc", schemes="https")
  * @Security("is_granted('PRIV_SCMC_ACCESS_FRONTEND') and token.hasAttribute('scmc_authenticated') and token.getAttribute('scmc_authenticated') == true")
  */
-class ManagementController extends PageController 
+class ManagementController extends AbstractPageController
 {
-    use FlashMessageBagTrait, FormTrait, LoggerInitializationTrait, LoggerTrait;
-    
-    /**
-     * @var \Stsbl\ScmcBundle\Menu\MenuBuilder
-     */
-    private $menuBuilder;
+    use FormTrait, LoggerInitializationTrait, LoggerTrait;
     
     /**
      * Get year choices for up- and download form
-     * 
+     *
      * @return array
      */
     private function getYearChoices()
     {
+        $config = $this->get(Config::class);
+
         $ret = [
             __('Year %s', 5) => 5,
             __('Year %s', 6) => 6,
@@ -79,26 +78,18 @@ class ManagementController extends PageController
         ];
 
         // add year 11 + 12 on demand
-        if ($this->get('iserv.config')->get('SCMCSchoolType') === 'gymnasium' ||
-            $this->get('iserv.config')->get('SCMCSchoolType') === 'stadtteilschule') {
+        if ($config->get('SCMCSchoolType') === 'gymnasium' ||
+            $config->get('SCMCSchoolType') === 'stadtteilschule') {
             $ret[__('Year %s', 11)] = 11;
             $ret[__('Year %s', 12)] = 12;
         }
         
         // add year 13 on demand
-        if ($this->get('iserv.config')->get('SCMCSchoolType') === 'stadtteilschule') {
+        if ($config->get('SCMCSchoolType') === 'stadtteilschule') {
             $ret[__('Year %s', 13)] = 13;
         }
         
         return $ret;
-    }
-
-
-    public function setMenuBuilder()
-    {
-        /* @var $menuBuilder \Stsbl\ScmcBundle\Menu\MenuBuilder */
-        $menuBuilder = $this->get('stsbl.scmc.menu_builder');
-        $this->menuBuilder = $menuBuilder;
     }
 
     /**
@@ -113,9 +104,8 @@ class ManagementController extends PageController
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
         $this->addBreadcrumb(_('Start Page'), $this->generateUrl('manage_scmc_forward'));
-        
-        $this->setMenuBuilder();
-        $menu = $this->menuBuilder->createSCMCMenu();
+
+        $menu = $this->get(MenuBuilder::class)->createSCMCMenu();
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $qb = $this
             ->getDoctrine()
@@ -157,9 +147,8 @@ class ManagementController extends PageController
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
         $this->addBreadcrumb(_('Data Upload'), $this->generateUrl('manage_scmc_upload'));
-        
-        $this->setMenuBuilder();
-        $menu = $this->menuBuilder->createSCMCMenu();
+
+        $menu = $this->get(MenuBuilder::class)->createSCMCMenu();
         $form = $this->createUploadForm();
         $form->handleRequest($request);
         
@@ -173,7 +162,6 @@ class ManagementController extends PageController
     /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
      * @Method("POST")
      * @Route("/upload/zip", name="manage_scmc_upload_zip")
      */
@@ -195,9 +183,8 @@ class ManagementController extends PageController
             return $this->redirectToRoute('manage_scmc_upload');
         }
 
-        /* @var $scmcAdm \Stsbl\ScmcBundle\Service\ScmcAdm */
-        $scmcAdm = $this->get('stsbl.scmc.service.scmcadm');
-        $this->createFlashMessagesFromBag($scmcAdm->putData($data['server'], $data['class_data'], $data['years']));
+        $scmcAdm = $this->get(ScmcAdm::class);
+        $this->get(Flash::class)->addBag($scmcAdm->putData($data['server'], $data['class_data'], $data['years']));
         
         return $this->redirectToRoute('manage_scmc_upload');
     }
@@ -215,9 +202,8 @@ class ManagementController extends PageController
         // track path
         $this->addBreadcrumb(_('Certificate Management'), $this->generateUrl('manage_scmc_forward'));
         $this->addBreadcrumb(_('Data Download'), $this->generateUrl('manage_scmc_download'));
-        
-        $this->setMenuBuilder();
-        $menu = $this->menuBuilder->createSCMCMenu();
+
+        $menu = $this->get(MenuBuilder::class)->createSCMCMenu();
         $form = $this->createDownloadForm();
         $form->handleRequest($request);
         
@@ -246,10 +232,10 @@ class ManagementController extends PageController
         $data = $form->getData();
 
         /* @var $scmcAdm \Stsbl\ScmcBundle\Service\ScmcAdm */
-        $scmcAdm = $this->get('stsbl.scmc.service.scmcadm');
+        $scmcAdm = $this->get(ScmcAdm::class);
         $getData = $scmcAdm->getData($data['server'], $data['years']);
 
-        $this->createFlashMessagesFromBag($getData[0]);
+        $this->get(Flash::class)->addBag($getData[0]);
         // assume error, if no prepared response is given
         if (!$getData[1] instanceof Response) {
             return $this->redirectToRoute('manage_scmc_download');
@@ -260,7 +246,7 @@ class ManagementController extends PageController
     
     /**
      * Gets the scmc upload form
-     * 
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     private function createUploadForm()
@@ -270,7 +256,7 @@ class ManagementController extends PageController
         
         $builder
             ->add('server', EntityType::class, [
-                'class' => 'StsblSchoolCertificateManagerConnectorBundle:Server',
+                'class' => 'StsblScmcBundle:Server',
                 'label' => _('Select destination server'),
                 'attr' => [
                     'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
@@ -303,18 +289,18 @@ class ManagementController extends PageController
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => _('Upload data'), 
-                'buttonClass' => 'btn-success', 
+                'label' => _('Upload data'),
+                'buttonClass' => 'btn-success',
                 'icon' => 'arrow-up'
-                ])
-            ;
+            ])
+        ;
         
         return $builder->getForm();
     }
     
     /**
      * Gets the scmc download form
-     * 
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     private function createDownloadForm()
@@ -324,7 +310,7 @@ class ManagementController extends PageController
         
         $builder
             ->add('server', EntityType::class, [
-                'class' => 'StsblSchoolCertificateManagerConnectorBundle:Server',
+                'class' => 'StsblScmcBundle:Server',
                 'label' => _('Select destination server'),
                 'attr' => [
                     'help_text' => _('If your administrator has configured multiple servers (for example a primary and backup server), you can select the destination server.')
@@ -341,12 +327,27 @@ class ManagementController extends PageController
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => _('Download data'), 
-                'buttonClass' => 'btn-success', 
+                'label' => _('Download data'),
+                'buttonClass' => 'btn-success',
                 'icon' => 'arrow-down'
                 ])
             ;
         
         return $builder->getForm();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices(): array
+    {
+        $deps = parent::getSubscribedServices();
+        $deps[] = Config::class;
+        $deps[] = Flash::class;
+        $deps[] = ScmcAdm::class;
+        $deps[] = MenuBuilder::class;
+        $deps[] = Logger::class;
+
+        return $deps;
     }
 }

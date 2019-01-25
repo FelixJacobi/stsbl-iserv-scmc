@@ -31,27 +31,27 @@ use IServ\CrudBundle\Entity\CrudInterface;
  */
 
 /**
- * StsblSchoolCertificateManagerConnectorBundle:UserPassword
+ * StsblScmcBundle:UserPassword
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @ORM\Entity
  * @ORM\Table(name="scmc_userpasswords")
  */
-class UserPassword implements CrudInterface 
+class UserPassword implements CrudInterface
 {
     /**
      * @ORM\OneToOne(targetEntity="\IServ\CoreBundle\Entity\User", fetch="EAGER")
      * @ORM\JoinColumn(name="act", referencedColumnName="act")
      * @ORM\Id
-     * 
+     *
      * @var User
      */
-    private $act;
+    private $user;
     
     /**
      * @ORM\Column(name="password", type="boolean")
-     * 
+     *
      * @var bool
      */
     private $password;
@@ -61,7 +61,7 @@ class UserPassword implements CrudInterface
      */
     public function __toString()
     {
-        return (string)$this->act->getUsername();
+        return $this->user->getUsername();
     }
 
     /**
@@ -69,45 +69,45 @@ class UserPassword implements CrudInterface
      */
     public function getId()
     {
-        return $this->getAct();
+        return $this->getUser()->getUsername();
     }
     
     /**
      * Get user
-     * 
+     *
      * @return User
      */
-    public function getAct()
+    public function getUser()
     {
-        return $this->act;
+        return $this->user;
     }
     
     /**
      * Get password
-     * 
-     * @returns bool
+     *
+     * @return bool
      */
-    public function getPassword()
+    public function hasPassword()
     {
         return $this->password;
     }
     
     /**
      * Set user
-     * 
-     * @param User $act
+     *
+     * @param User $user
      * @return UserPassword;
      */
-    public function setAct(User $act)
+    public function setUser(User $user)
     {
-        $this->act = $act;
+        $this->user = $user;
         
         return $this;
     }
     
     /**
      * Set if user have a password or not
-     * 
+     *
      * @param bool $password
      * @return UserPassword
      */
@@ -116,5 +116,10 @@ class UserPassword implements CrudInterface
         $this->password = $password;
         
         return $this;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->user->getUsername();
     }
 }

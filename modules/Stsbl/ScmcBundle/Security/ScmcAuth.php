@@ -131,7 +131,7 @@ class ScmcAuth
         ]);
         $args[] = $params;
 
-        if (count($secondArgs) > 0) {
+        if (!empty($secondArgs)) {
             foreach ($secondArgs as $arg) {
                 $args[] = $arg;
             }
@@ -288,7 +288,7 @@ class ScmcAuth
         }
 
         $scp = session_get_cookie_params();
-        setcookie(self::SECURITYCOOKIE, null, 1, $scp['path'], $scp['domain'], $scp['secure'], $scp['httponly']);
+        setcookie(self::SECURITYCOOKIE, '', 1, $scp['path'], $scp['domain'], $scp['secure'], $scp['httponly']);
         unset($_COOKIE[self::SECURITYCOOKIE]);
     }
 

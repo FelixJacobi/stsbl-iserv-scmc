@@ -2,12 +2,11 @@
 
 namespace Stsbl\ScmcBundle\Controller;
 
-use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Controller\AbstractPageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\ScmcBundle\Entity\Server;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Access list for the school certificate manager connector
@@ -20,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @Route("cgi", schemes="https")
  * @Security("is_granted('PRIV_SCMC_ACCESS_LIST')")
  */
-class AccessController extends PageController
+class AccessController extends AbstractPageController
 {
     /**
      * List available server

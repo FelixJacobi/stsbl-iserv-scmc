@@ -53,7 +53,7 @@ class PublicController extends PageController
         /* @var $qb QueryBuilder */
         $qb = $this->getDoctrine()->getRepository('IServRoomBundle:Room')->createQueryBuilder('r');
         /* @var $subQb QueryBuilder */
-        $subQb = $this->getDoctrine()->getRepository('StsblSchoolCertificateManagerConnectorBundle:Room')->createQueryBuilder('sr');
+        $subQb = $this->getDoctrine()->getRepository('StsblScmcBundle:Room')->createQueryBuilder('sr');
 
         $qb
             ->select('r')

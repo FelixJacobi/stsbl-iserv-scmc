@@ -67,7 +67,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
         $this->itemTitle = _('Room');
         $this->id = 'scmc_rooms';
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc';
-        $this->templates['crud_index'] = 'StsblSchoolCertificateManagerConnectorBundle:Crud:admin_scmc_rooms_index.html.twig';
+        $this->templates['crud_index'] = 'StsblScmcBundle:Crud:admin_scmc_rooms_index.html.twig';
     }
     
     /**
@@ -127,7 +127,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
                 $subQb
                     ->resetDqlParts()
                     ->select('sr')
-                    ->from('StsblSchoolCertificateManagerConnectorBundle:Room', 'sr')
+                    ->from('StsblScmcBundle:Room', 'sr')
                     ->where($subQb->expr()->eq('sr.room', 'r.id'))
                 ;
                 
@@ -162,7 +162,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
     {
         parent::buildRoutes();
         
-        $this->routes[self::ACTION_INDEX]['_controller'] = 'StsblSchoolCertificateManagerConnectorBundle:Admin:roomIndex';
+        $this->routes[self::ACTION_INDEX]['_controller'] = 'StsblScmcBundle:Admin:roomIndex';
     }
     
     /**

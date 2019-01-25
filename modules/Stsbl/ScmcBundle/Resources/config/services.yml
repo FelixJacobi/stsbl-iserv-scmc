@@ -4,19 +4,14 @@ services:
         autowire: true
         public: false
 
-    stsbl.scmc.menu_builder:
-        class: Stsbl\ScmcBundle\Menu\MenuBuilder
-        arguments: ["@knp_menu.factory", "@security.token_storage", "@security.authorization_checker", "@event_dispatcher"]
-
-    stsbl.scmc.validator.not_portalserver_domain:
-        class: Stsbl\ScmcBundle\Validator\Constraints\NotPortalServerDomainValidator
-        arguments: ["@iserv.config"]
-        tags:
-            - { name: validator.constraint_validator, alias: stsbl_scmc_not_portalserver_domain_validator }
-
     Stsbl\ScmcBundle\:
         resource: '../../*'
         exclude: '../../{Entity,Resources,Tests}'
+
+    Stsbl\ScmcBundle\Controller\:
+        public: true
+        resource: '../../Controller/*'
+        tags: ['controller.service_arguments']
 
     Stsbl\ScmcBundle\EventListener\KernelControllerSubscriber:
         bind:

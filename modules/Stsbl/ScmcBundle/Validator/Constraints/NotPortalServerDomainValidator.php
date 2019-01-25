@@ -42,11 +42,6 @@ class NotPortalServerDomainValidator extends ConstraintValidator
      */
     private $config;
 
-    /**
-     * The constructor.
-     *
-     * @param Config $config
-     */
     public function __construct(Config $config)
     {
         $this->config = $config;
@@ -63,23 +58,31 @@ class NotPortalServerDomainValidator extends ConstraintValidator
 
         /* @var $constraint NotPortalServerDomain */
         if ((string)$value === $this->config->get('Domain')) {
-            $this->context->buildViolation($constraint->getIsPortalServerDomainMessage())->atPath('webDomain')->addViolation();
+            $this->context->buildViolation(
+                $constraint->getIsPortalServerDomainMessage()
+            )->atPath('webDomain')->addViolation();
         }
 
-        if((string)$value === 'www.'.$this->config->get('Domain')) {
+        if ((string)$value === 'www.'.$this->config->get('Domain')) {
             $this->context->buildViolation($constraint->getIsWWWHomepageMessage())->atPath('webDomain')->addViolation();
         }
 
         if ((string)$value === $this->config->get('Hostname')) {
-            $this->context->buildViolation($constraint->getIsPortalServerHostNameMessage())->atPath('webDomain')->addViolation();
+            $this->context->buildViolation(
+                $constraint->getIsPortalServerHostNameMessage()
+            )->atPath('webDomain')->addViolation();
         }
 
         foreach ($this->config->get('AliasDomains') as $aliasDomain) {
             if ((string)$value === 'www.'.$aliasDomain) {
-                $this->context->buildViolation($constraint->getIsWWWHomepageMessage())->atPath('webDomain')->addViolation();
+                $this->context->buildViolation(
+                    $constraint->getIsWWWHomepageMessage()
+                )->atPath('webDomain')->addViolation();
             }
             if ((string)$value === $aliasDomain) {
-                $this->context->buildViolation($constraint->getIsAliasDomainMessage())->atPath('webDomain')->addViolation();
+                $this->context->buildViolation(
+                    $constraint->getIsAliasDomainMessage()
+                )->atPath('webDomain')->addViolation();
             }
         }
     }

@@ -3,14 +3,18 @@
 namespace Stsbl\ScmcBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-use Doctrine\ORM\NoResultException;
+use IServ\CoreBundle\Entity\User;
+use IServ\CoreBundle\Entity\UserRepository;
 use IServ\CoreBundle\Form\Type\BooleanType;
+use IServ\CoreBundle\Service\Flash;
+use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
-use IServ\CrudBundle\Controller\CrudController;
+use IServ\CrudBundle\Controller\StrictCrudController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Stsbl\ScmcBundle\Security\Privilege;
+use Stsbl\ScmcBundle\Service\ScmcAdm;
 use Stsbl\ScmcBundle\Traits\LoggerInitializationTrait;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -53,9 +57,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @Route("admin/scmc")
  * @Security("is_granted('PRIV_SCMC_ADMIN')")
  */
-class AdminController extends CrudController
+class AdminController extends StrictCrudController
 {
-    use LoggerTrait, LoggerInitializationTrait, FormTrait, FlashMessageBagTrait;
+    use LoggerTrait, LoggerInitializationTrait, FormTrait;
 
     const ROOM_CONFIG_FILE = '/var/lib/stsbl/scmc/cfg/room-mode.json';
 
@@ -63,7 +67,7 @@ class AdminController extends CrudController
     /**
      * Current room policy mode
      *
-     * @var boolean
+     * @var bool
      */
     private static $roomMode;
 
@@ -88,14 +92,14 @@ class AdminController extends CrudController
      * @param Request $request
      * @return array
      * @Route("", name="admin_scmc")
-     * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:index.html.twig")
+     * @Template("StsblScmcBundle:Admin:index.html.twig")
      * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function indexAction(Request $request)
     {
         $this->handleMasterPasswordForm($request);
         $view = $this->getMasterPasswordUpdateForm()->createView();
-        $isMasterPasswordEmtpy = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
+        $isMasterPasswordEmtpy = $this->get(ScmcAdm::class)->masterPasswdEmpty();
 
         // track path
         $this->addBreadcrumb(_('Certificate Management'));
@@ -122,7 +126,7 @@ class AdminController extends CrudController
             $data = $form->getData();
             $this->initalizeLogger();
          
-            if (!isset($data['oldmasterpassword']) && $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty()) {
+            if (!isset($data['oldmasterpassword']) && $this->get(ScmcAdm::class)->masterPasswdEmpty()) {
                 $oldMasterPassword = '';
             } else {
                 $oldMasterPassword = $data['oldmasterpassword'];
@@ -130,13 +134,17 @@ class AdminController extends CrudController
             
             if ($data['newmasterpassword'] !== $data['repeatmasterpassword']) {
                 $this->get('iserv.flash')->error(_('New password and repeat does not match.'));
-                $this->log('Masterpasswortaktualisierung fehlgeschlagen: Neues Passwort und Wiederholung nicht übereinstimmend');
+                $this->log(
+                    'Masterpasswortaktualisierung fehlgeschlagen: Neues Passwort und Wiederholung nicht übereinstimmend'
+                );
                 return;
             } else {
                 $newMasterPassword = $data['newmasterpassword'];
             }
             
-            $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->setMasterPasswd($newMasterPassword, $oldMasterPassword));
+            $this->get(Flash::class)->addBag(
+                $this->get(ScmcAdm::class)->setMasterPasswd($newMasterPassword, $oldMasterPassword)
+            );
         } else {
             $this->handleFormErrors($form);
         }
@@ -150,7 +158,7 @@ class AdminController extends CrudController
      */
     private function getMasterPasswordUpdateForm()
     {
-        $isMasterPasswordEmpty = $this->get('stsbl.scmc.service.scmcadm')->masterPasswdEmpty();
+        $isMasterPasswordEmpty = $this->get(ScmcAdm::class)->masterPasswdEmpty();
         $builder = $this->createFormBuilder();
         
         if (!$isMasterPasswordEmpty) {
@@ -167,7 +175,9 @@ class AdminController extends CrudController
         }
         
         $builder
-            ->add('newmasterpassword', PasswordType::class, [
+            ->add(
+                'newmasterpassword',
+                PasswordType::class, [
                 'label' => false,
                 'required' => true,
                 'constraints' => new NotBlank(['message' => _('New master password can not be empty.')]),
@@ -177,20 +187,24 @@ class AdminController extends CrudController
                     ]
                 ]
             )
-            ->add('repeatmasterpassword', PasswordType::class, array(
-                'label' => false,
-                'required' => true,
-                'constraints' => new NotBlank(['message' => _('Repeat of new master password can not be empty.')]),
-                'attr' => array(
-                    'placeholder' => _('Repeat new master password'),
-                    'autocomplete' => 'off',
-                    )
-                )
+            ->add(
+                'repeatmasterpassword',
+                PasswordType::class, [
+                    'label' => false,
+                    'required' => true,
+                    'constraints' => new NotBlank(['message' => _('Repeat of new master password can not be empty.')]),
+                    'attr' => [
+                        'placeholder' => _('Repeat new master password'),
+                        'autocomplete' => 'off',
+                    ]
+                ]
             )
-            ->add('submit', SubmitType::class, array(
-                'label' => _('Update password'),
-                'buttonClass' => 'btn-success',
-                'icon' => 'ok'
+            ->add('submit',
+                SubmitType::class,
+                array(
+                    'label' => _('Update password'),
+                    'buttonClass' => 'btn-success',
+                    'icon' => 'ok'
                 )
             )
         ;
@@ -243,7 +257,7 @@ class AdminController extends CrudController
      * @param string $user
      * @return array|RedirectResponse
      * @Route("/userpassword/set/{user}", name="admin_scmc_set_user_password")
-     * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:setuserpassword.html.twig")
+     * @Template("StsblScmcBundle:Admin:setuserpassword.html.twig")
      * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function setUserPasswordAction(Request $request, $user)
@@ -260,10 +274,9 @@ class AdminController extends CrudController
             $data = $form->getData();
             $password = $data['userpassword'];
             
-            $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->setUserPasswd($user->getUsername(), $password));
+            $this->get(Flash::class)->addBag($this->get(ScmcAdm::class)->setUserPasswd($user->getUsername(), $password));
 
             return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user->getId()]);
-            
         } else {
             // show form errors if any
             $this->handleFormErrors($form);
@@ -309,7 +322,7 @@ class AdminController extends CrudController
      * @param string $user
      * @return array|Response
      * @Route("/userpasswords/delete/{user}", name="admin_scmc_delete_user_password")
-     * @Template("StsblSchoolCertificateManagerConnectorBundle:Admin:deleteuserpassword.html.twig")
+     * @Template("StsblScmcBundle:Admin:deleteuserpassword.html.twig")
      * @throws \IServ\CoreBundle\Exception\ShellExecException
      */
     public function deleteUserPasswordAction(Request $request, $user)
@@ -318,21 +331,25 @@ class AdminController extends CrudController
         $FullName = $user->getName();
         
         $builder = $this->createFormBuilder();
-        $builder
-            ->add('actions', FormActionsType::class)
-        ;
+        $builder->add('actions', FormActionsType::class);
         
         $builder->get('actions')
-            ->add('approve', SubmitType::class, array(
-                'label' => _('Yes'),
-                'buttonClass' => 'btn-danger',
-                'icon' => 'ok'
+            ->add(
+                'approve',
+                SubmitType::class,
+                array(
+                    'label' => _('Yes'),
+                    'buttonClass' => 'btn-danger',
+                    'icon' => 'ok'
                 )
             )
-            ->add('cancel', SubmitType::class, array(
-                'label' => _('No'),
-                'buttonClass' => 'btn-default',
-                'icon' => 'remove'
+            ->add(
+                'cancel',
+                SubmitType::class,
+                array(
+                    'label' => _('No'),
+                    'buttonClass' => 'btn-default',
+                    'icon' => 'remove'
                 )
             )
         ;
@@ -344,7 +361,7 @@ class AdminController extends CrudController
             $this->initalizeLogger();
             $button = $form->getClickedButton()->getName();
             if ($button === 'approve') {
-                $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->deleteUserPasswd($user->getUsername()));
+                $this->get(Flash::class)->addBag($this->get(ScmcAdm::class)->deleteUserPasswd($user->getUsername()));
 
                 return $this->redirectToRoute('admin_scmc_userpassword_show', ['id' => $user->getId()]);
             } else {
@@ -367,22 +384,18 @@ class AdminController extends CrudController
     
     /**
      * Gets the Entity of an IServ User
-     * 
+     *
      * @param string $act
      * @return User
      */
     private function getUserEntity($act)
     {
-        /* @var $repository \Doctrine\Common\Persistence\ObjectRepository */
+        /* @var $repository UserRepository */
         $repository = $this->getDoctrine()->getRepository('IServCoreBundle:User');
         
         /* @var $userObject \IServ\CoreBundle\Entity\User */
-        try {
-            $userEntity = $repository->findOneByUsername($act);
-        } catch (NoResultException $e) {
-            throw $this->createNotFoundException('User '.$act.' was not found.');
-        }
-        
+        $userEntity = $repository->findOneBy(['username' => $act]);
+
         return $userEntity;
     }
 
@@ -450,7 +463,7 @@ class AdminController extends CrudController
 
                 $this->initalizeLogger();
                 $this->log($text);
-                $this->createFlashMessagesFromBag($this->get('stsbl.scmc.service.scmcadm')->newConfig());
+                $this->get(Flash::class)->addBag($this->get(ScmcAdm::class)->newConfig());
             }
 
             $content = json_encode(['invert' => $mode]);
@@ -462,5 +475,18 @@ class AdminController extends CrudController
         $ret['room_inclusion_form'] = $form->createView();
 
         return $ret;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices(): array
+    {
+        $deps = parent::getSubscribedServices();
+        $deps[] = ScmcAdm::class;
+        $deps[] = Flash::class;
+        $deps[] = Logger::class;
+
+        return $deps;
     }
 }

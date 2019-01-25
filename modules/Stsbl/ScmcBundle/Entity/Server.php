@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 
 /**
- * StsblSchoolCertificateManagerConnectorBundle:UserPassword
+ * StsblScmcBundle:UserPassword
  *
  * @author Felix Jacobi <felix.jacobi@stsbl.de>
  * @license MIT license <https://opensource.org/licenses/MIT>

@@ -2,6 +2,8 @@
 
 namespace Stsbl\ScmcBundle\Traits;
 
+use IServ\CoreBundle\Service\Logger;
+
 /**
  * Trait with common function to initialize the LoggerTrait from CoreBundle.
  *
@@ -14,11 +16,11 @@ trait LoggerInitializationTrait
      * Initializes the logger
      */
     protected function initalizeLogger()
-    {  
+    {
         // set module context for logging
         $this->logModule = 'School Certificate Manager Connector';
         
-        $logger = $this->get('iserv.logger');
+        $logger = $this->get(Logger::class);
         $this->setLogger($logger);
     }
 }

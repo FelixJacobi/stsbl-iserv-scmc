@@ -88,7 +88,7 @@ class ServerAdmin extends AbstractAdmin
 
         $this->options['help'] = 'https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc';
 
-        $this->templates['crud_batch_confirm'] = 'StsblSchoolCertificateManagerConnectorBundle:Crud:admin_scmc_server_batch_confirm.html.twig';
+        $this->templates['crud_batch_confirm'] = 'StsblScmcBundle:Crud:admin_scmc_server_batch_confirm.html.twig';
     }
     
     /**
@@ -108,7 +108,7 @@ class ServerAdmin extends AbstractAdmin
                     $subQb
                         ->resetDqlParts()
                         ->select('h')
-                        ->from('StsblSchoolCertificateManagerConnectorBundle:Server', 's')
+                        ->from('StsblScmcBundle:Server', 's')
                         ->where('s.host = h.id')
                     ;
                 
@@ -186,7 +186,7 @@ class ServerAdmin extends AbstractAdmin
             ])
             ->add('tomcatType', null, [
                 'label' => _('Tomcat version'),
-                'template' => 'StsblSchoolCertificateManagerConnectorBundle:List:field_tomcat_version.html.twig',
+                'template' => 'StsblScmcBundle:List:field_tomcat_version.html.twig',
                 'responsive' => 'desktop',
             ])
         ;
@@ -203,7 +203,7 @@ class ServerAdmin extends AbstractAdmin
             ])
             ->add('tomcatType', null, [
                 'label' => _('Tomcat version'),
-                'template' => 'StsblSchoolCertificateManagerConnectorBundle:Show:field_tomcat_version.html.twig',
+                'template' => 'StsblScmcBundle:Show:field_tomcat_version.html.twig',
             ])
             ->add('webDomain', null, [
                 'label' => _('Domain')

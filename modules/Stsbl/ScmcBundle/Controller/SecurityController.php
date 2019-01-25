@@ -4,10 +4,12 @@ namespace Stsbl\ScmcBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use IServ\CoreBundle\Controller\AbstractPageController;
+use IServ\CoreBundle\Service\Logger;
 use IServ\CoreBundle\Traits\LoggerTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Stsbl\ScmcBundle\Entity\UserPassword;
 use Stsbl\ScmcBundle\Security\ScmcAuth;
 use Stsbl\ScmcBundle\Service\ScmcAdm;
 use Stsbl\ScmcBundle\Traits\LoggerInitializationTrait;
@@ -63,8 +65,11 @@ class SecurityController extends AbstractPageController
      *
      * @return array|Response
      */
-    public function login(Request $request, ScmcAuth $auth, ScmcAdm $scmcAdm)
+    public function login(Request $request)
     {
+        $auth = $this->get(ScmcAuth::class);
+        $scmcAdm = $this->get(ScmcAdm::class);
+
         if ($auth->isAuthenticated()) {
             // go to index
             return $this->redirect($this->generateUrl('manage_scmc_index'));
@@ -86,7 +91,7 @@ class SecurityController extends AbstractPageController
             if ($ret === 'code required') {
                 // session requires 2fa code
                 return $this->redirectToRoute('manage_scmc_code');
-            } elseif (true === $ret || strlen($ret) > 0) {
+            } elseif (true === $ret) {
                 $this->log('Zeugnisverwaltungs-Login erfolgreich');
                 $this->addFlash('success', _('You have logged in successfully in the Certificate Management Section.'));
 
@@ -113,16 +118,16 @@ class SecurityController extends AbstractPageController
             }
         }
 
-        $act = $this->get('iserv.security_handler')->getToken()->getUser()->getUsername();
+        $act = $this->getUser()->getUsername();
         /* @var $qb \Doctrine\ORM\QueryBuilder */
         $doctrine = $this->getDoctrine();
         /* @var $em \Doctrine\ORM\EntityManager */
         $em = $doctrine->getManager();
         /* @var $object \Stsbl\ScmcBundle\Entity\UserPassword */
-        $object = $em->find('StsblSchoolCertificateManagerConnectorBundle:UserPassword', $act);
+        $object = $em->find(UserPassword::class, $act);
         
         if ($object != null) {
-            $hasUserPassword = $object->getPassword();
+            $hasUserPassword = $object->hasPassword();
         } else {
             $hasUserPassword = false;
         }
@@ -153,8 +158,10 @@ class SecurityController extends AbstractPageController
      * @Route("/logout", name="manage_scmc_logout")
      * @Security("token.hasAttribute('scmc_authenticated') and token.getAttribute('scmc_authenticated') == true")
      */
-    public function logout(ScmcAuth $auth)
+    public function logout()
     {
+        $auth = $this->get(ScmcAuth::class);
+
         if (!$auth->close($this->getUser()->getUsername())) {
             throw new \RuntimeException('scmc_sess_close failed!');
         }
@@ -260,5 +267,18 @@ class SecurityController extends AbstractPageController
         ;
         
         return $builder->getForm();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedServices()
+    {
+        $deps = parent::getSubscribedServices();
+        $deps[] = ScmcAdm::class;
+        $deps[] = ScmcAuth::class;
+        $deps[] = Logger::class;
+
+        return $deps;
     }
 }

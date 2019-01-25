@@ -4,12 +4,13 @@ namespace Stsbl\ScmcBundle\Admin;
 
 use Doctrine\ORM\NoResultException;
 use IServ\AdminBundle\Admin\AbstractAdmin;
+use IServ\CoreBundle\Entity\User;
+use IServ\CrudBundle\Doctrine\ORM\ORMObjectManager;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\ListMapper;
 use IServ\CrudBundle\Mapper\ShowMapper;
 use IServ\CrudBundle\Table\Filter;
 use IServ\CrudBundle\Table\ListHandler;
-use Stsbl\ScmcBundle\Entity\UserPassword;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /*
@@ -46,7 +47,7 @@ class UserPasswordAdmin extends AbstractAdmin
 {
     public function __construct()
     {
-        parent::__construct(UserPassword::class);
+        parent::__construct(User::class);
     }
 
     /**
@@ -124,18 +125,6 @@ class UserPasswordAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function loadBatchActions()
-    {
-        $res = parent::loadBatchActions();
-        // we do not need delete here
-        $res->remove('delete');
-        
-        return $res;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
     public function getRoutePattern($action, $id, $entityBased = true)
     {
         if ('index' === $action) {
@@ -162,16 +151,18 @@ class UserPasswordAdmin extends AbstractAdmin
      */
     public function getShowActions(CrudInterface $item)
     {
-        /* @var $item \IServ\CoreBundle\Entity\User */
+        /** @var ORMObjectManager $om */
+        $om = $this->getObjectManager();
+
+        /* @var $item User */
         $links = parent::getShowActions($item);
 
         $links['setuserpassword'] = array($this->getRouter()->generate('admin_scmc_set_user_password', ['user' => $item->getUsername()]), _('Set user password'), 'pro-keys', 'btn-primary');
-        
-        /* @var $qb \Doctrine\ORM\QueryBuilder */
-        $qb = $this->getObjectManager()->createQueryBuilder($this->class);
+
+        $qb = $om->createQueryBuilder($this->class);
         $qb->select('p')
-            ->from('StsblSchoolCertificateManagerConnectorBundle:UserPassword', 'p')
-            ->where('p.act = :user')
+            ->from('StsblScmcBundle:UserPassword', 'p')
+            ->where('p.user = :user')
             ->setMaxResults(1)
             ->setParameter('user', $item)
         ;
@@ -179,7 +170,7 @@ class UserPasswordAdmin extends AbstractAdmin
         try {
             /* @var $userPasswordObject \Stsbl\ScmcBundle\Entity\UserPassword */
             $userPasswordObject = $qb->getQuery()->getSingleResult();
-            $hasPassword = $userPasswordObject->getPassword();
+            $hasPassword = $userPasswordObject->hasPassword();
         } catch (NoResultException $e) {
             // assume that user has no password, if he is not listed in table
             $hasPassword = false;
