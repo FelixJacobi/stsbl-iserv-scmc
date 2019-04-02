@@ -86,6 +86,7 @@ class AdminController extends StrictCrudController
      * Overview page
      *
      * @Route("", name="admin_scmc")
+     * @Template("@StsblScmc/admin/index.html.twig")
      */
     public function indexAction(Request $request): array
     {
@@ -238,7 +239,7 @@ class AdminController extends StrictCrudController
      * Displays form to set a password for a user
      *
      * @Route("/userpassword/set/{user}", name="admin_scmc_set_user_password")
-     * @Template("StsblScmcBundle:Admin:setuserpassword.html.twig")
+     * @Template("@StsblScmc/admin/setuserpassword.html.twig")
      *
      * @return array|RedirectResponse
      */
@@ -270,7 +271,7 @@ class AdminController extends StrictCrudController
             $this->addBreadcrumb(_('Set user password'));
             
             /* @var $userPrivileges \Doctrine\Common\Collections\ArrayCollection */
-            $userPrivileges = $this->getUserEntity($user)->getPrivileges();
+            $userPrivileges = $user->getPrivileges();
             $hasPrivilege = false;
             
             foreach ($userPrivileges as $privilege) {
@@ -302,13 +303,12 @@ class AdminController extends StrictCrudController
      * Displays form to delete a password for a user
      *
      * @Route("/userpasswords/delete/{user}", name="admin_scmc_delete_user_password")
-     * @Template("StsblScmcBundle:Admin:deleteuserpassword.html.twig")
+     * @Template("@StsblScmc/admin/deleteuserpassword.html.twig")
      *
      * @return array|Response
      */
     public function deleteUserPasswordAction(Request $request, User $user)
     {
-        $user = $this->getUserEntity($user);
         $fullName = $user->getName();
         
         $builder = $this->createFormBuilder();
@@ -363,12 +363,7 @@ class AdminController extends StrictCrudController
         }
     }
 
-    /**
-     * Get form for room inclusion mode
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    private function getRoomInclusionForm()
+    private function getRoomInclusionForm(): FormInterface
     {
         /* @var $builder \Symfony\Component\Form\FormBuilder */
         $builder = $this->get('form.factory')->createNamedBuilder('file_distribution_room_inclusion');
@@ -404,18 +399,16 @@ class AdminController extends StrictCrudController
     /**
      * index action for room admin
      *
-     * @param Request $request
-     * @return array
-     * @throws \IServ\CoreBundle\Exception\ShellExecException
+     * @return mixed[]
      */
-    public function roomIndexAction(Request $request)
+    public function roomIndexAction(Request $request): array
     {
         $ret = parent::indexAction($request);
         $form = $this->getRoomInclusionForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $mode = (boolean)$form->getData()['mode'];
+            $mode = (bool)$form->getData()['mode'];
 
             // log if mode is changed
             if ($mode !== self::getRoomMode()) {
