@@ -1,17 +1,17 @@
 Source: stsbl-iserv-scmc
 Section: misc
-Priority: extra
+Priority: optional
 Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
 Build-Depends: debhelper (>= 10)
 Build-Depends-Indep: iserv3-dev
-Standards-Version: 4.1.3
+Standards-Version: 4.3.0
 Homepage: https://it.stsbl.de/documentation/mods/stsbl-iserv-scmc
 
 Package: stsbl-iserv-scmc
 Architecture: all
 Depends: ${misc:Depends},
   ${perl:Depends},
-  iserv-portal,
+  iserv-portal (>= 19.05.06-2),
   iserv3-core,
   iserv3-file,
   iserv3-filesystem,
