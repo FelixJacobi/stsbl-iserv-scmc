@@ -3,7 +3,7 @@
 namespace Stsbl\ScmcBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
-use IServ\CoreBundle\Controller\PageController;
+use IServ\CoreBundle\Controller\AbstractPageController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +38,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @license MIT license <https://opensource.org/licenses/MIT>
  * @Route("/public/scmc")
  */
-class PublicController extends PageController
+class PublicController extends AbstractPageController
 {
     /**
      * Shows block information
@@ -75,7 +75,7 @@ class PublicController extends PageController
 
         $parameter = [
             'rooms' => $qb->getQuery()->getResult(),
-            'invert' => AdminController::getRoomMode()
+            'invert' => AdminController::getRoomMode(),
         ];
 
         /* @var $template Template */

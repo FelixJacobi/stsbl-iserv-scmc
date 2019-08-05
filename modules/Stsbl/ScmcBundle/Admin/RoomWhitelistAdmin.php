@@ -8,6 +8,7 @@ use IServ\CoreBundle\Service\Logger;
 use IServ\CrudBundle\Entity\CrudInterface;
 use IServ\CrudBundle\Mapper\AbstractBaseMapper;
 use IServ\CrudBundle\Mapper\FormMapper;
+use Stsbl\ScmcBundle\Controller\AdminController;
 use Stsbl\ScmcBundle\Entity\Room;
 use Stsbl\ScmcBundle\Security\Privilege;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -162,7 +163,7 @@ class RoomWhitelistAdmin extends AbstractAdmin
     {
         parent::buildRoutes();
         
-        $this->routes[self::ACTION_INDEX]['_controller'] = 'StsblScmcBundle:Admin:roomIndex';
+        $this->routes[self::ACTION_INDEX]['_controller'] = AdminController::class . '::roomIndexAction';
     }
     
     /**
