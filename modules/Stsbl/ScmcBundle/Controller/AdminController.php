@@ -77,6 +77,10 @@ class AdminController extends StrictCrudController
         if (!is_bool(self::$roomMode)) {
             $content = file_get_contents(self::ROOM_CONFIG_FILE);
             self::$roomMode = json_decode($content, true)['invert'];
+
+            if (null === self::$roomMode) {
+                return true;
+            }
         }
 
         return self::$roomMode;
