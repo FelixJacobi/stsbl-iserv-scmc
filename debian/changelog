@@ -1,3 +1,11 @@
+stsbl-iserv-scmc (19.11.01-1) stable; urgency=medium
+
+  * Bumped copyright
+  * Fixed return value on default room access mode
+  * Replaced deprecated route annotation
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Fri, 01 Nov 2019 19:45:57 +0100
+
 stsbl-iserv-scmc (19.08.08-1) experimental; urgency=medium
 
   * Fixed deprecations
