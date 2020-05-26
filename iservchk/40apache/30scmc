@@ -1,6 +1,9 @@
 MkDir 0755 root:root /etc/apache2/scmc{,.local}
 Remove /etc/apache2/sites-enabled/00scmc{,-ssl}.conf
-Check /etc/apache2/sites-enabled/01scmc{,-ssl}.conf
+Check /etc/apache2/sites-available/01scmc{,-ssl}.conf
+Link ../sites-available/01scmc.conf /etc/apache2/sites-enabled/01scmc.conf
+Link ../sites-available/01scmc-ssl.conf /etc/apache2/sites-enabled/01scmc-ssl.conf
+
 Check /etc/apache2/scmc-whitelist.conf
 
 Test "check scmc apache config"
