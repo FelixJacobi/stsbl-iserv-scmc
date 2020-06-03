@@ -1,3 +1,10 @@
+stsbl-iserv-scmc (20.06.03-1) stable; urgency=medium
+
+  * Added switch for iserv-server-nginx
+  * KernelControllerSubscriber: Fixed messing up original request
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Wed, 03 Jun 2020 03:44:54 +0200
+
 stsbl-iserv-scmc (19.11.01-1) stable; urgency=medium
 
   * Bumped copyright
