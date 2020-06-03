@@ -128,7 +128,7 @@ class KernelControllerSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $originalRequest = $event->getRequest();
+        $originalRequest = $event->getRequest()->duplicate();
         $pathInfo = $originalRequest->getPathInfo();
 
         // prefilter requests by pathinfo to improve speed:
