@@ -1,0 +1,743 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-02 01:07+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: priv/scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Access the connector to up- and download data"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid "Access to school certificate management server not allowed"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "Account"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Action"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+msgid "Administration"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Administration > Modules > Certifcate Management"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid "All rooms are allowed."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "All rooms except the following"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/RoomWhitelistAdmin.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Allowed Rooms"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Are you sure that you want to reset the master password? (y/N)"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Assigned group"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/code.html.twig.php
+msgid "Authorization code"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+msgid "Back to details"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"Before you can upload new class data, you have to confirm that will lead to "
+"loosing all data currently stored on the certificate server."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/upload.html.twig.php
+msgid ""
+"Before you upload new class data, make sure that you have downloaded a "
+"security copy of the results. All existing data in the Jahrgang* folder "
+"inside the /Zeugnisse/ folder on the certificate management server will "
+"deleted."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid ""
+"By default a link to the reverse proxy is shown to all users with the "
+"privilege \"Show link to certificate management\". You can limit the "
+"visibility of the link to one group."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Cancel"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AccessController.php
+#: modules/Stsbl/ScmcBundle/EventListener/MenuListener.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/access/index.html.twig.php
+msgid "Certificate Grade Input"
+msgstr ""
+
+#: share/iservcfg/85scmc modules/Stsbl/ScmcBundle/Admin/RoomWhitelistAdmin.php
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#: modules/Stsbl/ScmcBundle/EventListener/MenuListener.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/download.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/upload.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/code.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Certificate Management"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Choose a valid server type."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid ""
+"Configure the rooms which are allowed to access the certificate management "
+"server."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Configure the servers which are the targets for up- and downloading."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Confirmation"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+msgid ""
+"Currently for your account is not a user password set. Please contact your "
+"administrator."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/access/index.html.twig.php
+msgid "Currently is no server available. Please contact your administrator."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+msgid ""
+"Currently there is no master password set. Please contact your administrator."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid ""
+"Currently there is no master password set. Please enter a new master "
+"password in the formular and press Update password."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#: modules/Stsbl/ScmcBundle/Menu/MenuBuilder.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/download.html.twig.php
+msgid "Data Download"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#: modules/Stsbl/ScmcBundle/Menu/MenuBuilder.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/upload.html.twig.php
+msgid "Data Upload"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Date"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/DeleteSSHKeyAction.php
+msgid "Delete SSH key"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+msgid "Delete user password"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+#, php-format
+msgid "Delete user password of %s"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/DeleteSSHKeyAction.php
+#, php-format
+msgid "Deleted SSH key for %s."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Deleting master password ..."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+#, php-format
+msgid "Do you really want to delete the user password of %s?"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Domain"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Download certifcate data"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Download data"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Download entered certificate data from the server."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Enter a valid Unix account name."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Enter a valid domain."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid ""
+"Every user which should access the certificate management section needs also "
+"to have an individual user password."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid ""
+"Everyone who should access the certificate management section need to know "
+"this password. After you you changed the password, note it down. If you "
+"forget it, you can only reset it via the root console."
+msgstr ""
+
+#: share/iservcfg/85scmc
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Exit"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "Finish login"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "Firstname"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "Groups"
+msgstr ""
+
+#: config/80scmc
+msgid "Gymnasium"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Host"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"If your administrator has configured multiple servers (for example a primary "
+"and backup server), you can select the destination server."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Last actions"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "Lastname"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Limit download to these years"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Limit upload to these years"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+msgid "Login"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: modules/Stsbl/ScmcBundle/Menu/MenuBuilder.php
+msgid "Logout"
+msgstr ""
+
+#: priv/scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Manage master password and servers"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Master password"
+msgstr ""
+
+#: config/80scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Module: School Certificate Manager Connector"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Name"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "New master password"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "New master password can not be empty."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "New password and repeat does not match."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "New user password"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "No"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid "No room is allowed."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Old master password"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Old master password can not be empty."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "Please enter authorization code."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+msgid ""
+"Please enter both passwords, the master password and your personal user "
+"password. If you do not know them, please conact your administrator."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "Please enter the master password and try it again."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "Please enter the user password and try it again."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/EventListener/KernelControllerSubscriber.php
+msgid "Please login to access the certificate management area."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+msgid "Please select a SSH key file."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Please select a file to upload."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/access/index.html.twig.php
+msgid ""
+"Please select the certificate management server which you want to access."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Press enter to continue ..."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Repeat new master password"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Repeat of new master password can not be empty."
+msgstr ""
+
+#: share/iservcfg/85scmc
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Reset master password"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/RoomWhitelistAdmin.php
+msgid "Room"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Room settings updated successful."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Running iservchk scmc ..."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "SSH account"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+msgid "SSH key"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Save"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "School Certificate Manager"
+msgstr ""
+
+#: priv/scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "School Certificate Manager Connector"
+msgstr ""
+
+#: config/80scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "School Type"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/unavailable.html.twig.php
+msgid "School certificate management server could not be reached"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Select destination server"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/Crud/admin_scmc_rooms_index.html.twig.php
+msgid "Select from which rooms the certificate management can accessed"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/Crud/admin_scmc_rooms_index.html.twig.php
+msgid ""
+"Select if all rooms except the one in the following list or only the rooms "
+"which are in the list are allowed."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Select the host which should be the target for up- and downloading."
+msgstr ""
+
+#: config/80scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid ""
+"Select the type of your school, this setting is required for the available "
+"years for up -and downloading."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Server"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Servers"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+#, php-format
+msgid "Set a new user password for %s"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Set up allowed rooms"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Set up servers"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Set up user passwords"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+msgid "Set user password"
+msgstr ""
+
+#: priv/scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Show link to certificate management"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Service/ScmcAdm.php
+msgid "Something went wrong."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#, php-format
+msgid "Something went wrong: %s"
+msgstr ""
+
+#: config/80scmc
+msgid "Stadtteilschule"
+msgstr ""
+
+#: config/80scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Stadtteilschule (Class 5-10)"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#: modules/Stsbl/ScmcBundle/Menu/MenuBuilder.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Start Page"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Success, you may now set the master password in the IDesk under "
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid "The access is also allowed from the internet connection at home."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid ""
+"The account which is used to up- and download the data. The account must be "
+"member of the tomcat6/7/8 group on the certificate management server. You "
+"must upload a SSH key for this user in the server overview."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid ""
+"The domain, under which the reverse proxy is reachable. Must be different "
+"from the main domain or an alias domain of the portal server."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Validator/Constraints/NotPortalServerDomain.php
+msgid ""
+"The entered domain must not be equivalent with the domain of the portal "
+"server."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Validator/Constraints/NotPortalServerDomain.php
+msgid ""
+"The entered domain must not be equivalent with the host name of the portal "
+"server."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Validator/Constraints/NotPortalServerDomain.php
+msgid "The entered domain must not be one of the alias domains."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Validator/Constraints/NotPortalServerDomain.php
+msgid "The entered domain must not use the WWW group homepage."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "The following rooms"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "The master password is wrong."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "The same domain can not used for two servers."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/unavailable.html.twig.php
+msgid ""
+"The school certificate management server could not be reached. Please "
+"contact your administrator."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+msgid ""
+"The user has currently not the privilege \"Access the connector to up- and "
+"download data\". Make sure that the User also have this privilege assigned. "
+"Otherwhile the certificate management will not shown in the IDesk."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "The user password is wrong."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid ""
+"The version of Tomcat server which is running on the certificate management "
+"server."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"The zip file with the class data. It must contain sub folders with the class "
+"lists sorted by age group (Jahrgang5, Jahrgang6, ...). For more information "
+"please refer the WZeugnis Documentation."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/unavailable.html.twig.php
+msgid "To the IDesk"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/List/field_tomcat_version.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/Show/field_tomcat_version.html.twig.php
+#, php-format
+msgid "Tomcat %s"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Tomcat 6"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Tomcat 7"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Tomcat 8"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Tomcat version"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Update password"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+msgid "Upload SSH key"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Upload certifcate data"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Upload data"
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Upload new class and course lists to the server."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+#, php-format
+msgid "Uploaded new SSH key for %s."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "User"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "User password"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "User password can not be empty."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+msgid "User passwords"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#, php-format
+msgid "Year %s"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Yes"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"You can limit the download to particular years. Only the selected years will "
+"be included in the Zip file."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"You can limit the upload to particular years. Only the course lists of the "
+"selected years will deleted and replaced on the server."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "You have logged in successfully in the Certificate Management Section."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid ""
+"You have logged out successfully from the Certificate Management Section."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Service/ScmcAdm.php
+msgid "You have to upload a zip file!"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+msgid "You must select a SSH key for uploading."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"You need to confirm that a new upload will delete all existing data on the "
+"server."
+msgstr ""
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid ""
+"Your administrator set, that the server is not reachable from your host. The "
+"access is allowed from the following rooms:"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/EventListener/KernelControllerSubscriber.php
+msgid "Your session is expired. Please login again."
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Zip file with class data"
+msgstr ""
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "again."
+msgstr ""

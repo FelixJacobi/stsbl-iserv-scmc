@@ -1,0 +1,810 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: stsbl-iserv3-repo-mon\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-07 05:49+0100\n"
+"PO-Revision-Date: 2017-03-30 17:27+0200\n"
+"Last-Translator: root <repository@stsbl.de>\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: priv/scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Access the connector to up- and download data"
+msgstr "Auf den Connector zugreifen um Daten hoch- und herunterzuladen"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid "Access to school certificate management server not allowed"
+msgstr "Zugriff auf Zeugnisverwaltungsserver nicht gestattet"
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "Account"
+msgstr "Account"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Action"
+msgstr "Aktion"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+msgid "Administration"
+msgstr "Verwaltung"
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Administration > Modules > Certifcate Management"
+msgstr "Verwaltung > Module > Zeugnisverwaltung"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid "All rooms are allowed."
+msgstr "Alle Räume sind erlaubt."
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "All rooms except the following"
+msgstr "Alle Räume, außer die folgenden"
+
+#: modules/Stsbl/ScmcBundle/Admin/RoomWhitelistAdmin.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Allowed Rooms"
+msgstr "Zulässige Räume"
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Are you sure that you want to reset the master password? (y/N)"
+msgstr "Möchten Sie das Masterpasswort wirklich zurücksetzen? (y/N)"
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Assigned group"
+msgstr "Zugewiesene Gruppe"
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/code.html.twig.php
+msgid "Authorization code"
+msgstr "Autorisierungscode"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+msgid "Back to details"
+msgstr "Zurück zu Details"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"Before you can upload new class data, you have to confirm that will lead to "
+"loosing all data currently stored on the certificate server."
+msgstr ""
+"Bevor Sie neue Klassendaten hochladen, müssen Sie bestätigen, dass ein neuer "
+"Upload alle existierenden gespeicherten Daten auf dem Server löscht."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/upload.html.twig.php
+msgid ""
+"Before you upload new class data, make sure that you have downloaded a "
+"security copy of the results. All existing data in the Jahrgang* folder "
+"inside the /Zeugnisse/ folder on the certificate management server will "
+"deleted."
+msgstr ""
+"Bevor Sie neue Klassendaten hochladen, stellen Sie sicher, dass Sie eine "
+"Sicherungskopie der Ergebnisse heruntergeladen haben. Alle existierenden "
+"Jahrgang*-Ordnern innerhalb des /Zeugnisse/-Ordners auf dem "
+"Zeugnisverwaltungsserver werden gelöscht."
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid ""
+"By default a link to the reverse proxy is shown to all users with the "
+"privilege \"Show link to certificate management\". You can limit the "
+"visibility of the link to one group."
+msgstr ""
+"Standardmäßig wird ein Link auf den Reverse-Proxy allen Benutzern mit dem "
+"Recht \"Link zur Zeugnisverwaltung anzeigen\" angezeigt. Sie können die "
+"Sichtbarkeit des Links auf eine Gruppe beschränken."
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: modules/Stsbl/ScmcBundle/Controller/AccessController.php
+#: modules/Stsbl/ScmcBundle/EventListener/MenuListener.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/access/index.html.twig.php
+msgid "Certificate Grade Input"
+msgstr "Zeugnisnoteneingabe"
+
+#: share/iservcfg/85scmc modules/Stsbl/ScmcBundle/Admin/RoomWhitelistAdmin.php
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#: modules/Stsbl/ScmcBundle/EventListener/MenuListener.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/download.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/upload.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/code.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Certificate Management"
+msgstr "Zeugnisverwaltung"
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Choose a valid server type."
+msgstr "Wählen Sie einen gültigen Server-Typ."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid ""
+"Configure the rooms which are allowed to access the certificate management "
+"server."
+msgstr ""
+"Konfigurieren Sie, welche Räume auf die Zeugnisverwaltungsserver zugreifen "
+"dürfen."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Configure the servers which are the targets for up- and downloading."
+msgstr ""
+"Richten Sie die Server ein, welche die Ziele für das Hoch- und Herunterladen "
+"sind."
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Confirmation"
+msgstr "Bestätigung"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+msgid ""
+"Currently for your account is not a user password set. Please contact your "
+"administrator."
+msgstr ""
+"Derzeit ist für Ihr Konto kein Benutzerpasswort gesetzt. Bitte kontaktieren "
+"Sie Ihren Administrator."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/access/index.html.twig.php
+msgid "Currently is no server available. Please contact your administrator."
+msgstr ""
+"Derzeit ist kein Server verfügbar. Bitte kontaktieren Sie Ihren "
+"Administrator."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+msgid ""
+"Currently there is no master password set. Please contact your administrator."
+msgstr ""
+"Derzeit ist das Masterpasswort nicht gesetzt. Bitte kontaktieren Sie Ihren "
+"Administrator."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid ""
+"Currently there is no master password set. Please enter a new master "
+"password in the formular and press Update password."
+msgstr ""
+"Derzeit ist kein Masterpasswort gesetzt. Bitte geben Sie ein neues "
+"Masterpasswort in das Formular ein und drücken Sie Passwort aktualisieren."
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#: modules/Stsbl/ScmcBundle/Menu/MenuBuilder.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/download.html.twig.php
+msgid "Data Download"
+msgstr "Daten-Download"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#: modules/Stsbl/ScmcBundle/Menu/MenuBuilder.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/upload.html.twig.php
+msgid "Data Upload"
+msgstr "Daten-Upload"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Date"
+msgstr "Datum"
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/DeleteSSHKeyAction.php
+msgid "Delete SSH key"
+msgstr "SSH-Schlüssel löschen"
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+msgid "Delete user password"
+msgstr "Benutzerpasswort löschen"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+#, php-format
+msgid "Delete user password of %s"
+msgstr "Benutzerpasswort von %s löschen"
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/DeleteSSHKeyAction.php
+#, php-format
+msgid "Deleted SSH key for %s."
+msgstr "SSH-Schlüssel für %s gelöscht."
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Deleting master password ..."
+msgstr "Lösche Masterpasswort ..."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+#, php-format
+msgid "Do you really want to delete the user password of %s?"
+msgstr "Möchten Sie das Benutzerpasswort von %s wirklich löschen?"
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Domain"
+msgstr "Domain"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Download certifcate data"
+msgstr "Zeugnisdaten herunterladen"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Download data"
+msgstr "Daten herunterladen"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Download entered certificate data from the server."
+msgstr "Eingebene Zeugnisdaten vom Server herunterladen."
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Enter a valid Unix account name."
+msgstr "Geben Sie einen gültigen Unix-Kontonamen an."
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Enter a valid domain."
+msgstr "Geben Sie eine gültige Domain an."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid ""
+"Every user which should access the certificate management section needs also "
+"to have an individual user password."
+msgstr ""
+"Jeder Benutzer, der auf den Zeugnisverwaltungsbereich zugreifen soll, "
+"benötigt außerdem ein invidiuelles Benutzerpasswort."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid ""
+"Everyone who should access the certificate management section need to know "
+"this password. After you you changed the password, note it down. If you "
+"forget it, you can only reset it via the root console."
+msgstr ""
+"Jeder, der Zugriff auf den Zeugnisverwaltungsbereich haben soll, muss "
+"Kenntnis von diesem Passwort haben. Nachdem Sie das Passwort geändert haben, "
+"notieren Sie es. Sollten Sie es vergessen, können Sie es ausschließlich über "
+"die Root-Konsole zurücksetzen."
+
+#: share/iservcfg/85scmc
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Exit"
+msgstr "Beenden"
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "Finish login"
+msgstr "Login abschließen"
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "Firstname"
+msgstr "Vorname"
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "Groups"
+msgstr "Gruppen"
+
+#: config/80scmc
+msgid "Gymnasium"
+msgstr "Gymnasium"
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Host"
+msgstr "Gerät"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"If your administrator has configured multiple servers (for example a primary "
+"and backup server), you can select the destination server."
+msgstr ""
+"Wenn Ihr Administrator mehrere Server konfiguriert hat (zum Beispiel einen "
+"primären und einen Sicherungs-Server), können Sie einen Zielserver wählen."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Last actions"
+msgstr "Letzte Aktionen"
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "Lastname"
+msgstr "Nachname"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Limit download to these years"
+msgstr "Download auf diese Jahrgänge beschränken"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Limit upload to these years"
+msgstr "Upload auf diese Jahrgänge beschränken"
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+msgid "Login"
+msgstr "Anmelden"
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: modules/Stsbl/ScmcBundle/Menu/MenuBuilder.php
+msgid "Logout"
+msgstr "Abmelden"
+
+#: priv/scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Manage master password and servers"
+msgstr "Masterpasswort und Server verwalten"
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Master password"
+msgstr "Masterpasswort"
+
+#: config/80scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Module: School Certificate Manager Connector"
+msgstr "Modul: Zeugnisverwaltungsconnector"
+
+# sprintf
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Name"
+msgstr "Name"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "New master password"
+msgstr "Neues Masterpasswort"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "New master password can not be empty."
+msgstr "Neues Masspasswort darf nicht leer sein."
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "New password and repeat does not match."
+msgstr "Neues Passwort und Wiederholung stimmen nicht überein."
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "New user password"
+msgstr "Neues Benutzerpasswort"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "No"
+msgstr "Nein"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid "No room is allowed."
+msgstr "Kein Raum ist erlaubt."
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Old master password"
+msgstr "Altes Masterpasswort"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Old master password can not be empty."
+msgstr "Altes Masterpasswort darf nicht leer sein."
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "Please enter authorization code."
+msgstr "Bitte geben Sie den Authorisierungs-Code ein."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+msgid ""
+"Please enter both passwords, the master password and your personal user "
+"password. If you do not know them, please conact your administrator."
+msgstr ""
+"Bitte geben Sie beide Passwörter ein, das Masterpasswort und Ihr "
+"persönliches Benutzerkennwort. Wenn Sie diese nicht kennen, kontaktieren Sie "
+"bitte Ihren Administrator."
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "Please enter the master password and try it again."
+msgstr "Bitte geben Sie das Masterpasswort ein und versuchen Sie es erneut."
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "Please enter the user password and try it again."
+msgstr "Bitte geben Sie das Benutzerpasswort ein und probieren Sie es erneut."
+
+#: modules/Stsbl/ScmcBundle/EventListener/KernelControllerSubscriber.php
+msgid "Please login to access the certificate management area."
+msgstr ""
+"Bitte melden Sie sich an, um auf den Zeugnisverwaltungsbereich zuzugreifen."
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+msgid "Please select a SSH key file."
+msgstr "Bitte wählen Sie eine SSH-Schlüsseldatei."
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Please select a file to upload."
+msgstr "Bitte wählen Sie eine Datei zum Hochladen aus."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/access/index.html.twig.php
+msgid ""
+"Please select the certificate management server which you want to access."
+msgstr ""
+"Bitte wählen Sie den Zeugnisverwaltungsserver, auf welchen Sie zugreifen "
+"wollen."
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Press enter to continue ..."
+msgstr "Eingabetaste zum Fortfahren drücken ..."
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Repeat new master password"
+msgstr "Neues Masterpasswort wiederholen"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Repeat of new master password can not be empty."
+msgstr "Wiederholung des neues Masterpasswortes darf nicht leer sein."
+
+#: share/iservcfg/85scmc
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Reset master password"
+msgstr "Masterpasswort zurücksetzen"
+
+#: modules/Stsbl/ScmcBundle/Admin/RoomWhitelistAdmin.php
+msgid "Room"
+msgstr "Raum"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Room settings updated successful."
+msgstr "Raumeinstellungen erfolgreich aktualisiert."
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Running iservchk scmc ..."
+msgstr "Führe iservchk scmc aus ..."
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "SSH account"
+msgstr "SSH-Konto"
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+msgid "SSH key"
+msgstr "SSH-Schlüssel"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Save"
+msgstr "Speichern"
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "School Certificate Manager"
+msgstr "Zeugnisverwalter"
+
+#: priv/scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "School Certificate Manager Connector"
+msgstr "Zeugnisverwaltungsconnector"
+
+#: config/80scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "School Type"
+msgstr "Schultyp"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/unavailable.html.twig.php
+msgid "School certificate management server could not be reached"
+msgstr "Zeugnisverwaltungsserver konnte nicht erreicht werden"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Select destination server"
+msgstr "Zielserver wählen"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/Crud/admin_scmc_rooms_index.html.twig.php
+msgid "Select from which rooms the certificate management can accessed"
+msgstr ""
+"Wählen Sie aus, von welchen Räumen aus auf die Zeugnisverwaltung zugegriffen "
+"werden kann."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/Crud/admin_scmc_rooms_index.html.twig.php
+msgid ""
+"Select if all rooms except the one in the following list or only the rooms "
+"which are in the list are allowed."
+msgstr ""
+"Wählen Sie aus ob alle, außer den Räumen in der folgende Liste order nur die "
+"in der folgenden Liste erlaubt sind."
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Select the host which should be the target for up- and downloading."
+msgstr ""
+"Wählen Sie das Gerät, auf das die Daten hoch- und heruntergeladen werden "
+"soll."
+
+#: config/80scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid ""
+"Select the type of your school, this setting is required for the available "
+"years for up -and downloading."
+msgstr ""
+"Wählen Sie den Typ Ihrer Schule, diese Einstellung wird für die verfügbaren "
+"Jahrgänge beim Up- und Download benötigt."
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Server"
+msgstr "Server"
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Servers"
+msgstr "Server"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+#, php-format
+msgid "Set a new user password for %s"
+msgstr "Ein neues Benutzerpasswort für %s setzen"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Set up allowed rooms"
+msgstr "Zulässige Räume einrichten"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Set up servers"
+msgstr "Server einrichten"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+msgid "Set up user passwords"
+msgstr "Benutzerpasswörter einrichten"
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+msgid "Set user password"
+msgstr "Benutzerpasswort setzen"
+
+#: priv/scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Show link to certificate management"
+msgstr "Link zur Zeugnisverwaltung anzeigen"
+
+#: modules/Stsbl/ScmcBundle/Service/ScmcAdm.php
+msgid "Something went wrong."
+msgstr "Etwas ist schiefgelaufen."
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+#, php-format
+msgid "Something went wrong: %s"
+msgstr "Etwas ist schiefgelaufen: %s"
+
+#: config/80scmc
+msgid "Stadtteilschule"
+msgstr "Stadtteilschule"
+
+#: config/80scmc modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Stadtteilschule (Class 5-10)"
+msgstr "Stadtteilschule (Klasse 5-10)"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#: modules/Stsbl/ScmcBundle/Menu/MenuBuilder.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Start Page"
+msgstr "Startseite"
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "Success, you may now set the master password in the IDesk under "
+msgstr "Erfolg, Sie sollten das Masterpasswort jetzt im IDesk unter "
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid "The access is also allowed from the internet connection at home."
+msgstr "Der Zugriff ist außerdem vom heimischen Internetanschluss erlaubt."
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid ""
+"The account which is used to up- and download the data. The account must be "
+"member of the tomcat6/7/8 group on the certificate management server. You "
+"must upload a SSH key for this user in the server overview."
+msgstr ""
+"Das Konto, welches genutzt wird, um die Daten hoch- und herunterzuladen. Das "
+"Konto muss Mitglied der tomcat6/7/8-Gruppe auf dem Zeugnisverwaltungsserver "
+"sein. Sie müssen eine SSH-Schlüssel für diesen Benutzer in der Server-"
+"Übersicht hochladen."
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid ""
+"The domain, under which the reverse proxy is reachable. Must be different "
+"from the main domain or an alias domain of the portal server."
+msgstr ""
+"Die Domain, unter der der Reverse-Proxy erreichbar ist. Diese muss sich von "
+"der Haupt-Domain oder einer Alias-Domain des Portalservers unterscheiden."
+
+#: modules/Stsbl/ScmcBundle/Validator/Constraints/NotPortalServerDomain.php
+msgid ""
+"The entered domain must not be equivalent with the domain of the portal "
+"server."
+msgstr ""
+"Die eingebene Domain darf nicht der Domain des Portalservers entsprechen."
+
+#: modules/Stsbl/ScmcBundle/Validator/Constraints/NotPortalServerDomain.php
+msgid ""
+"The entered domain must not be equivalent with the host name of the portal "
+"server."
+msgstr ""
+"Die eingebene Domain darf nicht dem Hostnamen des Portalservers entsprechen."
+
+#: modules/Stsbl/ScmcBundle/Validator/Constraints/NotPortalServerDomain.php
+msgid "The entered domain must not be one of the alias domains."
+msgstr "Die eingebene Domain darf keine der Alias-Domains sein."
+
+#: modules/Stsbl/ScmcBundle/Validator/Constraints/NotPortalServerDomain.php
+msgid "The entered domain must not use the WWW group homepage."
+msgstr "Die eingebene Domain darf nicht die WWW-Gruppenhomepage benutzten."
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "The following rooms"
+msgstr "Folgende Räume"
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "The master password is wrong."
+msgstr "Das Masterpasswort ist falsch."
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "The same domain can not used for two servers."
+msgstr "Diesselbe Domain kann nicht für zwei Server benutzt werden."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/unavailable.html.twig.php
+msgid ""
+"The school certificate management server could not be reached. Please "
+"contact your administrator."
+msgstr ""
+"Der Zeugnisverwaltungsserver konnte nicht erreicht werden. Bitte "
+"kontaktieren Sie Ihren Administrator."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+msgid ""
+"The user has currently not the privilege \"Access the connector to up- and "
+"download data\". Make sure that the User also have this privilege assigned. "
+"Otherwhile the certificate management will not shown in the IDesk."
+msgstr ""
+"Der Benutzer hat derzeit nicht das Sonderrecht \"Auf den Connector zugreifen "
+"um Daten hoch- und herunterzuladen\". Stellen Sie sicher, dass der Benutzer "
+"dieses Sonderrecht hat. Andernfalls wird der Menüpunkt Zeugnisverwaltung im "
+"IDesk nicht angezeigt."
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "The user password is wrong."
+msgstr "Das Benutzerpasswort ist falsch."
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid ""
+"The version of Tomcat server which is running on the certificate management "
+"server."
+msgstr ""
+"Die Version des Tomcat-Servers, die auf dem Zeugnisverwaltungsserver läuft."
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"The zip file with the class data. It must contain sub folders with the class "
+"lists sorted by age group (Jahrgang5, Jahrgang6, ...). For more information "
+"please refer the WZeugnis Documentation."
+msgstr ""
+"Die ZIP-Datei mit den Klassendaten. Sie muss Unterordner mit den "
+"Klassenlisten enthalten, sortiert nach Jahrgang (Jahrgang5, Jahrgang6, ...). "
+"Für mehr Informationen schauen Sie bitte in die WZeugnis-Dokumentation."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/unavailable.html.twig.php
+msgid "To the IDesk"
+msgstr "Zum IDesk"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/List/field_tomcat_version.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/Show/field_tomcat_version.html.twig.php
+#, php-format
+msgid "Tomcat %s"
+msgstr "Tomcat %s"
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Tomcat 6"
+msgstr "Tomcat 6"
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Tomcat 7"
+msgstr "Tomcat 7"
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Tomcat 8"
+msgstr "Tomcat 8"
+
+#: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+msgid "Tomcat version"
+msgstr "Tomcat-Version"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Update password"
+msgstr "Passwort aktualisieren"
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+msgid "Upload SSH key"
+msgstr "SSH-Schlüssel hochladen"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Upload certifcate data"
+msgstr "Zeugnisdaten hochladen"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Upload data"
+msgstr "Daten hochladen"
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
+msgid "Upload new class and course lists to the server."
+msgstr "Neue Klassen- und Kurslisten auf den Server hochladen"
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+#, php-format
+msgid "Uploaded new SSH key for %s."
+msgstr "Neuen SSH-Schlüssel für %s hochgeladen."
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+msgid "User"
+msgstr "Benutzer"
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "User password"
+msgstr "Benutzerpasswort"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "User password can not be empty."
+msgstr "Benutzerpasswort darf nicht leer sein."
+
+#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+msgid "User passwords"
+msgstr "Benutzerpasswörter"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+#, php-format
+msgid "Year %s"
+msgstr "Jahrgang %s"
+
+#: modules/Stsbl/ScmcBundle/Controller/AdminController.php
+msgid "Yes"
+msgstr "Ja"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"You can limit the download to particular years. Only the selected years will "
+"be included in the Zip file."
+msgstr ""
+"Sie können den Download auf einzelne Jahrgänge beschränken. Nur die "
+"ausgewählten Jahrgänge werden in der ZIP-Datei enthalten sein."
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"You can limit the upload to particular years. Only the course lists of the "
+"selected years will deleted and replaced on the server."
+msgstr ""
+"Sie können den Upload auf bestimmte Jahrgänge beschränken. Nur die "
+"Kurslisten der gewählten Jahrgänge werden auf dem Server gelöscht und "
+"ersetzt."
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid "You have logged in successfully in the Certificate Management Section."
+msgstr "Sie haben sich erfolgreich im Zeugnisverwaltungsbereich angemeldet."
+
+#: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
+msgid ""
+"You have logged out successfully from the Certificate Management Section."
+msgstr ""
+"Sie haben sich erfolgreich aus dem Zeugnisverwaltungsbereich abgemeldet."
+
+#: modules/Stsbl/ScmcBundle/Service/ScmcAdm.php
+msgid "You have to upload a zip file!"
+msgstr "Sie müssen eine ZIP-Datei hochladen!"
+
+#: modules/Stsbl/ScmcBundle/Crud/Batch/UploadSSHKeyAction.php
+msgid "You must select a SSH key for uploading."
+msgstr "Sie müssen einen SSH-Schlüssel für das Hochladen auswählen"
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid ""
+"You need to confirm that a new upload will delete all existing data on the "
+"server."
+msgstr ""
+"Sie müssen bestätigen, dass ein neuer Upload alle existierenden Daten auf "
+"dem Server löscht."
+
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
+msgid ""
+"Your administrator set, that the server is not reachable from your host. The "
+"access is allowed from the following rooms:"
+msgstr ""
+"Ihr Administrator hat konfiguriert, dass der Server von Ihrem Gerät aus "
+"nicht erreichbar ist. Der Zugriff ist von folgenden Räumen aus erlaubt:"
+
+#: modules/Stsbl/ScmcBundle/EventListener/KernelControllerSubscriber.php
+msgid "Your session is expired. Please login again."
+msgstr "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
+
+#: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
+msgid "Zip file with class data"
+msgstr "ZIP-Datei mit Klassendaten"
+
+#: modules/Stsbl/ScmcBundle/Resources/translations/messages.php
+msgid "again."
+msgstr "erneut setzen."
