@@ -29,8 +29,8 @@ msgid "Action"
 msgstr "Aktion"
 
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
-#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
 msgid "Administration"
 msgstr "Verwaltung"
 
@@ -62,7 +62,7 @@ msgstr "Zugewiesene Gruppe"
 #: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/code.html.twig.php
 msgid "Authorization code"
-msgstr "Autorisierungscode"
+msgstr "Autorisierungs-Code"
 
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
@@ -103,25 +103,25 @@ msgstr ""
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: modules/Stsbl/ScmcBundle/Controller/AccessController.php
 #: modules/Stsbl/ScmcBundle/EventListener/MenuListener.php
+#: modules/Stsbl/ScmcBundle/Controller/AccessController.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/access/index.html.twig.php
 msgid "Certificate Grade Input"
 msgstr "Zeugnisnoteneingabe"
 
-#: share/iservcfg/85scmc modules/Stsbl/ScmcBundle/Admin/RoomWhitelistAdmin.php
-#: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
+#: share/iservcfg/85scmc modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
 #: modules/Stsbl/ScmcBundle/Admin/ServerAdmin.php
+#: modules/Stsbl/ScmcBundle/Admin/RoomWhitelistAdmin.php
+#: modules/Stsbl/ScmcBundle/EventListener/MenuListener.php
 #: modules/Stsbl/ScmcBundle/Controller/SecurityController.php
 #: modules/Stsbl/ScmcBundle/Controller/AdminController.php
 #: modules/Stsbl/ScmcBundle/Controller/ManagementController.php
-#: modules/Stsbl/ScmcBundle/EventListener/MenuListener.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/code.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/index.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/download.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/management/upload.html.twig.php
-#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/code.html.twig.php
-#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/security/login.html.twig.php
-#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
 msgid "Certificate Management"
 msgstr "Zeugnisverwaltung"
 
@@ -665,13 +665,13 @@ msgstr ""
 "Klassenlisten enthalten, sortiert nach Jahrgang (Jahrgang5, Jahrgang6, ...). "
 "Für mehr Informationen schauen Sie bitte in die WZeugnis-Dokumentation."
 
-#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/unavailable.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/public/block.html.twig.php
 msgid "To the IDesk"
 msgstr "Zum IDesk"
 
-#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/List/field_tomcat_version.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/Show/field_tomcat_version.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/List/field_tomcat_version.html.twig.php
 #, php-format
 msgid "Tomcat %s"
 msgstr "Tomcat %s"
@@ -732,8 +732,8 @@ msgstr "Benutzerpasswort darf nicht leer sein."
 #: modules/Stsbl/ScmcBundle/Admin/UserPasswordAdmin.php
 #: modules/Stsbl/ScmcBundle/Controller/AdminController.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/setuserpassword.html.twig.php
-#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
 #: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/deleteuserpassword.html.twig.php
+#: /tmp/twig2php-stsbl-iserv-scmc/modules/Stsbl/ScmcBundle/Resources/views/admin/index.html.twig.php
 msgid "User passwords"
 msgstr "Benutzerpasswörter"
 
